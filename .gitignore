@@ -1,0 +1,8 @@
+bundle/
+.ctrlp/
+.neocomplete/
+.unite/
+.vimfiler/
+.vimshell/
+vimrc_local.vim
+gvimrc_local.vim
