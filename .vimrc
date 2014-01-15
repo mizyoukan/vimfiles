@@ -385,7 +385,7 @@ NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
-NeoBundle 'Shougo/neosnippet', {'depends': 'honza/vim-snippets'}
+NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neosnippet-snippets', 'honza/vim-snippets']}
 NeoBundleLazy 'Shougo/unite.vim', {'autoload': {'commands': 'Unite'}}
 NeoBundleLazy 'Shougo/vimfiler'
 NeoBundleLazy 'Shougo/vimshell'
@@ -450,6 +450,7 @@ endif "}}}
 
 if neobundle#tap('neosnippet') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory = expand(s:vimfiles . '/bundle/vim-snippets/snippets')
     if has('conceal')
       set conceallevel=2 concealcursor=i
