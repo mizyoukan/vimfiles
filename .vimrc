@@ -390,6 +390,8 @@ NeoBundle 'kana/vim-textobj-indent', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kana/vim-textobj-line', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kien/ctrlp.vim'
 NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
+NeoBundle 'mhinz/vim-signify'
+NeoBundle 'mhinz/vim-startify'
 NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
