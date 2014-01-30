@@ -381,6 +381,7 @@ NeoBundle 'jnurmine/Zenburn', {'gui': 0}
 NeoBundle 'jonathanfilip/vim-lucius', {'gui': 1}
 NeoBundle 'Pychimp/vim-sol', {'gui': 1}
 NeoBundle 'vim-scripts/freya', {'gui': 1}
+NeoBundle 'vim-scripts/swamplight', {'gui': 1}
 
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
