@@ -176,6 +176,14 @@ set smartindent
 " タブ文字の表示幅
 set tabstop=4
 
+" コメント行からの改行時のコメント文字列挿入をOFF
+augroup AutoCommentOff
+  autocmd!
+  autocmd BufEnter * setlocal formatoptions&
+  autocmd BufEnter * setlocal formatoptions-=r
+  autocmd BufEnter * setlocal formatoptions-=o
+augroup END
+
 "}}}
 
 " Appearances {{{
