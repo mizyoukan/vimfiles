@@ -635,12 +635,12 @@ if neobundle#tap('ctrlp.vim') "{{{
       \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
       \   'PrtCurLeft()': ['<left>', '<C-^>']
       \ }
-    let g:ctrlp_custom_ignore = {
-      \   'dir': 'classes|target'
-      \ }
   endfunction
   let g:ctrlp_cache_dir = expand(s:vimfiles . '/.ctrlp')
   let g:ctrlp_map = '<C-@>'
+  let g:ctrlp_custom_ignore = {
+    \   'dir': 'target'
+    \ }
   call neobundle#untap()
 endif "}}}
 
