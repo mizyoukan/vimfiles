@@ -404,6 +404,7 @@ NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundleLazy 'scrooloose/syntastic'
+NeoBundleLazy 'thinca/vim-ft-help_fold', {'autoload': {'filetypes': 'help'}}
 NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
 NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
 NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
@@ -835,6 +836,10 @@ autocmd MyAutoCmd FileType qf nnoremap <buffer> q :quit<CR>
 
 " Diff
 autocmd MyAutoCmd FileType diff setlocal foldlevel=99
+
+" Help
+autocmd MyAutoCmd FileType help setlocal nolist
+autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
 
 " Git
 autocmd MyAutoCmd FileType git setlocal foldlevel=99
