@@ -818,7 +818,7 @@ if neobundle#tap('vim-easy-align') "{{{
     \     'mappings': '<Plug>(EasyAlign)'
     \   }
     \ })
-  vmap <Enter> <Plug>(EasyAlign)<CR>
+  vmap <Enter> <Plug>(EasyAlign)
   call neobundle#untap()
 endif "}}}
 
