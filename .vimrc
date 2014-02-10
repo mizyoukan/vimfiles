@@ -657,6 +657,7 @@ if neobundle#tap('ctrlp.vim') "{{{
   let g:ctrlp_cache_dir = expand(s:vimfiles . '/.ctrlp')
   let g:ctrlp_map = '<C-@>'
   let g:ctrlp_custom_ignore = {
+    \   'file': '\v\.(dll|exe|jar|so)$',
     \   'dir': 'target'
     \ }
   call neobundle#untap()
