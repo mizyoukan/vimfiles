@@ -110,6 +110,20 @@ if has('clientserver') && has('gui_running') && (has('win32') || has('win64'))
   endfunction "}}}
 endif
 
+" 左移動でこれ以上移動できない場合はfoldingを1段階閉じる
+function! s:MoveLeftOrCloseFold() "{{{
+  let c = col(".")
+  if c == 1
+    try
+      foldclose
+    catch
+      echo "折り畳みがありません"
+    endtry
+  else
+    call cursor(line("."), c-1)
+  endif
+endfunction "}}}
+
 "}}}
 
 " Encodings {{{
@@ -307,6 +321,9 @@ cnoremap <C-n> <Down>
 noremap [option]a za
 " 現在のカーソル位置以外閉じる
 noremap [option]i zMzv
+
+" 左端で左移動した場合にfoldingを1段階閉じる
+nnoremap <silent> h :<C-u>call <SID>MoveLeftOrCloseFold()<CR>
 
 " wrapをトグル
 nnoremap [option]w :set invwrap<CR>
