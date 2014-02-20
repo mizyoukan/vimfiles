@@ -1,6 +1,7 @@
 bundle/
 .ctrlp/
 .neocomplete/
+.neomru/
 .unite/
 .vimfiler/
 .vimshell/

@@ -413,7 +413,7 @@ NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
 NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neosnippet-snippets', 'honza/vim-snippets']}
-NeoBundleLazy 'Shougo/unite.vim', {'autoload': {'commands': 'Unite'}}
+NeoBundleLazy 'Shougo/unite.vim', {'autoload': {'commands': 'Unite'}, 'depends': 'Shougo/neomru.vim'}
 NeoBundleLazy 'Shougo/vimfiler'
 NeoBundleLazy 'Shougo/vimshell'
 NeoBundle 'tomtom/tcomment_vim'
@@ -641,6 +641,13 @@ if neobundle#tap('vimshell') "{{{
   nnoremap <silent>[option]s :<C-u>VimShell -split<CR>
 
   call neobundle#untap()
+endif "}}}
+
+if neobundle#tap('neomru.vim') "{{{
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neomru#file_mru_path = expand(s:vimfiles . '/.neomru/file')
+    let g:neomru#directory_mru_path = expand(s:vimfiles . '/.neomru/directory')
+  endfunction
 endif "}}}
 
 if neobundle#tap('ctrlp.vim') "{{{
