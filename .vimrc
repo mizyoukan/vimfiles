@@ -513,10 +513,6 @@ if neobundle#tap('unite.vim') "{{{
     let g:unite_enable_start_insert = 1
     let g:unite_winheight = 10
     let g:unite_split_rule = 'botright'
-    let g:loaded_unite_source_directory_mru = 1
-    let g:loaded_unite_source_history_yank = 1
-    let g:loaded_unite_source_tab = 1
-    let g:loaded_unite_source_window = 1
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
       let g:unite_source_grep_default_opts = '--nocolor --nogroup'
