@@ -179,16 +179,16 @@ set iminsert=0 imsearch=0
 set mouse=a
 
 " 自動インデントに使われる空白の数
-set shiftwidth=4
+set shiftwidth=2
 
 " タブキー押下時に挿入される文字幅（0の場合tabstopの値を使用）
-set softtabstop=4
+set softtabstop=2
 
 " スマートインデント
 set smartindent
 
 " タブ文字の表示幅
-set tabstop=4
+set tabstop=2
 
 " コメント行からの改行時のコメント文字列挿入をOFF
 augroup AutoCommentOff
@@ -847,7 +847,6 @@ endif "}}}
 " Filetypes {{{
 
 " VimScript
-autocmd MyAutoCmd FileType vim setlocal shiftwidth=2 softtabstop=2 tabstop=2
 let g:vim_indent_cont = 2
 
 " QuickFix
@@ -866,14 +865,9 @@ autocmd MyAutoCmd FileType git setlocal foldlevel=99
 autocmd MyAutoCmd FileType gitcommit setlocal foldlevel=99
 
 " Python
+autocmd MyAutoCmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=8
 autocmd MyAutoCmd FileType python setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd MyAutoCmd FileType python inoremap <buffer> # X#
-
-" Ruby
-autocmd MyAutoCmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=2
-
-" Scala
-autocmd MyAutoCmd FileType scala setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 " Go
 autocmd MyAutoCmd FileType go setlocal noexpandtab
@@ -887,6 +881,7 @@ if $GOPATH != ''
 endif
 
 " Markdown
+autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType markdown setlocal foldlevel=1 foldlevelstart=1
 
 " reStructuredText
@@ -905,6 +900,9 @@ let s:jsbat_template = [
   \   '/* vim: set ft=javascript : */',
   \ ]
 autocmd MyAutoCmd BufNewFile *.js.bat call append(0, s:jsbat_template)|normal Gdd{
+
+" VBScript
+autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
 "}}}
 
