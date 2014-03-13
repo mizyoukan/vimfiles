@@ -404,6 +404,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'fuenor/qfixhowm'
 NeoBundleLazy 'junegunn/vim-easy-align'
+NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-indent', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kana/vim-textobj-line', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kien/ctrlp.vim'
