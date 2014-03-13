@@ -9,9 +9,6 @@ try
 catch
 endtry
 
-" ウィンドウサイズ
-set columns=100 lines=30
-
 " ビープ音を消す
 set visualbell t_vb=
 
