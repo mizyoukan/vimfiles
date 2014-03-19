@@ -883,7 +883,7 @@ autocmd MyAutoCmd FileType python setlocal cinwords=if,elif,else,for,while,try,e
 autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 
 " Go
-autocmd MyAutoCmd FileType go setlocal noexpandtab
+autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 if $GOPATH != ''
   execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
