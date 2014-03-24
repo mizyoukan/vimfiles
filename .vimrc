@@ -888,10 +888,12 @@ autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestma
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 if $GOPATH != ''
   execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
-  if !exists('g:neocomplcache_omni_patterns')
-    let g:neocomplcache_omni_patterns = {}
+  if executable('gocode')
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+      let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+    let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
   endif
-  let g:neocomplcache_omni_patterns.go = '[^. \t[:digit:]]\.\w*'
 endif
 
 " Markdown
