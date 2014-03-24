@@ -885,6 +885,7 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 " Go
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
+autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 if $GOPATH != ''
   execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
   if !exists('g:neocomplcache_omni_patterns')
