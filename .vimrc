@@ -843,7 +843,7 @@ if neobundle#tap('vim-easy-align') "{{{
   call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vim-operator-user')
+if neobundle#tap('vim-operator-user') "{{{
   " JSONデータを整形
   if executable('jq')
     function! Op_json_format(motion_wise)
@@ -854,7 +854,8 @@ if neobundle#tap('vim-operator-user')
   endif
 
   call neobundle#untap()
-endif
+endif "}}}
+
 "}}}
 
 " Filetypes {{{
