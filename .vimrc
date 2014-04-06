@@ -265,13 +265,30 @@ set t_Co=256
 set autoread
 
 " バックアップファイルを作らない
-set nobackup
+" set nobackup
 
 " スワップファイルを作らない
-set noswapfile
+" set noswapfile
 
 " ファイルの上書きの前にバックアップを作らない
-set nowritebackup
+" set nowritebackup
+
+" バックアップファイル出力先
+let s:backupdir = expand(s:vimfiles . '/.backup')
+if !isdirectory(s:backupdir)
+  call mkdir(s:backupdir)
+endif
+let &backupdir = s:backupdir
+
+" スワップファイル出力先
+let s:swapdir = expand(s:vimfiles . '/.swap')
+if !isdirectory(s:swapdir)
+  call mkdir(s:swapdir)
+endif
+let &directory = s:swapdir
+
+" undoファイル出力先
+let &undodir = expand(s:vimfiles . '/.undo')
 
 "}}}
 
