@@ -810,6 +810,12 @@ if neobundle#tap('qfixhowm') "{{{
   call neobundle#untap()
 endif "}}}
 
+if neobundle#tap('vim-ft-clojure') "{{{
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:clojure#indent#special = '\%(defroutes\)$'
+  endfunction
+endif "}}}
+
 if neobundle#tap('riv.vim') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:riv_global_leader = '<C-e>'
