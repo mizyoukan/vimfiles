@@ -458,7 +458,7 @@ NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
 
 " Clojure
 NeoBundleLazy 'thinca/vim-ft-clojure', {'autoload': {'filetypes': 'clojure'}}
-NeoBundleLazy 'tpope/vim-fireplace', {'depends': 'tpope/vim-classpath', 'autoload': {'commands': 'Connect'}}
+NeoBundleLazy 'tpope/vim-fireplace', {'disabled': !has('python'), 'depends': 'tpope/vim-classpath', 'autoload': {'commands': 'Connect'}}
 
 " Javascript
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {'autoload': {'filetypes': 'javascript'}}
