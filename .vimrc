@@ -802,7 +802,6 @@ if neobundle#tap('qfixhowm') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:qfixmemo_dir = expand('~/memo')
     let g:qfixmemo_filename = '%Y/%m/%Y-%m-%d-%H%M%S'
-    let g:qfixmemo_ext = 'md'
     let g:qfixmemo_filetype = ''
     let g:qfixmemo_title = '#'
     let g:qfixmemo_timeformat = 'last update: %Y-%m-%d %H:%M'
@@ -824,6 +823,7 @@ if neobundle#tap('qfixhowm') "{{{
   endfunction
   let g:QFixHowm_Convert = 0
   let g:disable_QFixWin = 1
+  let g:qfixmemo_ext = 'md'
   call neobundle#untap()
 endif "}}}
 
