@@ -429,18 +429,18 @@ NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
 NeoBundle 'mhinz/vim-signify'
 NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
+NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
 NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neosnippet-snippets', 'honza/vim-snippets']}
 NeoBundleLazy 'Shougo/unite.vim', {'autoload': {'commands': 'Unite'}, 'depends': 'Shougo/neomru.vim'}
 NeoBundleLazy 'Shougo/vimfiler'
 NeoBundleLazy 'Shougo/vimshell'
-NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-surround'
-NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'thinca/vim-ft-help_fold', {'autoload': {'filetypes': 'help'}}
 NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
 NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-surround'
 NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
 
 " Python
