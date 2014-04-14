@@ -458,7 +458,7 @@ NeoBundleLazy 'kannokanno/previm'
 NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
 
 " Clojure
-NeoBundleLazy 'thinca/vim-ft-clojure', {'autoload': {'filetypes': 'clojure'}}
+" NeoBundleLazy 'thinca/vim-ft-clojure', {'autoload': {'filetypes': 'clojure'}}
 NeoBundleLazy 'tpope/vim-fireplace', {'disabled': !has('python'), 'depends': 'tpope/vim-classpath', 'autoload': {'commands': 'Connect'}}
 
 " Javascript
@@ -487,6 +487,7 @@ if neobundle#tap('neocomplete.vim') "{{{
     let g:neocomplete#enable_insert_char_pre = 1
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#max_list = 20
+    let g:neocomplete#force_overwrite_completefunc = 1
     if !exists('g:neocomplete#keyword_patterns')
       let g:neocomplete#keyword_patterns = {}
     endif
@@ -928,6 +929,9 @@ if $GOPATH != ''
     let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
   endif
 endif
+
+" Clojure
+let g:clojure_align_multiline_strings = 1
 
 " Markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
