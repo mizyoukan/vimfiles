@@ -425,6 +425,7 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-indent', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kana/vim-textobj-line', {'depends': 'kana/vim-textobj-user'}
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
 NeoBundle 'mhinz/vim-signify'
 NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
@@ -680,6 +681,14 @@ if neobundle#tap('ctrlp.vim') "{{{
     \   'file': '\v\.(dll|exe|jar|so)$',
     \   'dir': 'target'
     \ }
+  call neobundle#untap()
+endif "}}}
+
+if neobundle#tap('rainbow_parentheses.vim') "{{{
+  autocmd MyAutoCmd VimEnter * RainbowParenthesesToggle
+  autocmd MyAutoCmd Syntax * RainbowParenthesesLoadRound
+  autocmd MyAutoCmd Syntax * RainbowParenthesesLoadSquare
+  autocmd MyAutoCmd Syntax * RainbowParenthesesLoadBraces
   call neobundle#untap()
 endif "}}}
 
