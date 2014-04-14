@@ -420,6 +420,7 @@ NeoBundle 'vim-scripts/swamplight', {'gui': 1}
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'jiangmiao/auto-pairs'
 NeoBundleLazy 'junegunn/vim-easy-align'
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-indent', {'depends': 'kana/vim-textobj-user'}
