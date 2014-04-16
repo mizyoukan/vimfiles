@@ -8,5 +8,6 @@ bundle/
 .vimfiler/
 .vimshell/
 .swap/
+.qfixmru
 vimrc_local.vim
 gvimrc_local.vim

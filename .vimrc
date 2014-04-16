@@ -831,6 +831,7 @@ if neobundle#tap('qfixhowm') "{{{
       \ ]
     let g:qfixmemo_template_keycmd = '$F[a'
     let g:qfixmemo_use_howm_schedule = 0
+    let g:QFixMRU_Filename = expand(s:vimfiles . '/.qfixmru')
   endfunction
   let g:QFixHowm_Convert = 0
   let g:disable_QFixWin = 1
