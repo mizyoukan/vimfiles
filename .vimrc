@@ -548,16 +548,14 @@ if neobundle#tap('unite.vim') "{{{
 
   let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
   let g:unite_source_menu_menus.fugitive.command_candidates = [
-    \   ['add             (fugitive)', 'Gwrite'],
     \   ['command...      (fugitive)', 'execute "Git!" input("command git: ")'],
+    \   ['add             (fugitive)', 'Gwrite'],
     \   ['blame           (fugitive)', 'Gblame'],
     \   ['checkout        (fugitive)', 'Gread'],
     \   ['commit          (fugitive)', 'Gcommit -v'],
     \   ['commit --amend  (fugitive)', 'Gcommit -v --amend'],
     \   ['diff            (fugitive)', 'Gdiff'],
-    \   ['diff...         (fugitive)', 'execute "Gdiff" input("revision: ", "HEAD")'],
     \   ['grep...         (fugitive)', 'execute "silent Glgrep!" input("argumengs: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
-    \   ['log             (fugitive)', 'silent Gllog! -- | Unite location_list'],
     \   ['move...         (fugitive)', 'execute "Gmove" input("destination: ")'],
     \   ['pull            (fugitive)', 'Git! pull'],
     \   ['push            (fugitive)', 'Git! push'],
