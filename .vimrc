@@ -548,20 +548,26 @@ if neobundle#tap('unite.vim') "{{{
 
   let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
   let g:unite_source_menu_menus.fugitive.command_candidates = [
-    \   ['command...      (fugitive)', 'execute "Git!" input("command git: ")'],
-    \   ['add             (fugitive)', 'Gwrite'],
-    \   ['blame           (fugitive)', 'Gblame'],
-    \   ['checkout        (fugitive)', 'Gread'],
-    \   ['commit          (fugitive)', 'Gcommit -v'],
-    \   ['commit --amend  (fugitive)', 'Gcommit -v --amend'],
-    \   ['diff            (fugitive)', 'Gdiff'],
-    \   ['grep...         (fugitive)', 'execute "silent Glgrep!" input("argumengs: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
-    \   ['move...         (fugitive)', 'execute "Gmove" input("destination: ")'],
-    \   ['pull            (fugitive)', 'Git! pull'],
-    \   ['push            (fugitive)', 'Git! push'],
-    \   ['remove          (fugitive)', 'Gremove'],
-    \   ['status          (fugitive)', 'Gstatus'],
+    \   ['command...',     'execute "Git!" input("command git: ")'],
+    \   ['add',            'Gwrite'],
+    \   ['blame',          'Gblame'],
+    \   ['checkout',       'Gread'],
+    \   ['commit',         'Gcommit -v'],
+    \   ['commit --amend', 'Gcommit -v --amend'],
+    \   ['diff',           'Gdiff'],
+    \   ['grep...',        'execute "silent Glgrep!" input("argumengs: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
+    \   ['move...',        'execute "Gmove" input("destination: ")'],
+    \   ['pull',           'Git! pull'],
+    \   ['push',           'Git! push'],
+    \   ['remove',         'Gremove'],
+    \   ['status',         'Gstatus'],
     \ ]
+
+  if !exists('g:unite_source_alias_aliases')
+    let g:unite_source_alias_aliases = {}
+  endif
+
+  let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
 
   autocmd MyAutoCmd FileType unite call s:unite_my_settings()
   function! s:unite_my_settings()
@@ -576,7 +582,7 @@ if neobundle#tap('unite.vim') "{{{
 
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
-  nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite menu:fugitive giti')<CR>
+  nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
 
   call neobundle#untap()
 endif "}}}
