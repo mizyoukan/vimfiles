@@ -294,8 +294,8 @@ let &undodir = expand(s:vimfiles . '/.undo')
 
 " Key mappings {{{
 
-let mapleader = ','
-noremap \ ,
+" let mapleader = ','
+" noremap \ ,
 
 noremap [option] <Nop>
 map <Space> [option]
