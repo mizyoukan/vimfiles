@@ -435,6 +435,7 @@ NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
 NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neosnippet-snippets', 'honza/vim-snippets']}
 NeoBundleLazy 'Shougo/unite.vim', {'autoload': {'commands': 'Unite'}, 'depends': 'Shougo/neomru.vim'}
+NeoBundleLazy 'Shougo/unite-outline'
 NeoBundleLazy 'Shougo/vimfiler'
 NeoBundleLazy 'Shougo/vimshell'
 NeoBundleLazy 'thinca/vim-ft-help_fold', {'autoload': {'filetypes': 'help'}}
@@ -598,6 +599,14 @@ if neobundle#tap('unite-qfixhowm') "{{{
 
   nnoremap <silent>[option]mm :<C-u>Unite qfixhowm/new qfixhowm -hide-source-names<CR>
   nnoremap <silent>[option]ma :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
+
+  call neobundle#untap()
+endif "}}}
+
+if neobundle#tap('unite-outline') "{{{
+  call neobundle#config({'depends': 'Shougo/unite.vim'})
+
+  nnoremap <silent>[option]o :<C-u>Unite outline -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 
   call neobundle#untap()
 endif "}}}
