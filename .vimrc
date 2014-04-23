@@ -340,7 +340,7 @@ noremap [option]a za
 noremap [option]i zMzv
 
 " 左端で左移動した場合にfoldingを1段階閉じる
-nnoremap <silent> h :<C-u>call <SID>MoveLeftOrCloseFold()<CR>
+" nnoremap <silent> h :<C-u>call <SID>MoveLeftOrCloseFold()<CR>
 
 " wrapをトグル
 nnoremap [option]w :set invwrap<CR>
