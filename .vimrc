@@ -519,14 +519,6 @@ endif "}}}
 
 if neobundle#tap('unite.vim') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
-    if neobundle#is_installed('unite-quickfix')
-      call neobundle#source('unite-quickfix')
-    endif
-
-    if neobundle#is_installed('unite-qfixhowm')
-      call neobundle#source('unite-qfixhowm')
-    endif
-
     if neobundle#is_installed('vim-unite-giti')
       call neobundle#source('vim-unite-giti')
     endif
