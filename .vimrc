@@ -305,6 +305,11 @@ nnoremap ZZ <Nop>
 nnoremap q <Nop>
 nnoremap <C-q> <Nop>
 
+" 押し辛い位置のキーの代替
+noremap [option]h ^
+noremap [option]l $
+noremap [option]m %
+
 " .vimrc/.gvimrcを編集
 if has('win32') || has('win64')
   nnoremap <silent> [option]ev :<C-u>edit ~\vimfiles\.vimrc<CR>
@@ -315,8 +320,8 @@ else
 endif
 
 " .vimrc/.gvimrcを反映
-nnoremap <silent> [option]lv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
-nnoremap <silent> [option]lg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> [option]!v :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> [option]!g :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 
 " 行末までヤンク
 nnoremap Y y$
@@ -589,8 +594,8 @@ if neobundle#tap('unite-qfixhowm') "{{{
     call unite#custom#source('qfixhowm:nocache', 'filters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
   endfunction
 
-  nnoremap <silent>[option]mm :<C-u>Unite qfixhowm/new qfixhowm -hide-source-names<CR>
-  nnoremap <silent>[option]ma :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
+  " nnoremap <silent>[option]mm :<C-u>Unite qfixhowm/new qfixhowm -hide-source-names<CR>
+  " nnoremap <silent>[option]ma :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
 
   call neobundle#untap()
 endif "}}}
