@@ -842,10 +842,13 @@ if neobundle#tap('qfixhowm') "{{{
     let g:qfixmemo_template_keycmd = '$F[a'
     let g:qfixmemo_use_howm_schedule = 0
     let g:QFixMRU_Filename = expand(s:vimfiles . '/.qfixmru')
+    let g:QFixHowm_HolidayFile = expand(s:vimfiles . '/bundle/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8')
   endfunction
   let g:QFixHowm_Convert = 0
   let g:disable_QFixWin = 1
+  let g:qfixmemo_mapleader = 'm'
   let g:qfixmemo_ext = 'md'
+  noremap mt :<C-u>call howm_schedule#QFixHowmSchedule('todo', expand('~/memo'), 'utf-8')<CR>
   call neobundle#untap()
 endif "}}}
 
