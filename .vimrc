@@ -861,6 +861,7 @@ if neobundle#tap('vim-ft-clojure') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:clojure#indent#special = '\%(defroutes\)$'
   endfunction
+  call neobundle#untap()
 endif "}}}
 
 if neobundle#tap('riv.vim') "{{{
