@@ -852,6 +852,11 @@ if neobundle#tap('qfixhowm') "{{{
   call neobundle#untap()
 endif "}}}
 
+if neobundle#tap('auto-pairs') "{{{
+  let g:AutoPairsMapSpace = 0
+  call neobundle#untap()
+endif "}}}
+
 if neobundle#tap('vim-ft-clojure') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:clojure#indent#special = '\%(defroutes\)$'
