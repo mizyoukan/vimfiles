@@ -124,6 +124,11 @@ function! s:MoveLeftOrCloseFold() "{{{
   endif
 endfunction "}}}
 
+" PowerShellを開く
+if executable('powershell')
+  command! -nargs=0 PowerShell silent execute ':!start powershell'
+endif
+
 "}}}
 
 " Encodings {{{
