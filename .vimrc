@@ -496,7 +496,7 @@ if neobundle#tap('neocomplete.vim') "{{{
     let g:neocomplete#data_directory = expand(s:vimfiles . '/.neocomplete')
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_ignore_case = 1
-    let g:neocomplete#enable_insert_char_pre = 1
+    " let g:neocomplete#enable_insert_char_pre = 1
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#max_list = 20
     let g:neocomplete#force_overwrite_completefunc = 1
