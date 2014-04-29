@@ -558,7 +558,7 @@ if neobundle#tap('unite.vim') "{{{
     \   ['commit',         'Gcommit -v'],
     \   ['commit --amend', 'Gcommit -v --amend'],
     \   ['diff',           'Gdiff'],
-    \   ['grep...',        'execute "silent Glgrep!" input("argumengs: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
+    \   ['grep...',        'execute "silent Glgrep!" input("arguments: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
     \   ['move...',        'execute "Gmove" input("destination: ")'],
     \   ['pull',           'Git! pull'],
     \   ['push',           'Git! push'],
