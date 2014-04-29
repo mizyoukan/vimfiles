@@ -440,7 +440,7 @@ NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
 NeoBundle 'mhinz/vim-signify'
 " NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
-" NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
+NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
 NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neosnippet-snippets', 'honza/vim-snippets']}
@@ -533,6 +533,10 @@ if neobundle#tap('unite.vim') "{{{
       call neobundle#source('vim-unite-giti')
     endif
 
+    if neobundle#is_installed('unite-quickfix')
+      call neobundle#source('unite-quickfix')
+    endif
+
     let g:unite_data_directory = expand(s:vimfiles . '/.unite')
     let g:unite_enable_start_insert = 1
     let g:unite_winheight = 10
@@ -549,17 +553,30 @@ if neobundle#tap('unite.vim') "{{{
     let g:unite_source_menu_menus = {}
   endif
 
+  function! s:unite_menu_input(prompt, exec_command)
+    let l:command = [
+      \   'let s:capture_input = input("' . a:prompt . '")',
+      \   'if s:capture_input !=# ""',
+      \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
+      \   'else',
+      \     'echo "canceled."',
+      \   'endif',
+      \   'unlet s:capture_input',
+      \ ]
+    return join(l:command, '|')
+  endfunction
+
   let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
   let g:unite_source_menu_menus.fugitive.command_candidates = [
-    \   ['command...',     'execute "Git!" input("command git: ")'],
+    \   ['[command?]',     s:unite_menu_input('git> ', 'execute "Git!" . $1')],
     \   ['add',            'Gwrite'],
     \   ['blame',          'Gblame'],
     \   ['checkout',       'Gread'],
     \   ['commit',         'Gcommit -v'],
     \   ['commit --amend', 'Gcommit -v --amend'],
     \   ['diff',           'Gdiff'],
-    \   ['grep...',        'execute "silent Glgrep!" input("arguments: ") | Unite -auto-preview -auto-resize -winheight=20 location_list'],
-    \   ['move...',        'execute "Gmove" input("destination: ")'],
+    \   ['grep...',        s:unite_menu_input('git grep> ', 'execute("silent Glgrep!" . $1 . " | Unite -auto-preview -auto-resize -winheight=20 location_list")')],
+    \   ['mv...',          s:unite_menu_input('git mv dest> ', 'execute "Gmove" . $1')],
     \   ['pull',           'Git! pull'],
     \   ['push',           'Git! push'],
     \   ['remove',         'Gremove'],
@@ -602,23 +619,11 @@ if neobundle#tap('unite.vim') "{{{
       \   ],
       \ }
     function! g:unite_source_menu_menus.lein.map(key, value)
-      function! s:str_capture_input(prompt, exec_command)
-        let l:command = [
-          \   'let s:capture_input = input("' . a:prompt . '")',
-          \   'if s:capture_input !=# ""',
-          \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
-          \   'else',
-          \     'echo "canceled."',
-          \   'endif',
-          \   'unlet s:capture_input',
-          \ ]
-        return join(l:command, '|')
-      endfunction
       if a:value ==# '?'
         return {
           \   'word': '[command?]',
           \   'kind': 'command',
-          \   'action__command': s:str_capture_input(
+          \   'action__command': s:unite_menu_input(
           \     'lein task> ',
           \     'execute ''VimShellInteractive --split="split | resize 10" lein '' . $1'),
           \ }
@@ -628,7 +633,6 @@ if neobundle#tap('unite.vim') "{{{
         \   'kind': 'command',
         \   'action__command': 'VimShellInteractive --split="split | resize 10" lein ' . a:value,
         \ }
-      unlet s:str_capture_input
     endfunction
     autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
   endif "}}}
