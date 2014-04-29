@@ -1022,7 +1022,7 @@ autocmd MyAutoCmd BufNewFile,BufRead *.js.bat setlocal filetype=javascript filee
 let s:jsbat_template = [
   \   '@if (0)==(0) echo off',
   \   'pushd %~dp0',
-  \   'CScript //Nologo //E:JScript "%~f0"',
+  \   'CScript //Nologo //E:JScript "%~f0" %*',
   \   'popd',
   \   'goto :EOF',
   \   '@end',
