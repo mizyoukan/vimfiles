@@ -313,7 +313,7 @@ nnoremap <C-q> <Nop>
 " 押し辛い位置のキーの代替
 noremap [option]h ^
 noremap [option]l $
-noremap [option]m %
+noremap [option]j %
 
 " .vimrc/.gvimrcを編集
 if has('win32') || has('win64')
@@ -586,6 +586,52 @@ if neobundle#tap('unite.vim') "{{{
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
   nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
+
+  if executable('lein') "{{{
+    if has('win32') || has('win64')
+      " For REPL input availability
+      call vimshell#util#set_variables({'$LEIN_JVM_OPTS': '-Djline.terminal=jline.UnsupportedTerminal'})
+    endif
+    let g:unite_source_menu_menus.lein = {
+      \   'description': 'Leiningen tasks',
+      \   'candidates': [
+      \     '?',
+      \     'repl', 'deps', 'test', 'clean',
+      \     'ring server', 'ring server-headless',
+      \     'cljsbuild auto', 'cljsbuild auto dev', 'cljsbuild once', 'cljsbuild clean',
+      \   ],
+      \ }
+    function! g:unite_source_menu_menus.lein.map(key, value)
+      function! s:str_capture_input(prompt, exec_command)
+        let l:command = [
+          \   'let s:capture_input = input("' . a:prompt . '")',
+          \   'if s:capture_input !=# ""',
+          \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
+          \   'else',
+          \     'echo "canceled."',
+          \   'endif',
+          \   'unlet s:capture_input',
+          \ ]
+        return join(l:command, '|')
+      endfunction
+      if a:value ==# '?'
+        return {
+          \   'word': '[command?]',
+          \   'kind': 'command',
+          \   'action__command': s:str_capture_input(
+          \     'lein task> ',
+          \     'execute ''VimShellInteractive --split="split | resize 10" lein '' . $1'),
+          \ }
+      endif
+      return {
+        \   'word': a:value,
+        \   'kind': 'command',
+        \   'action__command': 'VimShellInteractive --split="split | resize 10" lein ' . a:value,
+        \ }
+      unlet s:str_capture_input
+    endfunction
+    autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
+  endif "}}}
 
   call neobundle#untap()
 endif "}}}
