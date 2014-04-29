@@ -325,8 +325,8 @@ else
 endif
 
 " .vimrc/.gvimrcを反映
-nnoremap <silent> [option]!v :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
-nnoremap <silent> [option]!g :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 
 " 行末までヤンク
 nnoremap Y y$
