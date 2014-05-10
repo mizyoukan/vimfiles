@@ -463,7 +463,7 @@ NeoBundle 'mizyoukan/vim-virtualenv'
 NeoBundleLazy 'Rykka/riv.vim', {'autoload': {'filetypes': 'rst'}}
 
 " Markdown
-NeoBundleLazy 'rcmdnk/vim-markdown', {'autoload': {'filetypes': 'markdown'}}
+NeoBundleLazy 'plasticboy/vim-markdown', {'autoload': {'filetypes': ['markdown']}}
 NeoBundleLazy 'kannokanno/previm'
 
 " Scala
@@ -964,6 +964,15 @@ if neobundle#tap('vim-operator-user') "{{{
 
   call neobundle#untap()
 endif "}}}
+
+if neobundle#tap('vim-markdown')
+  function! ReplaceFileTypeTo(new_ft)
+    if index(split(&ft, '\.'), a:new_ft) == -1
+      let &ft = a:new_ft
+    endif
+  endfunction
+  autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
+endif
 
 "}}}
 
