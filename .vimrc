@@ -870,6 +870,9 @@ if neobundle#tap('syntastic') "{{{
       \   'passive_filetypes': []
       \ }
     let g:syntastic_python_checkers = ['flake8']
+    if executable('golint')
+      let g:syntastic_go_checkers = ['go', 'golint']
+    endif
   endfunction
   call neobundle#untap()
 endif "}}}
@@ -1006,12 +1009,18 @@ autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 ta
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 if $GOPATH != ''
-  execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
+  autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
+
   if executable('gocode')
+    execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
     if !exists('g:neocomplete#sources#omni#input_patterns')
       let g:neocomplete#sources#omni#input_patterns = {}
     endif
     let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
+  endif
+
+  if executable('golint')
+    execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/golang/lint/misc/vim')
   endif
 endif
 
