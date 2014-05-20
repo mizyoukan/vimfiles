@@ -493,7 +493,7 @@ endif "}}}
 
 if neobundle#tap('neocomplete.vim') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:neocomplete#data_directory = expand(s:vimfiles . '/.neocomplete')
+    let g:neocomplete#data_directory = expand(s:vimfiles . '/.cache/neocomplete')
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_ignore_case = 1
     " let g:neocomplete#enable_insert_char_pre = 1
@@ -512,6 +512,7 @@ if neobundle#tap('neosnippet') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory = expand(s:vimfiles . '/bundle/vim-snippets/snippets')
+    let g:neosnippet#data_directory = expand(s:vimfiles . '/.cache/neosnippet')
     if has('conceal')
       set conceallevel=2 concealcursor=i
     endif
@@ -537,7 +538,7 @@ if neobundle#tap('unite.vim') "{{{
       call neobundle#source('unite-quickfix')
     endif
 
-    let g:unite_data_directory = expand(s:vimfiles . '/.unite')
+    let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
     let g:unite_enable_start_insert = 1
     let g:unite_winheight = 10
     let g:unite_split_rule = 'botright'
@@ -677,7 +678,7 @@ if neobundle#tap('vimfiler') "{{{
     \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:vimfiler_data_directory = expand(s:vimfiles . '/.vimfiler')
+    let g:vimfiler_data_directory = expand(s:vimfiles . '/.cache/vimfiler')
     let g:vimfiler_as_default_explorer = 1
     let g:vimfiler_safe_mode_by_default = 0
     let g:vimfiler_tree_leaf_icon = ' '
@@ -709,7 +710,7 @@ if neobundle#tap('vimshell') "{{{
     \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:vimshell_temporary_directory = expand(s:vimfiles . '/.vimshell')
+    let g:vimshell_temporary_directory = expand(s:vimfiles . '/.cache/vimshell')
     " 毎回カレントディレクトリを表示
     let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
     let g:vimshell_prompt = ((has('win32') || has('win64')) ? $USERNAME : $USER) . '% '
@@ -727,8 +728,8 @@ endif "}}}
 
 if neobundle#tap('neomru.vim') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:neomru#file_mru_path = expand(s:vimfiles . '/.neomru/file')
-    let g:neomru#directory_mru_path = expand(s:vimfiles . '/.neomru/directory')
+    let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
+    let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
   endfunction
 endif "}}}
 
@@ -742,7 +743,7 @@ if neobundle#tap('ctrlp.vim') "{{{
       \   'PrtCurLeft()': ['<left>', '<C-^>']
       \ }
   endfunction
-  let g:ctrlp_cache_dir = expand(s:vimfiles . '/.ctrlp')
+  let g:ctrlp_cache_dir = expand(s:vimfiles . '/.cache/ctrlp')
   let g:ctrlp_map = '<C-@>'
   let g:ctrlp_custom_ignore = {
     \   'file': '\v\.(dll|exe|jar|so)$',
@@ -899,7 +900,7 @@ if neobundle#tap('qfixhowm') "{{{
       \ ]
     let g:qfixmemo_template_keycmd = '$F[a'
     let g:qfixmemo_use_howm_schedule = 0
-    let g:QFixMRU_Filename = expand(s:vimfiles . '/.qfixmru')
+    let g:QFixMRU_Filename = expand(s:vimfiles . '/.cache/qfixmru')
     let g:QFixHowm_HolidayFile = expand(s:vimfiles . '/bundle/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8')
   endfunction
   let g:QFixHowm_Convert = 0

@@ -1,13 +1,7 @@
 bundle/
 .backup/
-.ctrlp/
-.neocomplete/
-.neomru/
+.cache/
 .undo/
-.unite/
-.vimfiler/
-.vimshell/
 .swap/
-.qfixmru
 vimrc_local.vim
 gvimrc_local.vim
