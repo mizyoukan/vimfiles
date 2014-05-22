@@ -920,6 +920,11 @@ if neobundle#tap('vim-ft-clojure') "{{{
   call neobundle#untap()
 endif "}}}
 
+if neobundle#tap('vim-classpath') "{{{
+  let g:classpath_cache = expand(s:vimfiles . '/.cache/classpath')
+  call neobundle#untap()
+endif "}}}
+
 if neobundle#tap('riv.vim') "{{{
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:riv_global_leader = '<C-e>'
