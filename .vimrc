@@ -1005,7 +1005,7 @@ autocmd MyAutoCmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=8
 autocmd MyAutoCmd FileType python setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 
-" Go
+" Golang
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
