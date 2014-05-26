@@ -129,6 +129,15 @@ if executable('powershell')
   command! -nargs=0 PowerShell silent execute ':!start powershell'
 endif
 
+" FileTypeを変更する
+" 使用例:
+" autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
+function! ReplaceFileTypeTo(new_ft) "{{{
+  if index(split(&ft, '\.'), a:new_ft) == -1
+    let &ft = a:new_ft
+  endif
+endfunction "}}}
+
 "}}}
 
 " Encodings {{{
@@ -463,7 +472,6 @@ NeoBundle 'mizyoukan/vim-virtualenv'
 NeoBundleLazy 'Rykka/riv.vim', {'autoload': {'filetypes': 'rst'}}
 
 " Markdown
-NeoBundleLazy 'plasticboy/vim-markdown', {'autoload': {'filetypes': ['markdown']}}
 NeoBundleLazy 'kannokanno/previm'
 
 " Scala
@@ -969,15 +977,6 @@ if neobundle#tap('vim-operator-user') "{{{
   call neobundle#untap()
 endif "}}}
 
-if neobundle#tap('vim-markdown')
-  function! ReplaceFileTypeTo(new_ft)
-    if index(split(&ft, '\.'), a:new_ft) == -1
-      let &ft = a:new_ft
-    endif
-  endfunction
-  autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
-endif
-
 "}}}
 
 " Filetypes {{{
@@ -1029,9 +1028,9 @@ endif
 let g:clojure_align_multiline_strings = 1
 
 " Markdown
+autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
-" autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
-let g:vim_markdown_initial_foldlevel = 99
+autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
 
 " reStructuredText
 autocmd MyAutoCmd FileType rst setlocal shiftwidth=3 nosmartindent smarttab softtabstop=3 tabstop=3 wrap
