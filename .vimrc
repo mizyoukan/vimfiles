@@ -413,8 +413,6 @@ call neobundle#rc(expand(s:vimfiles . '/bundle'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let g:neobundle#types#git#default_protocol = 'https'
-
 "}}}
 
 " Plugins {{{
