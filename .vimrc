@@ -129,15 +129,6 @@ if executable('powershell')
   command! -nargs=0 PowerShell silent execute ':!start powershell'
 endif
 
-" FileTypeを変更する
-" 使用例:
-" autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
-function! ReplaceFileTypeTo(new_ft) "{{{
-  if index(split(&ft, '\.'), a:new_ft) == -1
-    let &ft = a:new_ft
-  endif
-endfunction "}}}
-
 "}}}
 
 " Encodings {{{
@@ -1026,7 +1017,7 @@ endif
 let g:clojure_align_multiline_strings = 1
 
 " Markdown
-autocmd MyAutoCmd FileType mkd call ReplaceFileTypeTo('markdown')
+autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
 let g:markdown_fenced_languages = [
