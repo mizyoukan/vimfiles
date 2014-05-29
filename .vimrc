@@ -545,6 +545,14 @@ if neobundle#tap('unite.vim') "{{{
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_max_candidates = 200
     endif
+
+    let g:unite_source_file_mru_ignore_pattern = ''
+    let g:unite_source_file_mru_ignore_pattern .= '\~$'
+    let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
+    if has('win32') || has('win64')
+      let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
+      let g:unite_source_file_mru_ignore_pattern .= '\|^//'
+  endif
   endfunction
 
   if !exists('g:unite_source_menu_menus')
