@@ -338,7 +338,7 @@ nnoremap <silent><ESC><ESC> :nohlsearch<CR><ESC>
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " insertモード終了時にIMEをOFF
-inoremap <silent><ESC> <ESC>:set iminsert=0<CR>
+autocmd MyAutoCmd InsertLeave * setlocal iminsert=0 imsearch=0
 
 " コマンド履歴のフィルタリング
 cnoremap <C-p> <Up>
