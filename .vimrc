@@ -983,6 +983,8 @@ endif "}}}
 
 " Filetypes {{{
 
+autocmd MyAutoCmd FileType text setlocal textwidth=0
+
 " VimScript
 let g:vim_indent_cont = 2
 
