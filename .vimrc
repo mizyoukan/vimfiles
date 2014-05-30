@@ -455,7 +455,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
 
 " Python
-NeoBundle 'mizyoukan/vim-virtualenv'
+NeoBundle 'mizyoukan/vim-virtualenv', {'disabled': !executable('virtualenv')}
 
 " reStructuredText
 NeoBundleLazy 'Rykka/riv.vim', {'autoload': {'filetypes': 'rst'}}
