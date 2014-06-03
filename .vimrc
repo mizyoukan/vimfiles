@@ -406,7 +406,6 @@ NeoBundleLazy 'kannokanno/previm'
 NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
 
 " Clojure
-" NeoBundleLazy 'thinca/vim-ft-clojure', {'autoload': {'filetypes': 'clojure'}}
 NeoBundleLazy 'tpope/vim-fireplace', {'disabled': !has('python'), 'depends': 'tpope/vim-classpath', 'autoload': {'commands': 'Connect'}}
 
 " Javascript
@@ -843,13 +842,6 @@ endif "}}}
 
 if neobundle#tap('auto-pairs') "{{{
   let g:AutoPairsMapSpace = 0
-  call neobundle#untap()
-endif "}}}
-
-if neobundle#tap('vim-ft-clojure') "{{{
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:clojure#indent#special = '\%(defroutes\)$'
-  endfunction
   call neobundle#untap()
 endif "}}}
 
