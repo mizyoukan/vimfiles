@@ -50,20 +50,6 @@ function! s:KillCurrentBuffer() "{{{
   execute 'bdelete' l:bn
 endfunction "}}}
 
-" Git管理下のディレクトリの場合 /.git/tags を更新
-if executable('git') && executable('ctags')
-  command! -nargs=0 TUpdate :call s:UpdateCtags()
-  function! s:UpdateCtags() "{{{
-    lcd %:p:h
-    let l:gitdir = substitute(vimproc#system('git rev-parse --git-dir 2> /dev/null'), '\n$', '', 'g')
-    if isdirectory(l:gitdir)
-      let l:tags = l:gitdir . ((has('win32') || has('win64')) ? '\\' : '/') . 'tags'
-      execute vimproc#system('ctags --tag-relative -Raf ' . shellescape(l:tags))
-    endif
-    lcd -
-  endfunction "}}}
-endif
-
 " フォールディングで表示する文字列設定
 function! s:mbslen(str) "{{{
   let l:char_count = strlen(a:str)
@@ -79,49 +65,6 @@ function! MyFoldText() "{{{
   let l:space_count = l:line_width - s:mbslen(l:left) - strlen(l:right)
   let l:space = l:space_count > 0 ? repeat(" ", l:space_count) : ""
   return l:left . l:space . l:right
-endfunction "}}}
-
-" 存在しリストされているバッファの番号を配列で取得
-function! s:BuffersNrListed() "{{{
-  let l:nrs = []
-  let l:last = bufnr('$')
-  let l:i = 0 | while l:i <= l:last | let l:i = l:i + 1
-    if buflisted(l:i)
-      let l:nrs = add(l:nrs, l:i)
-    endif
-  endwhile
-  return l:nrs
-endfunction "}}}
-
-" カレントバッファを別のGVimで開く
-if has('clientserver') && has('gui_running') && (has('win32') || has('win64'))
-  command! -nargs=0 WinNew call s:OpenWithOtherGVim()
-  function! s:OpenWithOtherGVim() "{{{
-    if &buftype | echo("Don't work on not normal buffer") | return | endif
-    if len(s:BuffersNrListed()) <= 1 | echo("Don't work on only current buffer") | return | endif
-    " 重複起動防止処理を避けるため、servernameをGVIM1以外で設定
-    let l:serverlist = split(substitute(serverlist(), '\n$', '', 'g'), '\n')
-    let l:newservername = 'GVIM2'
-    if v:servername == 'GVIM2'
-      let l:newservername = len(l:serverlist)==1 ? 'GVIM' : 'GVIM'.(l:serverlist[-1][4:]+1)
-    endif
-    execute '!start' v:progname shellescape(expand('%')) '--servername' l:newservername
-    call s:KillCurrentBuffer()
-  endfunction "}}}
-endif
-
-" 左移動でこれ以上移動できない場合はfoldingを1段階閉じる
-function! s:MoveLeftOrCloseFold() "{{{
-  let c = col(".")
-  if c == 1
-    try
-      foldclose
-    catch
-      echo "折り畳みがありません"
-    endtry
-  else
-    call cursor(line("."), c-1)
-  endif
 endfunction "}}}
 
 " PowerShellを開く
@@ -348,9 +291,6 @@ cnoremap <C-n> <Down>
 noremap [option]a za
 " 現在のカーソル位置以外閉じる
 noremap [option]i zMzv
-
-" 左端で左移動した場合にfoldingを1段階閉じる
-" nnoremap <silent> h :<C-u>call <SID>MoveLeftOrCloseFold()<CR>
 
 " wrapをトグル
 nnoremap [option]w :set invwrap<CR>
