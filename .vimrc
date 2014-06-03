@@ -736,6 +736,7 @@ if neobundle#tap('neomru.vim') "{{{
     let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
     let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
   endfunction
+  call neobundle#untap()
 endif "}}}
 
 if neobundle#tap('ctrlp.vim') "{{{
