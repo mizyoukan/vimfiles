@@ -393,9 +393,6 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
 
-" Python
-NeoBundle 'mizyoukan/vim-virtualenv', {'disabled': !executable('virtualenv')}
-
 " reStructuredText
 NeoBundleLazy 'Rykka/riv.vim', {'autoload': {'filetypes': 'rst'}}
 
@@ -737,33 +734,6 @@ if neobundle#tap('vim-quickrun') "{{{
       \   'runner/vimproc/updatetime': 50,
       \   'runner/vimproc/sleep': 0,
       \ }
-
-    if has('win32') || has('win64')
-      let s:hook = {
-        \   'name': 'virtualenv',
-        \   'kind': 'hook',
-        \   'config': {'enable': 0},
-        \ }
-
-      function! s:hook.init(session)
-        if !self.config.enable
-          return
-        endif
-        if !exists('g:virtualenv_name')
-          return
-        endif
-        let python_path = g:virtualenv_directory . '\' . g:virtualenv_name . '\Scripts\python.exe'
-        let a:session.config.command = python_path
-      endfunction
-
-      call quickrun#module#register(s:hook, 1)
-      unlet s:hook
-
-      let g:quickrun_config.python = {
-        \   'type': 'python',
-        \   'hook/virtualenv/enable': 1,
-        \ }
-    endif
 
     if executable('CScript')
       let g:quickrun_config.vb = {
