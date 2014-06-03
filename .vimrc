@@ -437,7 +437,6 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundleLazy 'kmnk/vim-unite-giti', {'depends': 'Shougo/unite.vim'}
 NeoBundle 'mhinz/vim-signify'
-" NeoBundleLazy 'osyo-manga/unite-qfixhowm', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'osyo-manga/unite-quickfix', {'depends': 'Shougo/unite.vim'}
 NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload': {'insert': 1}}
@@ -642,21 +641,6 @@ if neobundle#tap('unite.vim') "{{{
     endfunction
     autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
   endif "}}}
-
-  call neobundle#untap()
-endif "}}}
-
-if neobundle#tap('unite-qfixhowm') "{{{
-  call neobundle#config({'depends': ['Shougo/unite.vim', 'fuenor/qfixhowm']})
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    " 更新日時で降順ソート
-    call unite#custom#source('qfixhowm', 'filters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
-    call unite#custom#source('qfixhowm:nocache', 'filters', ['sorter_qfixhowm_updatetime', 'sorter_reverse'])
-  endfunction
-
-  " nnoremap <silent>[option]mm :<C-u>Unite qfixhowm/new qfixhowm -hide-source-names<CR>
-  " nnoremap <silent>[option]ma :<C-u>Unite qfixhowm/new qfixhowm:nocache -hide-source-names<CR>
 
   call neobundle#untap()
 endif "}}}
