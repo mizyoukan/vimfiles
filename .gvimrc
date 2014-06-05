@@ -12,26 +12,13 @@ endtry
 " ビープ音を消す
 set visualbell t_vb=
 
-" GUI options {{{
-
 set guioptions&
-
-" ツールバー非表示
-if &guioptions =~# 'T'
-  set guioptions-=T
-endif
-
-" メニューバー非表示
-if &guioptions =~# 'm'
-  set guioptions-=m
-endif
-
-" 水平スクロールバー表示
-if &guioptions !~# 'b'
-  set guioptions+=b
-endif
-
-"}}}
+" Display horizontal scrollbar (limit length of the cursor line)
+set guioptions+=b
+set guioptions+=h
+" Hide toolbar/menubar
+set guioptions-=T
+set guioptions-=m
 
 " Font
 set linespace=1
