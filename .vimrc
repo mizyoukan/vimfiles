@@ -446,6 +446,9 @@ if neobundle#is_installed('neosnippet')
   " snippet操作中にTabキーで次のフィールドに移動
   imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
   smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  " Delete merkers when InsertLeave
+  autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
 endif
 "}}}
 
