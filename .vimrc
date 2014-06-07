@@ -531,13 +531,20 @@ if neobundle#tap('unite.vim')
 
   autocmd MyAutoCmd FileType unite call s:unite_my_settings()
   function! s:unite_my_settings()
+    imap <buffer><expr> <C-s> unite#do_action('split')
+    " Quit
     nmap <buffer> q <Plug>(unite_exit)
     nmap <buffer> <C-q> <Plug>(unite_exit)
-    nmap <buffer> <C-g> <Plug>(unite_exit)
     imap <buffer> <C-q> <Plug>(unite_exit)
-    imap <buffer> <C-g><C-g> <Plug>(unite_exit)
+    " Ctrlp like
     imap <buffer> <C-j> <Plug>(unite_select_next_line)
     imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+    " Emacs like
+    imap <buffer> <C-b> <Left>
+    imap <buffer> <C-f> <Right>
+    imap <buffer> <C-a> <Home>
+    imap <buffer> <C-e> <End>
+    imap <buffer> <C-d> <Del>
   endfunction
 
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
