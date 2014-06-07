@@ -465,34 +465,34 @@ endif
 "}}}
 
 " Shougo/unite.vim {{{
-call neobundle#config('unite.vim', {
-  \   'depends': 'Shougo/neomru.vim',
-  \   'lazy': 1,
-  \   'autoload': {'commands': 'Unite'}
-  \ })
+if neobundle#tap('unite.vim')
+  call neobundle#config({
+    \   'depends': 'Shougo/neomru.vim',
+    \   'lazy': 1,
+    \   'autoload': {'commands': 'Unite'}
+    \ })
 
-" Shougo/neomru.vim
-let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
-let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
+  " Shougo/neomru.vim
+  let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
+  let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
 
-let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
-let g:unite_enable_start_insert = 1
-let g:unite_split_rule = 'botright'
-let g:unite_winheight = 10
+  let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
+  let g:unite_enable_start_insert = 1
+  let g:unite_split_rule = 'botright'
+  let g:unite_winheight = 10
 
-let g:unite_source_file_mru_ignore_pattern = ''
-let g:unite_source_file_mru_ignore_pattern .= '\~$'
-let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
-if has('win32') || has('win64')
-  let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
-  let g:unite_source_file_mru_ignore_pattern .= '\|^//'
-endif
+  let g:unite_source_file_mru_ignore_pattern = ''
+  let g:unite_source_file_mru_ignore_pattern .= '\~$'
+  let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
+  if has('win32') || has('win64')
+    let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
+    let g:unite_source_file_mru_ignore_pattern .= '\|^//'
+  endif
 
-if !exists('g:unite_source_menu_menus')
-  let g:unite_source_menu_menus = {}
-endif
+  if !exists('g:unite_source_menu_menus')
+    let g:unite_source_menu_menus = {}
+  endif
 
-if neobundle#is_installed('unite.vim') "{{{
   function! s:unite_menu_input(prompt, exec_command)
     let l:command = [
       \   'let s:capture_input = input("' . a:prompt . '")',
@@ -545,10 +545,6 @@ if neobundle#is_installed('unite.vim') "{{{
   nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
 
   if executable('lein') "{{{
-    if has('win32') || has('win64')
-      " For REPL input availability
-      call vimshell#util#set_variables({'$LEIN_JVM_OPTS': '-Djline.terminal=jline.UnsupportedTerminal'})
-    endif
     let g:unite_source_menu_menus.lein = {
       \   'description': 'Leiningen tasks',
       \   'candidates': [
@@ -575,8 +571,11 @@ if neobundle#is_installed('unite.vim') "{{{
         \ }
     endfunction
     autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
-  endif "}}}
-endif "}}}
+  endif
+  "}}}
+
+  call neobundle#untap()
+endif
 " }}}
 
 " Shougo/vimfiler {{{
@@ -606,28 +605,36 @@ endif
 "}}}
 
 " Shougo/vimshell {{{
-call neobundle#config('vimshell', {
-  \   'lazy': 1,
-  \   'autoload': {
-  \     'commands': [
-  \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
-  \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
-  \     ],
-  \     'mappings': '<Plug>(vimshell_'
-  \   }
-  \ })
+if neobundle#tap('vimshell')
+  call neobundle#config({
+    \   'lazy': 1,
+    \   'autoload': {
+    \     'commands': [
+    \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
+    \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
+    \     ],
+    \     'mappings': '<Plug>(vimshell_'
+    \   }
+    \ })
 
-let g:vimshell_prompt = ((has('win32') || has('win64')) ? $USERNAME : $USER) . '% '
-let g:vimshell_split_command = 'split'
-let g:vimshell_temporary_directory = expand(s:vimfiles . '/.cache/vimshell')
-let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:vimshell_prompt = ((has('win32') || has('win64')) ? $USERNAME : $USER) . '% '
+    let g:vimshell_split_command = 'split'
+    let g:vimshell_temporary_directory = expand(s:vimfiles . '/.cache/vimshell')
+    let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 
-if neobundle#is_installed('vimshell')
-  if has('win32') || has('win64')
-    autocmd MyAutoCmd FileType vimshell setlocal fileencoding=sjis
-  endif
+    if has('win32') || has('win64')
+      autocmd MyAutoCmd FileType vimshell setlocal fileencoding=cp932
+
+      if executable('lein')
+        call vimshell#util#set_variables({'$LEIN_JVM_OPTS': '-Djline.terminal=jline.UnsupportedTerminal'})
+      endif
+    endif
+  endfunction
 
   nnoremap <silent>[option]s :<C-u>VimShell -split<CR>
+
+  call neobundle#untap()
 endif
 "}}}
 
@@ -964,5 +971,9 @@ endif
 filetype plugin indent on
 
 NeoBundleCheck
+
+if !has('vim_starting')
+  call neobundle#call_hook('on_source')
+endif
 
 "}}}
