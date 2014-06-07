@@ -459,7 +459,8 @@ call neobundle#config('unite-outline', {
   \ })
 
 if neobundle#is_installed('unite-outline')
-  nnoremap <silent>[option]o :<C-u>Unite outline -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  nnoremap <silent> [option]o :<C-u>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> [option]o :<C-u>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 endif
 "}}}
 
