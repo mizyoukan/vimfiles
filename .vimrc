@@ -262,14 +262,21 @@ noremap [option]j %
 if has('win32') || has('win64')
   nnoremap <silent> [option]ev :<C-u>edit ~\vimfiles\.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~\vimfiles\.gvimrc<CR>
+  nnoremap <silent> [option]el :<C-u>edit ~\vimfiles\vimrc_local.vim<CR>
 else
   nnoremap <silent> [option]ev :<C-u>edit ~/.vim/.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~/.vim/.gvimrc<CR>
+  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
 endif
 
 " .vimrc/.gvimrcを反映
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+if has('win32') || has('win64')
+  nnoremap <silent> [option]vl :<C-u>source ~\vimfiles\vimrc_local.vim<CR>
+else
+  nnoremap <silent> [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
+endif
 
 " 行末までヤンク
 nnoremap Y y$
