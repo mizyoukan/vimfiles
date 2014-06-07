@@ -273,9 +273,9 @@ endif
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 if has('win32') || has('win64')
-  nnoremap <silent> [option]vl :<C-u>source ~\vimfiles\vimrc_local.vim<CR>
+  nnoremap [option]vl :<C-u>source ~\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap <silent> [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
+  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
 
 " 行末までヤンク
