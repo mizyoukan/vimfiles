@@ -418,63 +418,73 @@ NeoBundle 'vim-scripts/freya'
 NeoBundle 'vim-scripts/swamplight'
 
 " Shougo/neocomplete.vim {{{
-call neobundle#config('neocomplete.vim', {
-  \   'lazy': 1,
-  \   'autoload': {'insert': 1},
-  \   'disabled': !has('lua'),
-  \   'vim_version' : '7.3.885'
-  \ })
+if neobundle#tap('neocomplete.vim')
+  call neobundle#config({
+    \   'lazy': 1,
+    \   'autoload': {'insert': 1},
+    \   'disabled': !has('lua'),
+    \   'vim_version' : '7.3.885'
+    \ })
 
-let g:neocomplete#data_directory = expand(s:vimfiles . '/.cache/neocomplete')
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_ignore_case = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#max_list = 20
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neocomplete#data_directory = expand(s:vimfiles . '/.cache/neocomplete')
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_ignore_case = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#force_overwrite_completefunc = 1
+    let g:neocomplete#max_list = 20
 
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
+    if !exists('g:neocomplete#keyword_patterns')
+      let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+  endfunction
+
+  call neobundle#untap()
 endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 "}}}
 
 " Shougo/neosnippet {{{
-call neobundle#config('neosnippet', {
-  \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
-  \   'lazy': 1,
-  \   'autoload': {
-  \     'insert': 1,
-  \     'mappings': '<Plug>(neosnippet_'
-  \   }
-  \ })
+if neobundle#tap('neosnippet')
+  call neobundle#config({
+    \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
+    \   'lazy': 1,
+    \   'autoload': {
+    \     'insert': 1,
+    \     'mappings': '<Plug>(neosnippet_'
+    \   }
+    \ })
 
-let g:neosnippet#data_directory = expand(s:vimfiles . '/.cache/neosnippet')
-let g:neosnippet#snippets_directory = expand(s:vimfiles . '/bundle/neosnippet-snippets/snippets')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neosnippet#data_directory = expand(s:vimfiles . '/.cache/neosnippet')
+    let g:neosnippet#snippets_directory = expand(s:vimfiles . '/bundle/neosnippet-snippets/snippets')
 
-if neobundle#is_installed('neosnippet')
-  if has('conceal')
-    set conceallevel=2 concealcursor=i
-  endif
+    if has('conceal')
+      set conceallevel=2 concealcursor=i
+    endif
 
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+    imap <C-k> <Plug>(neosnippet_expand_or_jump)
+    smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
-  " snippet操作中にTabキーで次のフィールドに移動
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    " snippet操作中にTabキーで次のフィールドに移動
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-  " Delete merkers when InsertLeave
-  autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
+    " Delete merkers when InsertLeave
+    autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
+  endfunction
+
+  call neobundle#untap()
 endif
 "}}}
 
 " Shougo/unite-outline {{{
-call neobundle#config('unite-outline', {
-  \   'lazy': 1,
-  \   'autoload': {'unite_sources': 'outline'}
-  \ })
-
 if neobundle#is_installed('unite-outline')
+  call neobundle#config('unite-outline', {
+    \   'lazy': 1,
+    \   'autoload': {'unite_sources': 'outline'}
+    \ })
+
   nnoremap <silent> [option]o :<C-u>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
   autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> [option]o :<C-u>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 endif
@@ -488,140 +498,143 @@ if neobundle#tap('unite.vim')
     \   'autoload': {'commands': 'Unite'}
     \ })
 
-  " Shougo/neomru.vim
-  let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
-  let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    " Shougo/neomru.vim
+    let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
+    let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
 
-  let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
-  let g:unite_enable_start_insert = 1
-  let g:unite_split_rule = 'botright'
-  let g:unite_winheight = 10
+    let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
+    let g:unite_enable_start_insert = 1
+    let g:unite_split_rule = 'botright'
+    let g:unite_winheight = 10
 
-  let g:unite_source_file_mru_ignore_pattern = ''
-  let g:unite_source_file_mru_ignore_pattern .= '\~$'
-  let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
-  if has('win32') || has('win64')
-    let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
-    let g:unite_source_file_mru_ignore_pattern .= '\|^//'
-  endif
+    let g:unite_source_file_mru_ignore_pattern = ''
+    let g:unite_source_file_mru_ignore_pattern .= '\~$'
+    let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
+    if has('win32') || has('win64')
+      let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
+      let g:unite_source_file_mru_ignore_pattern .= '\|^//'
+    endif
 
-  if !exists('g:unite_source_menu_menus')
-    let g:unite_source_menu_menus = {}
-  endif
+    if !exists('g:unite_source_menu_menus')
+      let g:unite_source_menu_menus = {}
+    endif
 
-  function! s:unite_menu_input(prompt, exec_command)
-    let l:command = [
-      \   'let s:capture_input = input("' . a:prompt . '")',
-      \   'if s:capture_input !=# ""',
-      \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
-      \   'else',
-      \     'echo "canceled."',
-      \   'endif',
-      \   'unlet s:capture_input',
+    if !exists('g:unite_source_alias_aliases')
+      let g:unite_source_alias_aliases = {}
+    endif
+
+    function! s:unite_menu_input(prompt, exec_command)
+      let l:command = [
+        \   'let s:capture_input = input("' . a:prompt . '")',
+        \   'if s:capture_input !=# ""',
+        \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
+        \   'else',
+        \     'echo "canceled."',
+        \   'endif',
+        \   'unlet s:capture_input',
+        \ ]
+      return join(l:command, '|')
+    endfunction
+
+    let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
+    let g:unite_source_menu_menus.fugitive.command_candidates = [
+      \   ['[command?]',     s:unite_menu_input('git> ', 'execute "Git!" . $1')],
+      \   ['add',            'Gwrite'],
+      \   ['blame',          'Gblame'],
+      \   ['checkout',       'Gread'],
+      \   ['commit',         'Gcommit -v'],
+      \   ['commit --amend', 'Gcommit -v --amend'],
+      \   ['diff',           'Gdiff'],
+      \   ['grep...',        s:unite_menu_input('git grep> ', 'execute("silent Glgrep!" . $1 . " | Unite -auto-preview -auto-resize -winheight=20 location_list")')],
+      \   ['mv...',          s:unite_menu_input('git mv dest> ', 'execute "Gmove " . $1')],
+      \   ['pull',           'Git! pull'],
+      \   ['push',           'Git! push'],
+      \   ['remove',         'Gremove'],
+      \   ['status',         'Gstatus'],
       \ ]
-    return join(l:command, '|')
-  endfunction
+    let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
 
-  let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
-  let g:unite_source_menu_menus.fugitive.command_candidates = [
-    \   ['[command?]',     s:unite_menu_input('git> ', 'execute "Git!" . $1')],
-    \   ['add',            'Gwrite'],
-    \   ['blame',          'Gblame'],
-    \   ['checkout',       'Gread'],
-    \   ['commit',         'Gcommit -v'],
-    \   ['commit --amend', 'Gcommit -v --amend'],
-    \   ['diff',           'Gdiff'],
-    \   ['grep...',        s:unite_menu_input('git grep> ', 'execute("silent Glgrep!" . $1 . " | Unite -auto-preview -auto-resize -winheight=20 location_list")')],
-    \   ['mv...',          s:unite_menu_input('git mv dest> ', 'execute "Gmove " . $1')],
-    \   ['pull',           'Git! pull'],
-    \   ['push',           'Git! push'],
-    \   ['remove',         'Gremove'],
-    \   ['status',         'Gstatus'],
-    \ ]
+    if executable('lein') "{{{
+      let g:unite_source_menu_menus.lein = {
+        \   'description': 'Leiningen tasks',
+        \   'candidates': [
+        \     '?',
+        \     'repl', 'deps', 'test', 'clean',
+        \     'ring server', 'ring server-headless',
+        \     'cljsbuild auto', 'cljsbuild auto dev', 'cljsbuild once', 'cljsbuild clean',
+        \   ],
+        \ }
+      function! g:unite_source_menu_menus.lein.map(key, value)
+        if a:value ==# '?'
+          return {
+            \   'word': '[command?]',
+            \   'kind': 'command',
+            \   'action__command': s:unite_menu_input(
+            \     'lein task> ',
+            \     'execute ''VimShellInteractive --split="split | resize 10" lein '' . $1'),
+            \ }
+        endif
+        return {
+          \   'word': a:value,
+          \   'kind': 'command',
+          \   'action__command': 'VimShellInteractive --split="split | resize 10" lein ' . a:value,
+          \ }
+      endfunction
+    endif
+    " }}}
 
-  if !exists('g:unite_source_alias_aliases')
-    let g:unite_source_alias_aliases = {}
-  endif
-
-  let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
-
-  autocmd MyAutoCmd FileType unite call s:unite_my_settings()
-  function! s:unite_my_settings()
-    imap <buffer><expr> <C-s> unite#do_action('split')
-    " Quit
-    nmap <buffer> q <Plug>(unite_exit)
-    nmap <buffer> <C-q> <Plug>(unite_exit)
-    imap <buffer> <C-q> <Plug>(unite_exit)
-    " Ctrlp like
-    imap <buffer> <C-j> <Plug>(unite_select_next_line)
-    imap <buffer> <C-k> <Plug>(unite_select_previous_line)
-    " Emacs like
-    imap <buffer> <C-b> <Left>
-    imap <buffer> <C-f> <Right>
-    imap <buffer> <C-a> <Home>
-    imap <buffer> <C-e> <End>
-    imap <buffer> <C-d> <Del>
+    autocmd MyAutoCmd FileType unite call s:unite_my_settings()
+    function! s:unite_my_settings()
+      imap <buffer><expr> <C-s> unite#do_action('split')
+      " Quit
+      nmap <buffer> q <Plug>(unite_exit)
+      nmap <buffer> <C-q> <Plug>(unite_exit)
+      imap <buffer> <C-q> <Plug>(unite_exit)
+      " Ctrlp like
+      imap <buffer> <C-j> <Plug>(unite_select_next_line)
+      imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+      " Emacs like
+      imap <buffer> <C-b> <Left>
+      imap <buffer> <C-f> <Right>
+      imap <buffer> <C-a> <Home>
+      imap <buffer> <C-e> <End>
+      imap <buffer> <C-d> <Del>
+    endfunction
   endfunction
 
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
   nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
-
-  if executable('lein') "{{{
-    let g:unite_source_menu_menus.lein = {
-      \   'description': 'Leiningen tasks',
-      \   'candidates': [
-      \     '?',
-      \     'repl', 'deps', 'test', 'clean',
-      \     'ring server', 'ring server-headless',
-      \     'cljsbuild auto', 'cljsbuild auto dev', 'cljsbuild once', 'cljsbuild clean',
-      \   ],
-      \ }
-    function! g:unite_source_menu_menus.lein.map(key, value)
-      if a:value ==# '?'
-        return {
-          \   'word': '[command?]',
-          \   'kind': 'command',
-          \   'action__command': s:unite_menu_input(
-          \     'lein task> ',
-          \     'execute ''VimShellInteractive --split="split | resize 10" lein '' . $1'),
-          \ }
-      endif
-      return {
-        \   'word': a:value,
-        \   'kind': 'command',
-        \   'action__command': 'VimShellInteractive --split="split | resize 10" lein ' . a:value,
-        \ }
-    endfunction
+  if executable('lein')
     autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
   endif
-  "}}}
 
   call neobundle#untap()
 endif
 " }}}
 
 " Shougo/vimfiler {{{
-call neobundle#config('vimfiler', {
-  \   'depends': 'Shougo/unite.vim',
-  \   'lazy': 1,
-  \   'autoload': {
-  \     'commands': [
-  \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
-  \       'VimFilerBufferDir', 'Edit', 'Read', 'Source', 'Write'
-  \     ],
-  \     'mappings': '<Plug>(vimfiler_',
-  \     'explorer': 1
-  \   }
-  \ })
-
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_data_directory = expand(s:vimfiles . '/.cache/vimfiler')
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_tree_indentation = 2
-let g:vimfiler_tree_leaf_icon = ' '
-
 if neobundle#is_installed('vimfiler')
+  call neobundle#config('vimfiler', {
+    \   'depends': 'Shougo/unite.vim',
+    \   'lazy': 1,
+    \   'autoload': {
+    \     'commands': [
+    \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
+    \       'VimFilerBufferDir', 'Edit', 'Read', 'Source', 'Write'
+    \     ],
+    \     'mappings': '<Plug>(vimfiler_',
+    \     'explorer': 1
+    \   }
+    \ })
+
+  let g:vimfiler_as_default_explorer = 1
+  let g:vimfiler_data_directory = expand(s:vimfiles . '/.cache/vimfiler')
+  let g:vimfiler_safe_mode_by_default = 0
+  let g:vimfiler_tree_indentation = 2
+  let g:vimfiler_tree_leaf_icon = ' '
+
   " 現在開いているバッファをIDE風に開く
   nnoremap <silent>[option]f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
 endif
@@ -662,9 +675,11 @@ endif
 "}}}
 
 " Yggdroot/indentLine {{{
-call g:neobundle#config('indentLine', {
-  \   'disabled': !has('conceal')
-  \ })
+if neobundle#is_installed('indentLine')
+  call g:neobundle#config('indentLine', {
+    \   'disabled': !has('conceal')
+    \ })
+endif
 " }}}
 
 " bling/vim-airline, vim-bufferline {{{
@@ -692,34 +707,34 @@ let g:bufferline_echo = 0
 "}}}
 
 " fuenor/qfixhowm {{{
-let g:QFixHowm_Convert = 0
-let g:QFixHowm_HolidayFile = expand(s:vimfiles . '/bundle/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8')
-let g:QFixMRU_Filename = expand(s:vimfiles . '/.cache/qfixmru')
-let g:disable_QFixWin = 1
-let g:qfixmemo_dir = expand('~/memo')
-let g:qfixmemo_ext = 'md'
-let g:qfixmemo_filename = '%Y/%m/%Y-%m-%d-%H%M%S'
-let g:qfixmemo_filetype = ''
-let g:qfixmemo_mapleader = 'm'
-let g:qfixmemo_template = [
-  \   substitute('%TITLE% [] <_1_>', '_', '`', 'g'),
-  \   '%DATE%',
-  \   '',
-  \   substitute('<_0_>', '_', '`', 'g')
-  \ ]
-let g:qfixmemo_template_keycmd = '$F[a'
-let g:qfixmemo_timeformat = 'last update: %Y-%m-%d %H:%M'
-let g:qfixmemo_timeformat_regxp = '^last update: \d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}'
-let g:qfixmemo_timestamp_regxp  = g:qfixmemo_timeformat_regxp
-let g:qfixmemo_title = '#'
-let g:qfixmemo_use_howm_schedule = 0
-let g:qfixmemo_use_updatetime = 1
-if (has('win32') || has('win64')) && !executable('grep')
-  let mygreparg = 'findstr'
-  let myjpgrepprg = 'agrep.vim'
-endif
-
 if neobundle#is_installed('qfixhowm')
+  let g:QFixHowm_Convert = 0
+  let g:QFixHowm_HolidayFile = expand(s:vimfiles . '/bundle/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8')
+  let g:QFixMRU_Filename = expand(s:vimfiles . '/.cache/qfixmru')
+  let g:disable_QFixWin = 1
+  let g:qfixmemo_dir = expand('~/memo')
+  let g:qfixmemo_ext = 'md'
+  let g:qfixmemo_filename = '%Y/%m/%Y-%m-%d-%H%M%S'
+  let g:qfixmemo_filetype = ''
+  let g:qfixmemo_mapleader = 'm'
+  let g:qfixmemo_template = [
+    \   substitute('%TITLE% [] <_1_>', '_', '`', 'g'),
+    \   '%DATE%',
+    \   '',
+    \   substitute('<_0_>', '_', '`', 'g')
+    \ ]
+  let g:qfixmemo_template_keycmd = '$F[a'
+  let g:qfixmemo_timeformat = 'last update: %Y-%m-%d %H:%M'
+  let g:qfixmemo_timeformat_regxp = '^last update: \d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}'
+  let g:qfixmemo_timestamp_regxp  = g:qfixmemo_timeformat_regxp
+  let g:qfixmemo_title = '#'
+  let g:qfixmemo_use_howm_schedule = 0
+  let g:qfixmemo_use_updatetime = 1
+  if (has('win32') || has('win64')) && !executable('grep')
+    let mygreparg = 'findstr'
+    let myjpgrepprg = 'agrep.vim'
+  endif
+
   noremap mt :<C-u>call howm_schedule#QFixHowmSchedule('todo', expand('~/memo'), 'utf-8')<CR>
 endif
 "}}}
@@ -729,34 +744,34 @@ let g:AutoPairsMapSpace = 0
 "}}}
 
 " kmnk/vim-unite-giti {{{
-call neobundle#config('vim-unite-giti', {
-  \   'lazy': 1,
-  \   'autoload': {'unite_sources': 'giti'}
-  \ })
+if neobundle#is_installed('vim-unite-giti')
+  call neobundle#config('vim-unite-giti', {
+    \   'lazy': 1,
+    \   'autoload': {'unite_sources': 'giti'}
+    \ })
+endif
 "}}}
 
 " junegunn/vim-easy-align {{{
-call neobundle#config('vim-easy-align', {
-  \   'lazy': 1,
-  \   'autoload': {
-  \     'commands': ['EasyAlign', 'LiveEasyAlign'],
-  \     'mappings': '<Plug>(EasyAlign)'
-  \   }
-  \ })
-
 if neobundle#is_installed('vim-easy-align')
+  call neobundle#config('vim-easy-align', {
+    \   'lazy': 1,
+    \   'autoload': {
+    \     'commands': ['EasyAlign', 'LiveEasyAlign'],
+    \     'mappings': '<Plug>(EasyAlign)'
+    \   }
+    \ })
   vmap <Enter> <Plug>(EasyAlign)
 endif
 "}}}
 
 " kannokanno/previm {{{
-call neobundle#config('previm', {
-  \   'depends': 'tyru/open-browser.vim',
-  \   'lazy': 1,
-  \   'autoload': {'commands': 'PrevimOpen'}
-  \ })
-
 if neobundle#is_installed('previm')
+  call neobundle#config('previm', {
+    \   'depends': 'tyru/open-browser.vim',
+    \   'lazy': 1,
+    \   'autoload': {'commands': 'PrevimOpen'}
+    \ })
   autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> [option]p :<C-u>PrevimOpen<CR>
 endif
 "}}}
@@ -787,88 +802,102 @@ endif
 "}}}
 
 " osyo-manga/unite-quickfix {{{
-call neobundle#config('unite-quickfix', {
-  \   'lazy': 1,
-  \   'autoload': {'unite_sources': ['quickfix', 'location_list']}
-  \ })
+if neobundle#is_installed('unite-quickfix')
+  call neobundle#config('unite-quickfix', {
+    \   'lazy': 1,
+    \   'autoload': {'unite_sources': ['quickfix', 'location_list']}
+    \ })
+endif
 "}}}
 
 " scrooloose/syntastic {{{
-call neobundle#config('syntastic', {
-  \   'lazy': 1,
-  \   'autoload': {'filetypes': ['go', 'python']}
-  \ })
-let g:syntastic_mode_map = {
-  \   'mode': 'active',
-  \   'active_filetypes': ['go', 'python'],
-  \   'passive_filetypes': []
-  \ }
-let g:syntastic_python_checkers = ['flake8']
-if executable('golint')
-  let g:syntastic_go_checkers = ['go', 'golint']
+if neobundle#is_installed('syntastic')
+  call neobundle#config('syntastic', {
+    \   'lazy': 1,
+    \   'autoload': {'filetypes': ['go', 'python']}
+    \ })
+  let g:syntastic_mode_map = {
+    \   'mode': 'active',
+    \   'active_filetypes': ['go', 'python'],
+    \   'passive_filetypes': []
+    \ }
+  let g:syntastic_python_checkers = ['flake8']
+  if executable('golint')
+    " let g:syntastic_go_checkers = ['go', 'golint']
+    let g:syntastic_go_checkers = ['go']
+  endif
 endif
 "}}}
 
 " thinca/vim-quickrun {{{
-call neobundle#config('vim-quickrun', {
-  \   'lazy': 1,
-  \   'autoload': {'commands': 'QuickRun'}
-  \ })
+if neobundle#tap('vim-quickrun')
+  call neobundle#config({
+    \   'lazy': 1,
+    \   'autoload': {'commands': 'QuickRun'}
+   \ })
 
-if !has('g:quickrun_config')
-  let g:quickrun_config = {}
-endif
+  function! neobundle#tapped.hooks.on_source(bundle)
+    if !has('g:quickrun_config')
+      let g:quickrun_config = {}
+    endif
 
-let g:quickrun_config._ = {
-  \   'outputter': 'multi:buffer:quickfix',
-  \   'outputter/buffer/split': 'botright 10sp',
-  \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
-  \   'outputter/buffer/close_on_empty': 1,
-  \   'runner': 'vimproc',
-  \   'runner/vimproc/updatetime': 50,
-  \   'runner/vimproc/sleep': 0
-  \ }
+    let g:quickrun_config._ = {
+      \   'outputter': 'multi:buffer:quickfix',
+      \   'outputter/buffer/split': 'botright 10sp',
+      \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
+      \   'outputter/buffer/close_on_empty': 1,
+      \   'runner': 'vimproc',
+      \   'runner/vimproc/updatetime': 50,
+      \   'runner/vimproc/sleep': 0
+      \ }
 
-if executable('CScript')
-  let g:quickrun_config.vb = {
-    \   'command': 'CScript',
-    \   'exec': '%c //Nologo //E:VBScript %s',
-    \   'hook/output_encode/encoding': 'cp932',
-    \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
-    \ }
+    if executable('CScript')
+      let g:quickrun_config.vb = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:VBScript %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
+        \ }
 
-  let g:quickrun_config.javascript = {
-    \   'command': 'CScript',
-    \   'exec': '%c //Nologo //E:JScript %s',
-    \   'hook/output_encode/encoding': 'cp932',
-    \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
-    \ }
-endif
+      let g:quickrun_config.javascript = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:JScript %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
+        \ }
+    endif
 
-autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
+    autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
+  endfunction
 
-if neobundle#is_installed('vim-quickrun')
   nnoremap <silent>[option]q :<C-u>QuickRun<CR>
+
+  call neobundle#untap()
 endif
+
 "}}}
 
 " thinca/vim-scouter {{{
-call neobundle#config('vim-scouter', {
-  \   'lazy': 1,
-  \   'autoload': {'commands': 'Scouter'}
-  \ })
+if neobundle#is_installed('vim-scouter')
+  call neobundle#config('vim-scouter', {
+    \   'lazy': 1,
+    \   'autoload': {'commands': 'Scouter'}
+    \ })
+endif
 "}}}
 
 " tpope/vim-fireplace {{{
-call neobundle#config('vim-fireplace', {
-  \   'depends': 'tpope/vim-classpath',
-  \   'lazy': 1,
-  \   'autoload': {'commands': 'Connect'},
-  \   'disabled': !has('python')
-  \ })
+if neobundle#is_installed('vim-fireplace')
+  call neobundle#config('vim-fireplace', {
+    \   'depends': 'tpope/vim-classpath',
+    \   'lazy': 1,
+    \   'autoload': {'commands': 'Connect'},
+    \   'disabled': !has('python')
+    \ })
 
-" tpope/vim-classpath
-let g:classpath_cache = expand(s:vimfiles . '/.cache/classpath')
+  " tpope/vim-classpath
+  let g:classpath_cache = expand(s:vimfiles . '/.cache/classpath')
+endif
 "}}}
 
 " $GOROOT/misc/vim {{{
@@ -878,12 +907,10 @@ endif
 " }}}
 
 " $GOPATH/src/github.com/nsf/gocode {{{
-if neobundle#is_installed('gocode')
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-  let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
 endif
+let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
 " }}}
 
 call neobundle#end()
