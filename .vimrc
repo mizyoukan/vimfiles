@@ -676,7 +676,7 @@ endif
 
 " Yggdroot/indentLine {{{
 if neobundle#is_installed('indentLine')
-  call g:neobundle#config('indentLine', {
+  call neobundle#config('indentLine', {
     \   'disabled': !has('conceal')
     \ })
 endif
