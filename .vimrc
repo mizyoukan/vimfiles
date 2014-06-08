@@ -72,9 +72,11 @@ function! MyFoldText() "{{{
   return l:left . l:space . l:right
 endfunction "}}}
 
-" PowerShellを開く
+" Open PowerShell based on current buffer
 if executable('powershell')
-  command! -nargs=0 PowerShell silent execute ':!start powershell'
+  command! -nargs=0 PowerShell silent execute
+    \ ':!start powershell -NoLogo -NoExit -Command Set-Location ' .
+    \ shellescape(expand('%:p:h'))
 endif
 
 "}}}
