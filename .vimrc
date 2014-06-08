@@ -401,6 +401,10 @@ NeoBundleLazy 'thinca/vim-quickrun'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fireplace'
 
+" Golang
+call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
+call neobundle#local(expand('$GOPATH/src/github.com/nsf/gocode'), {'name': 'gocode'}, ['vim'])
+
 " colorscheme
 NeoBundle 'Pychimp/vim-sol'
 NeoBundle 'jnurmine/Zenburn'
@@ -862,6 +866,21 @@ call neobundle#config('vim-fireplace', {
 let g:classpath_cache = expand(s:vimfiles . '/.cache/classpath')
 "}}}
 
+" $GOROOT/misc/vim {{{
+if neobundle#is_installed('go')
+  autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
+endif
+" }}}
+
+" $GOPATH/src/github.com/nsf/gocode {{{
+if neobundle#is_installed('gocode')
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+  let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
+endif
+" }}}
+
 call neobundle#end()
 
 "}}}
@@ -918,21 +937,6 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
-if $GOPATH != ''
-  autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
-
-  if executable('gocode')
-    execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/nsf/gocode/vim')
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-      let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
-  endif
-
-  if executable('golint')
-    execute 'set runtimepath+=' . globpath($GOPATH, 'src/github.com/golang/lint/misc/vim')
-  endif
-endif
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
