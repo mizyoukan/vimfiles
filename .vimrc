@@ -47,7 +47,12 @@ endfunction "}}}
 function! s:KillCurrentBuffer() "{{{
   let l:bn = bufnr('%')
   bprevious
-  execute 'bdelete' l:bn
+  try
+    execute 'bdelete' l:bn
+  catch /E89:/
+    execute 'buffer' l:bn
+    echoerr v:exception
+  endtry
 endfunction "}}}
 
 " フォールディングで表示する文字列設定
