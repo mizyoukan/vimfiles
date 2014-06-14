@@ -4,5 +4,6 @@ bundle/
 .undo/
 .swap/
 .tags/
-vimrc_local.vim
+vimrc_local_first.vim
+vimrc_local_last.vim
 gvimrc_local.vim

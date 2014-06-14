@@ -1,7 +1,16 @@
 " Initialize {{{
 
-" GVimは複数起動せずにタブで開く {{{
+" Vi互換をオフ
+set nocompatible
 
+let s:vimfiles = expand((has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim')
+
+" Load local setting file first
+if filereadable(s:vimfiles . '/vimrc_local_first.vim')
+  execute 'source' s:vimfiles . '/vimrc_local_first.vim'
+endif
+
+" 多重起動しない
 if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
   let file = expand('%:p')
   bwipeout
@@ -10,21 +19,13 @@ if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
   quit
 endif
 
-" }}}
-
-" Vi互換をオフ
-set nocompatible
-
-" 自分設定用のaugroupをリセット
+" Reset my autocmd group
 augroup MyAutoCmd
   autocmd!
 augroup END
 
 " ファイルタイプ関連を無効化
 filetype plugin indent off
-
-" 設定ファイル配置場所
-let s:vimfiles = expand((has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim')
 
 "}}}
 
@@ -278,20 +279,22 @@ noremap [option]j %
 if has('win32') || has('win64')
   nnoremap <silent> [option]ev :<C-u>edit ~\vimfiles\.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~\vimfiles\.gvimrc<CR>
-  nnoremap <silent> [option]el :<C-u>edit ~\vimfiles\vimrc_local.vim<CR>
+  nnoremap <silent> [option]ef :<C-u>edit ~\vimfiles\vimrc_local_first.vim<CR>
+  nnoremap <silent> [option]el :<C-u>edit ~\vimfiles\vimrc_local_last.vim<CR>
 else
   nnoremap <silent> [option]ev :<C-u>edit ~/.vim/.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~/.vim/.gvimrc<CR>
-  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
+  nnoremap <silent> [option]ef :<C-u>edit ~/.vim/vimrc_local_first.vim<CR>
+  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local_last.vim<CR>
 endif
 
 " .vimrc/.gvimrcを反映
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 if has('win32') || has('win64')
-  nnoremap [option]vl :<C-u>source ~\vimfiles\vimrc_local.vim<CR>
+  nnoremap [option]vl :<C-u>source ~\vimfiles\vimrc_local_last.vim<CR>
 else
-  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
+  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local_last.vim<CR>
 endif
 
 " 行末までヤンク
@@ -1070,9 +1073,9 @@ autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
 " Finalize {{{
 
-" ローカル設定をvimrc_local.vimから読み込む
-if filereadable(s:vimfiles . '/vimrc_local.vim')
-  execute 'source' s:vimfiles . '/vimrc_local.vim'
+" Load local setting file last
+if filereadable(s:vimfiles . '/vimrc_local_last.vim')
+  execute 'source' s:vimfiles . '/vimrc_local_last.vim'
 endif
 
 " ファイルタイプ関連を有効化
