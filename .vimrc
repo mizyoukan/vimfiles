@@ -410,6 +410,7 @@ NeoBundleLazy 'jiangmiao/simple-javascript-indenter', '', 'javascript'
 NeoBundleLazy 'junegunn/vim-easy-align'
 NeoBundleLazy 'kannokanno/previm'
 NeoBundleLazy 'kmnk/vim-unite-giti'
+NeoBundleLazy 'majutsushi/tagbar'
 NeoBundleLazy 'osyo-manga/unite-quickfix'
 NeoBundleLazy 'scrooloose/syntastic'
 NeoBundleLazy 'thinca/vim-ft-help_fold', '', 'help'
@@ -809,6 +810,49 @@ if neobundle#is_installed('rainbow_parentheses.vim')
   autocmd MyAutoCmd Syntax * RainbowParenthesesLoadRound
   autocmd MyAutoCmd Syntax * RainbowParenthesesLoadSquare
   autocmd MyAutoCmd Syntax * RainbowParenthesesLoadBraces
+endif
+"}}}
+
+" majutsushi/tagbar {{{
+if neobundle#tap('tagbar')
+  call neobundle#config({
+    \   'autoload': {'commands': 'TagbarToggle'}
+    \ })
+
+  function! neobundle#tapped.hooks.on_source(bundle)
+    if executable('gotags') "{{{
+      let g:tagbar_type_go = {
+        \   'ctagstype' : 'go',
+        \   'kinds': [
+        \     'p:package',
+        \     'i:imports:1',
+        \     'c:constants',
+        \     'v:variables',
+        \     't:types',
+        \     'n:interfaces',
+        \     'w:fields',
+        \     'e:embedded',
+        \     'm:methods',
+        \     'r:constructor',
+        \     'f:functions'
+        \   ],
+        \   'sro': '.',
+        \   'kind2scope': {
+        \     't': 'ctype',
+        \     'n': 'ntype'
+        \   },
+        \   'scope2kind': {
+        \     'ctype': 't',
+        \     'ntype': 'n'
+        \   },
+        \   'ctagsbin': 'gotags',
+        \   'ctagsargs': '-sort -silent'
+        \ }
+    endif "}}}
+  endfunction
+
+  nnoremap [option]t :<C-u>TagbarToggle<CR>
+  call neobundle#untap()
 endif
 "}}}
 
