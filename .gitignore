@@ -3,5 +3,6 @@ bundle/
 .cache/
 .undo/
 .swap/
+.tags/
 vimrc_local.vim
 gvimrc_local.vim

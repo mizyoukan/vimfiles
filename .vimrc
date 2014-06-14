@@ -105,6 +105,15 @@ set incsearch
 " 検索文字列に大文字が含まれている場合大小文字を区別
 set smartcase
 
+" tags {{{
+set tags&
+let s:tags = expand(s:vimfiles . '/.tags')
+if isdirectory(s:tags)
+  let &tags = &tags . ',' . expand(s:tags . '/*')
+endif
+unlet s:tags
+"}}}
+
 "}}}
 
 " Edit {{{
