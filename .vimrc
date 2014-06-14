@@ -11,12 +11,15 @@ if filereadable(s:vimfiles . '/vimrc_local_first.vim')
 endif
 
 " 多重起動しない
-if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
-  let file = expand('%:p')
-  bwipeout
-  call remote_send('GVIM', '<ESC>:tabnew ' . file . '<CR>')
-  call remote_foreground('GVIM')
-  quit
+let g:MultiWindowBootEnable = get(g:, 'MultiWindowBootEnable', 1)
+if g:MultiWindowBootEnable == 1
+  if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
+    let file = expand('%:p')
+    bwipeout
+    call remote_send('GVIM', '<ESC>:tabnew ' . file . '<CR>')
+    call remote_foreground('GVIM')
+    quit
+  endif
 endif
 
 " Reset my autocmd group
