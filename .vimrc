@@ -393,7 +393,9 @@ let g:neobundle#default_options = {
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
+NeoBundle 'dannyob/quickfixstatus'
 NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'jceb/vim-hier'
 NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-line'
@@ -875,18 +877,14 @@ endif
 if neobundle#is_installed('syntastic')
   call neobundle#config('syntastic', {
     \   'lazy': 1,
-    \   'autoload': {'filetypes': ['go', 'python']}
+    \   'autoload': {'filetypes': ['python']}
     \ })
   let g:syntastic_mode_map = {
     \   'mode': 'active',
-    \   'active_filetypes': ['go', 'python'],
+    \   'active_filetypes': ['python'],
     \   'passive_filetypes': []
     \ }
   let g:syntastic_python_checkers = ['flake8']
-  if executable('golint')
-    " let g:syntastic_go_checkers = ['go', 'golint']
-    let g:syntastic_go_checkers = ['go']
-  endif
 endif
 "}}}
 
@@ -928,10 +926,42 @@ if neobundle#tap('vim-quickrun')
         \ }
     endif
 
+    " silent syntax checker
+    execute 'highlight qf_error_ucurl gui=undercurl guisp=Red'
+    let g:hier_hightlight_group_qf = 'qf_error_ucurl'
+
+    let s:silent_quickfix = quickrun#outputter#quickfix#new()
+    function! s:silent_quickfix.finish(session)
+      call call(quickrun#outputter#quickfix#new().finish, [a:session], self)
+      :cclose
+      :HierUpdate
+      :QuickfixStatusEnable
+    endfunction
+    call quickrun#register_outputter('silent_quickfix', s:silent_quickfix)
+    unlet! s:silent_quickfix
+
+    let s:go_syntaxcheck_exec = ['%c build %o %s:p:t %a']
+    if executable('golint')
+      call add(s:go_syntaxcheck_exec, 'golint %s:p:t')
+    endif
+    let s:device_null = has('win32') || has('win64') ? '\\Device\\Null' : '/dev/null'
+    let g:quickrun_config['go/syntaxcheck'] = {
+      \   'type': 'go',
+      \   'exec': s:go_syntaxcheck_exec,
+      \   'cmdopt': '-o ' . s:device_null,
+      \   'outputter': 'silent_quickfix'
+      \ }
+    unlet! s:device_null
+    unlet! s:go_syntaxcheck_exec
+
     autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
   endfunction
 
   nnoremap <silent>[option]q :<C-u>QuickRun<CR>
+
+  if executable('go')
+    autocmd MyAutoCmd BufWritePost *.go :QuickRun go/syntaxcheck
+  endif
 
   call neobundle#untap()
 endif
