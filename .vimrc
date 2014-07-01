@@ -83,6 +83,17 @@ if executable('powershell')
     \ shellescape(expand('%:p:h'))
 endif
 
+" Toggle golang impl/test file
+function! GolangToggleFile(editCmd)
+  let currFile = expand("%")
+  if match(currFile, "_test\.go$") >= 0
+    let fileToOpen = split(currFile, "_test\.go$")[0] . ".go"
+  else
+    let fileToOpen = split(currFile, "\.go$")[0] . "_test.go"
+  endif
+  execute ":" . a:editCmd . " " . fileToOpen
+endfunction
+
 "}}}
 
 " Encodings {{{
@@ -1063,6 +1074,7 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
+autocmd MyAutoCmd FileType go nnoremap <buffer> <C-s> :<C-u>call GolangToggleFile("e")<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
