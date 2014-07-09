@@ -956,7 +956,7 @@ if neobundle#tap('vim-quickrun')
     if executable('golint')
       call add(s:go_syntaxcheck_exec, 'golint %s:p:t')
     endif
-    let s:device_null = has('win32') || has('win64') ? '\\Device\\Null' : '/dev/null'
+    let s:device_null = has('win32') || has('win64') ? 'NUL' : '/dev/null'
     let g:quickrun_config['go/syntaxcheck'] = {
       \   'type': 'go',
       \   'exec': s:go_syntaxcheck_exec,
