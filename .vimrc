@@ -396,6 +396,7 @@ if !has('win32') && !has('win64')
 endif
 
 let g:neobundle#default_options = {
+  \   '_' : {'verbose': 1, 'focus': 1},
   \   'help': {'lazy': 1, 'autoload': {'filetypes': 'help'}},
   \   'javascript': {'lazy': 1, 'autoload': {'filetypes': 'javascript'}},
   \   'scala': {'lazy': 1, 'autoload': {'filetypes': 'scala'}}
