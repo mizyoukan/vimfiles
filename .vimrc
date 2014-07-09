@@ -415,6 +415,7 @@ NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'mhinz/vim-signify'
+NeoBundle 'nsf/gocode' " error lazy loading on Windows
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
@@ -438,9 +439,7 @@ NeoBundleLazy 'thinca/vim-quickrun'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fireplace'
 
-" Golang
 call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
-call neobundle#local(expand('$GOPATH/src/github.com/nsf/gocode'), {'name': 'gocode'}, ['vim'])
 
 " colorscheme
 NeoBundle 'Pychimp/vim-sol'
@@ -876,6 +875,31 @@ if neobundle#tap('tagbar')
 endif
 "}}}
 
+" nsf/gocode {{{
+if neobundle#tap('gocode')
+  call neobundle#config({
+    \   'rtp': 'vim',
+    \   'disabled': !executable('go') || expand('$GOPATH') == ''
+    \ })
+
+  if executable('go') && expand('$GOPATH') != ''
+    call neobundle#config({
+      \   'build': {
+      \     'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
+      \     'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+      \   }
+      \ })
+  endif
+
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+  let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
+
+  call neobundle#untap()
+endif
+" }}}
+
 " osyo-manga/unite-quickfix {{{
 if neobundle#is_installed('unite-quickfix')
   call neobundle#config('unite-quickfix', {
@@ -1010,13 +1034,6 @@ if neobundle#is_installed('go')
   endif
   autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
 endif
-" }}}
-
-" $GOPATH/src/github.com/nsf/gocode {{{
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
 " }}}
 
 call neobundle#end()
