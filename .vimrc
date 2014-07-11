@@ -729,6 +729,9 @@ let g:airline_mode_map = {
   \   '' : 'S',
   \ }
 
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#branch#enabled = 0
+
 " statusline設定を抑制
 let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
