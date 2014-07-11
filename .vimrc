@@ -94,6 +94,16 @@ function! GolangToggleFile(editCmd)
   execute ":" . a:editCmd . " " . fileToOpen
 endfunction
 
+" Source all unsourced plugins
+command! -nargs=0 MyNeoBundleSourceAll silent call <SID>MyNeoBundleSourceAll()
+function! s:MyNeoBundleSourceAll()
+  for bundle in neobundle#config#get_neobundles()
+    if !neobundle#is_sourced(bundle.name)
+      call neobundle#config#source(bundle.name)
+    endif
+  endfor
+endfunction
+
 "}}}
 
 " Encodings {{{
