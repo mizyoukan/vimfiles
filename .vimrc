@@ -1096,6 +1096,7 @@ autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 ta
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 autocmd MyAutoCmd FileType go nnoremap <buffer> <C-s> :<C-u>call GolangToggleFile("e")<CR>
+autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
