@@ -47,12 +47,13 @@ function! s:ChangeCurrentDir(directory, bang) "{{{
   endif
 endfunction "}}}
 
-" カレントバッファを閉じる
-function! s:KillCurrentBuffer() "{{{
+" Delete current buffer without closing window
+command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
+function! s:KillCurrentBuffer(bang) "{{{
   let l:bn = bufnr('%')
   bprevious
   try
-    execute 'bdelete' l:bn
+    execute 'bdelete'.a:bang l:bn
   catch /E89:/
     execute 'buffer' l:bn
     echoerr v:exception
@@ -362,9 +363,6 @@ nnoremap <silent> [option]cd :<C-u>CD<CR>
 " バッファリストを前後に移動
 nnoremap <C-n> :<C-u>bnext<CR>
 nnoremap <C-p> :<C-u>bprev<CR>
-
-" カレントバッファをバッファリストから削除
-nnoremap <C-q> :<C-u>call <SID>KillCurrentBuffer()<CR>
 
 " コマンドモードでクリップボードのデータを貼り付け
 cnoremap <C-v> <C-r>+
