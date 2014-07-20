@@ -277,11 +277,6 @@ let &undodir = expand(s:vimfiles . '/.undo')
 noremap [option] <Nop>
 map <Space> [option]
 
-" 誤爆防止
-nnoremap ZZ <Nop>
-nnoremap q <Nop>
-nnoremap <C-q> <Nop>
-
 " 押し辛い位置のキーの代替
 noremap [option]h ^
 noremap [option]l $
