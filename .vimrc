@@ -34,19 +34,6 @@ filetype plugin indent off
 
 " Commands and Functions {{{
 
-" カレントディレクトリを変更
-command! -nargs=? -complete=dir -bang CD call s:ChangeCurrentDir('<args>', '<bang>')
-function! s:ChangeCurrentDir(directory, bang) "{{{
-  if a:directory == ''
-    lcd %:p:h
-  else
-    execute 'lcd' a:directory
-  endif
-  if a:bang == ''
-    pwd
-  endif
-endfunction "}}}
-
 " Delete current buffer without closing window
 command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
 function! s:KillCurrentBuffer(bang) "{{{
@@ -357,8 +344,8 @@ nnoremap gk k
 " 検索でvery magicをデフォルトで使う
 nnoremap / /\v
 
-" 開いているバッファをカレントディレクトリにする
-nnoremap <silent> [option]cd :<C-u>CD<CR>
+" Change local cd to current buffer's dir
+nnoremap <silent> [option]cd :<C-u>lcd %:p:h<CR>:pwd<CR>
 
 " バッファリストを前後に移動
 nnoremap <C-n> :<C-u>bnext<CR>
