@@ -11,8 +11,8 @@ if filereadable(s:vimfiles . '/vimrc_local_first.vim')
 endif
 
 " 多重起動しない
-let g:MultiWindowBootEnable = get(g:, 'MultiWindowBootEnable', 1)
-if g:MultiWindowBootEnable == 1
+let g:SingleWindowBootEnable = get(g:, 'SingleWindowBootEnable', 1)
+if g:SingleWindowBootEnable == 1
   if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
     let file = expand('%:p')
     bwipeout
