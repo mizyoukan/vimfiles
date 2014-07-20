@@ -369,13 +369,14 @@ nnoremap <C-q> :<C-u>call <SID>KillCurrentBuffer()<CR>
 " コマンドモードでクリップボードのデータを貼り付け
 cnoremap <C-v> <C-r>+
 
-" コマンドモードでEmacsキーバインド
+" Emacs keybind on command mode
 cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
-cnoremap <C-d> <Del>
 cnoremap <C-g> :<C-u><Esc><CR>
+" Delete without line end
+cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>")
 
 "}}}
 
