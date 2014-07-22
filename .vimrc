@@ -456,9 +456,7 @@ if neobundle#tap('neocomplete.vim')
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#max_list = 20
 
-    if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
-    endif
+    let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
   endfunction
 
@@ -538,13 +536,8 @@ if neobundle#tap('unite.vim')
       let g:unite_source_file_mru_ignore_pattern .= '\|^//'
     endif
 
-    if !exists('g:unite_source_menu_menus')
-      let g:unite_source_menu_menus = {}
-    endif
-
-    if !exists('g:unite_source_alias_aliases')
-      let g:unite_source_alias_aliases = {}
-    endif
+    let g:unite_source_menu_menus = get(g:, 'unite_source_menu_menus', {})
+    let g:unite_source_alias_aliases = get(g:, 'unite_source_alias_aliases', {})
 
     function! s:unite_menu_input(prompt, exec_command)
       let l:command = [
@@ -885,9 +878,7 @@ if neobundle#tap('gocode')
       \ })
   endif
 
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
+  let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
   let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
 
   call neobundle#untap()
