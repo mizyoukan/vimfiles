@@ -917,9 +917,7 @@ if neobundle#tap('vim-quickrun')
    \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    if !has('g:quickrun_config')
-      let g:quickrun_config = {}
-    endif
+    let g:quickrun_config = get(g:, 'quickrun_config', {})
 
     let g:quickrun_config._ = {
       \   'outputter': 'multi:buffer:quickfix',
@@ -945,6 +943,10 @@ if neobundle#tap('vim-quickrun')
         \   'hook/output_encode/encoding': 'cp932',
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
         \ }
+    endif
+
+    if has('win32') || has('win64')
+      let g:quickrun_config.dosbatch = {'runner': 'system'}
     endif
 
     " silent syntax checker
