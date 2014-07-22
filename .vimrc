@@ -939,7 +939,7 @@ if neobundle#tap('vim-quickrun')
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
         \ }
 
-      let g:quickrun_config.javascript = {
+      let g:quickrun_config['javascript.wsh'] = {
         \   'command': 'CScript',
         \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
         \   'hook/output_encode/encoding': 'cp932',
@@ -1102,16 +1102,16 @@ let g:markdown_fenced_languages = [
 autocmd MyAutoCmd FileType rst setlocal shiftwidth=3 nosmartindent smarttab softtabstop=3 tabstop=3 wrap
 
 " JScript
-autocmd MyAutoCmd BufNewFile,BufRead *.js.bat setlocal filetype=javascript fileencoding=sjis
+autocmd MyAutoCmd BufNewFile,BufRead *.js.bat setlocal filetype=javascript.wsh fileencoding=sjis
 let s:jsbat_template = [
   \   '@if (0)==(0) echo off',
   \   'pushd %~dp0',
-  \   'CScript //Nologo //E:JScript "%~f0" %*',
+  \   'CScript //Nologo //E:{16d51579-a30b-4c8b-a276-0ff4dc41e755} "%~f0" %*',
   \   'popd',
   \   'goto :EOF',
   \   '@end',
   \   '',
-  \   '/* vim: set ft=javascript : */',
+  \   '/* vim: set ft=javascript.wsh : */',
   \ ]
 autocmd MyAutoCmd BufNewFile *.js.bat call append(0, s:jsbat_template)|normal Gdd{
 
