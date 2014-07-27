@@ -398,6 +398,12 @@ if !has('win32') && !has('win64')
     \ }
 endif
 
+" vimdoc-ja
+if has('unix')
+  NeoBundle 'vim-jp/vimdoc-ja'
+  set helplang=ja,en
+endif
+
 let g:neobundle#default_options = {
   \   '_' : {'verbose': 1, 'focus': 1},
   \   'help': {'lazy': 1, 'autoload': {'filetypes': 'help'}},
