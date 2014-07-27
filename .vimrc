@@ -92,6 +92,12 @@ function! s:MyNeoBundleSourceAll()
   endfor
 endfunction
 
+" Set IME off when insert leave
+if executable('fcitx-remote')
+  set ttimeoutlen=150
+  autocmd MyAutoCmd InsertLeave * call system('fcitx-remote -c')
+endif
+
 "}}}
 
 " Encodings {{{
