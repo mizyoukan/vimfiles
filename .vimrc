@@ -124,6 +124,9 @@ set incsearch
 " 検索文字列に大文字が含まれている場合大小文字を区別
 set smartcase
 
+" Highlight all matches
+set hlsearch
+
 " tags {{{
 set tags&
 let s:tags = expand(s:vimfiles . '/.tags')
@@ -141,7 +144,7 @@ unlet s:tags
 set autoindent
 
 " OSのクリップボードを使う
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 
 " 補完ウィンドウの指定
 set completeopt=menuone
@@ -230,6 +233,9 @@ set statusline=%F\ %m%r%h%w%=%{&ff}\ \|\ %{&fenc}\ \|\ %{&ft}\ \|\ %l:%c\ [%p%%]
 
 " 入力中に折り返さない
 set textwidth=0
+
+" Display window title
+set title
 
 " 補完候補を一覧表示
 set wildmenu
