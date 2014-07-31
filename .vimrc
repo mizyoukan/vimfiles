@@ -98,6 +98,14 @@ if executable('fcitx-remote')
   autocmd MyAutoCmd InsertLeave * call system('fcitx-remote -c')
 endif
 
+" Remove line end space
+function! s:removeLineEndSpace()
+  let cursor = getpos('.')
+  execute '%s/\s\+$//ge'
+  call setpos('.', cursor)
+endfunction
+command! -nargs=0 RemoveLineEndSpace silent call <SID>removeLineEndSpace()
+
 "}}}
 
 " Encodings {{{
