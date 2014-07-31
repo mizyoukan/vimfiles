@@ -409,9 +409,9 @@ endif
 
 let g:neobundle#default_options = {
   \   '_' : {'verbose': 1, 'focus': 1},
-  \   'help': {'lazy': 1, 'autoload': {'filetypes': 'help'}},
-  \   'javascript': {'lazy': 1, 'autoload': {'filetypes': 'javascript'}},
-  \   'scala': {'lazy': 1, 'autoload': {'filetypes': 'scala'}}
+  \   'help': {'autoload': {'filetypes': 'help'}},
+  \   'javascript': {'autoload': {'filetypes': 'javascript'}},
+  \   'scala': {'autoload': {'filetypes': 'scala'}}
   \ }
 
 NeoBundle 'Yggdroot/indentLine'
@@ -463,7 +463,6 @@ NeoBundle 'vim-scripts/swamplight'
 " Shougo/neocomplete.vim {{{
 if neobundle#tap('neocomplete.vim')
   call neobundle#config({
-    \   'lazy': 1,
     \   'autoload': {'insert': 1},
     \   'disabled': !has('lua'),
     \   'vim_version' : '7.3.885'
@@ -491,7 +490,6 @@ endif
 if neobundle#tap('neosnippet')
   call neobundle#config({
     \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
-    \   'lazy': 1,
     \   'autoload': {
     \     'insert': 1,
     \     'mappings': '<Plug>(neosnippet_'
@@ -524,7 +522,6 @@ endif
 " Shougo/unite-outline {{{
 if neobundle#is_installed('unite-outline')
   call neobundle#config('unite-outline', {
-    \   'lazy': 1,
     \   'autoload': {'unite_sources': 'outline'}
     \ })
 
@@ -537,7 +534,6 @@ endif
 if neobundle#tap('unite.vim')
   call neobundle#config({
     \   'depends': 'Shougo/neomru.vim',
-    \   'lazy': 1,
     \   'autoload': {'commands': 'Unite'}
     \ })
 
@@ -656,7 +652,6 @@ endif
 if neobundle#is_installed('vimfiler')
   call neobundle#config('vimfiler', {
     \   'depends': 'Shougo/unite.vim',
-    \   'lazy': 1,
     \   'autoload': {
     \     'commands': [
     \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
@@ -681,7 +676,6 @@ endif
 " Shougo/vimshell {{{
 if neobundle#tap('vimshell')
   call neobundle#config({
-    \   'lazy': 1,
     \   'autoload': {
     \     'commands': [
     \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
@@ -787,7 +781,6 @@ let g:AutoPairsMapSpace = 0
 " kmnk/vim-unite-giti {{{
 if neobundle#is_installed('vim-unite-giti')
   call neobundle#config('vim-unite-giti', {
-    \   'lazy': 1,
     \   'autoload': {'unite_sources': 'giti'}
     \ })
 endif
@@ -796,7 +789,6 @@ endif
 " junegunn/vim-easy-align {{{
 if neobundle#is_installed('vim-easy-align')
   call neobundle#config('vim-easy-align', {
-    \   'lazy': 1,
     \   'autoload': {
     \     'commands': ['EasyAlign', 'LiveEasyAlign'],
     \     'mappings': '<Plug>(EasyAlign)'
@@ -810,7 +802,6 @@ endif
 if neobundle#is_installed('previm')
   call neobundle#config('previm', {
     \   'depends': 'tyru/open-browser.vim',
-    \   'lazy': 1,
     \   'autoload': {'commands': 'PrevimOpen'}
     \ })
   autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> [option]p :<C-u>PrevimOpen<CR>
@@ -908,7 +899,6 @@ endif
 " osyo-manga/unite-quickfix {{{
 if neobundle#is_installed('unite-quickfix')
   call neobundle#config('unite-quickfix', {
-    \   'lazy': 1,
     \   'autoload': {'unite_sources': ['quickfix', 'location_list']}
     \ })
 endif
@@ -917,7 +907,6 @@ endif
 " scrooloose/syntastic {{{
 if neobundle#is_installed('syntastic')
   call neobundle#config('syntastic', {
-    \   'lazy': 1,
     \   'autoload': {'filetypes': ['python']}
     \ })
   let g:syntastic_mode_map = {
@@ -932,7 +921,6 @@ endif
 " thinca/vim-quickrun {{{
 if neobundle#tap('vim-quickrun')
   call neobundle#config({
-    \   'lazy': 1,
     \   'autoload': {'commands': 'QuickRun'}
    \ })
 
@@ -1014,7 +1002,6 @@ endif
 " thinca/vim-scouter {{{
 if neobundle#is_installed('vim-scouter')
   call neobundle#config('vim-scouter', {
-    \   'lazy': 1,
     \   'autoload': {'commands': 'Scouter'}
     \ })
 endif
@@ -1024,7 +1011,6 @@ endif
 if neobundle#is_installed('vim-fireplace')
   call neobundle#config('vim-fireplace', {
     \   'depends': 'tpope/vim-classpath',
-    \   'lazy': 1,
     \   'autoload': {'commands': 'Connect'},
     \   'disabled': !has('python')
     \ })
