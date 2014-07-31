@@ -1,20 +1,17 @@
-vimfiles
-========
-Vimの設定ファイル置き場
+# vimfiles
 
-setup
------
+## Installation
 
-### *nix
+Linux/OSX:
 
-    git clone https://github.com/mizyoukan/vimfiles.git $HOME/.vim
-    cd $HOME/.vim
-    sh setup.sh
+    cd $HOME
+    git clone https://github.com/mizyoukan/vimfiles.git .vim
+    sh .vim/setup.sh
 
-### Windows
-作業前に環境変数 `%HOME%` を設定しておくこと。
+Windows:
 
-    git clone https://github.com/mizyoukan/vimfiles.git %HOME%
-    cd %HOME%
-    cd vimfiles
-    setup.bat
+(Need to execute `setup.bat` in administrator role)
+
+    cd %UserProfile%
+    git clone https://github.com/mizyoukan/vimfiles.git vimfiles
+    vimfiles\setup.bat
