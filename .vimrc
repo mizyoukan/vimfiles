@@ -370,6 +370,9 @@ cnoremap <C-g> :<C-u><Esc><CR>
 " Delete without line end
 cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>")
 
+" Omni completion without select first matching
+inoremap <C-o> <C-x><C-o><C-p>
+
 "}}}
 
 " NeoBundle {{{
@@ -476,6 +479,8 @@ if neobundle#tap('neocomplete.vim')
 
     let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+    call neocomplete#custom#source('omni', 'disabled_filetypes', {'clojure': 1})
   endfunction
 
   call neobundle#untap()
@@ -895,9 +900,6 @@ if neobundle#tap('gocode')
       \   }
       \ })
   endif
-
-  let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
-  let g:neocomplete#sources#omni#input_patterns.go = '[^. \t[:digit:]]\.\w*'
 
   call neobundle#untap()
 endif
