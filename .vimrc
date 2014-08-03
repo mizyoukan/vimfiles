@@ -1019,7 +1019,7 @@ endif
 if neobundle#is_installed('vim-fireplace')
   call neobundle#config('vim-fireplace', {
     \   'depends': 'tpope/vim-classpath',
-    \   'autoload': {'commands': 'Connect'},
+    \   'autoload': {'filetypes': 'clojure'},
     \   'disabled': !has('python')
     \ })
 
@@ -1098,6 +1098,7 @@ autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
+autocmd MyAutoCmd BufNewFile,BufRead *.cljs setlocal filetype=clojure
 
 " Markdown
 autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
