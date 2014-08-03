@@ -444,7 +444,7 @@ NeoBundleLazy 'Shougo/neosnippet'
 NeoBundleLazy 'Shougo/unite-outline'
 NeoBundleLazy 'Shougo/unite.vim'
 NeoBundleLazy 'Shougo/vimfiler'
-NeoBundleLazy 'Shougo/vimshell'
+" NeoBundleLazy 'Shougo/vimshell'
 NeoBundleLazy 'derekwyatt/vim-scala', '', 'scala'
 NeoBundleLazy 'jelera/vim-javascript-syntax', '', 'javascript'
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', '', 'javascript'
@@ -597,7 +597,7 @@ if neobundle#tap('unite.vim')
       \ ]
     let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
 
-    if executable('lein') "{{{
+    if executable('lein') && g:neobundle#is_installed('vimshell') "{{{
       let g:unite_source_menu_menus.lein = {
         \   'description': 'Leiningen tasks',
         \   'candidates': [
@@ -648,7 +648,7 @@ if neobundle#tap('unite.vim')
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
   nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
-  if executable('lein')
+  if executable('lein') && g:neobundle#is_installed('vimshell')
     autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
   endif
 
