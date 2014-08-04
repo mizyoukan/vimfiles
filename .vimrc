@@ -966,8 +966,8 @@ if neobundle#tap('vim-quickrun')
     endif
 
     " silent syntax checker
-    execute 'highlight qf_error_ucurl gui=undercurl guisp=Red'
-    let g:hier_hightlight_group_qf = 'qf_error_ucurl'
+    execute 'highlight SilentSyntaxChecker gui=undercurl guisp=Red'
+    let g:hier_highlight_group_qf = 'SilentSyntaxChecker'
 
     let s:silent_quickfix = quickrun#outputter#quickfix#new()
     function! s:silent_quickfix.finish(session)
