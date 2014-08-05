@@ -106,6 +106,14 @@ function! s:removeLineEndSpace()
 endfunction
 command! -nargs=0 RemoveLineEndSpace silent call <SID>removeLineEndSpace()
 
+" Capitalize last modified text
+function! s:lastModifyCapitalize()
+  let c = getpos('.')
+  normal `[v`]U
+  call setpos('.', c)
+endfunction
+command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
+
 "}}}
 
 " Encodings {{{
