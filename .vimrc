@@ -1106,7 +1106,7 @@ autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
-autocmd MyAutoCmd BufNewFile,BufRead *.cljs setlocal filetype=clojure
+autocmd MyAutoCmd BufNewFile,BufRead *.cljx setlocal filetype=clojure
 
 " Markdown
 autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
