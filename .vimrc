@@ -398,7 +398,6 @@ NeoBundle 'bling/vim-bufferline'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'dannyob/quickfixstatus'
 NeoBundle 'fuenor/qfixhowm'
-NeoBundle 'jceb/vim-hier'
 NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-line'
@@ -413,6 +412,7 @@ NeoBundleLazy 'Shougo/neosnippet'
 NeoBundleLazy 'Shougo/unite-outline'
 NeoBundleLazy 'Shougo/unite.vim'
 NeoBundleLazy 'Shougo/vimfiler'
+NeoBundleLazy 'cohama/vim-hier'
 NeoBundleLazy 'derekwyatt/vim-scala', '', 'scala'
 NeoBundleLazy 'jelera/vim-javascript-syntax', '', 'javascript'
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', '', 'javascript'
@@ -643,6 +643,14 @@ let g:vimfiler_force_overwrite_statusline = 0
 
 " vim-quickrunが終了しない点防止用
 let g:bufferline_echo = 0
+"}}}
+
+" cohama/vim-hier {{{
+if neobundle#is_installed('vim-hier')
+  call neobundle#config('vim-hier', {
+    \   'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}
+    \ })
+endif
 "}}}
 
 " ctrlpvim/ctrlp.vim {{{
