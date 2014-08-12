@@ -371,7 +371,7 @@ call neobundle#begin(s:bundledir)
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " vimproc Windows環境ではKaoriya付属のものを使用
-if !has('win32')
+if has('mac') || has('unix')
   NeoBundle 'Shougo/vimproc', {
     \   'build': {
     \     'mac'  : 'make -f make_mac.mak',
