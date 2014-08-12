@@ -890,17 +890,6 @@ call neobundle#end()
 
 "}}}
 
-" Colorscheme for CLI {{{
-if neobundle#is_installed('Zenburn')
-  if !has('gui_running') && !has('win32') && !has('win64')
-    try
-      colorscheme zenburn
-    catch
-    endtry
-  endif
-endif
-" }}}
-
 " Filetypes {{{
 
 autocmd MyAutoCmd FileType text setlocal textwidth=0
