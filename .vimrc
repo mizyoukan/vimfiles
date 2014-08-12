@@ -64,13 +64,6 @@ function! MyFoldText() "{{{
   return l:left . l:space . l:right
 endfunction "}}}
 
-" Open PowerShell based on current buffer
-if executable('powershell')
-  command! -nargs=0 PowerShell silent execute
-    \ ':!start powershell -NoLogo -NoExit -Command Set-Location ' .
-    \ shellescape(expand('%:p:h'))
-endif
-
 " Toggle golang impl/test file
 function! GolangToggleFile(editCmd)
   let currFile = expand("%")
@@ -142,15 +135,6 @@ set smartcase
 
 " Highlight all matches
 set hlsearch
-
-" tags {{{
-set tags&
-let s:tags = expand(s:vimfiles . '/.tags')
-if isdirectory(s:tags)
-  let &tags = &tags . ',' . expand(s:tags . '/*')
-endif
-unlet s:tags
-"}}}
 
 "}}}
 
@@ -269,15 +253,6 @@ set t_Co=256
 " 読み込んでいるファイルが変更された時自動で読み直す
 set autoread
 
-" バックアップファイルを作らない
-" set nobackup
-
-" スワップファイルを作らない
-" set noswapfile
-
-" ファイルの上書きの前にバックアップを作らない
-" set nowritebackup
-
 " バックアップファイル出力先
 let s:backupdir = expand(s:vimfiles . '/.backup')
 if !isdirectory(s:backupdir)
@@ -298,9 +273,6 @@ let &undodir = expand(s:vimfiles . '/.undo')
 "}}}
 
 " Key mappings {{{
-
-" let mapleader = ','
-" noremap \ ,
 
 noremap [option] <Nop>
 map <Space> [option]
@@ -425,7 +397,6 @@ endif
 
 let g:neobundle#default_options = {
   \   '_' : {'verbose': 1, 'focus': 1},
-  \   'help': {'autoload': {'filetypes': 'help'}},
   \   'javascript': {'autoload': {'filetypes': 'javascript'}},
   \   'scala': {'autoload': {'filetypes': 'scala'}}
   \ }
@@ -442,7 +413,6 @@ NeoBundle 'kana/vim-textobj-line'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
-NeoBundle 'mhinz/vim-signify'
 NeoBundle 'nsf/gocode' " error lazy loading on Windows
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -452,17 +422,13 @@ NeoBundleLazy 'Shougo/neosnippet'
 NeoBundleLazy 'Shougo/unite-outline'
 NeoBundleLazy 'Shougo/unite.vim'
 NeoBundleLazy 'Shougo/vimfiler'
-" NeoBundleLazy 'Shougo/vimshell'
 NeoBundleLazy 'derekwyatt/vim-scala', '', 'scala'
 NeoBundleLazy 'jelera/vim-javascript-syntax', '', 'javascript'
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', '', 'javascript'
 NeoBundleLazy 'junegunn/vim-easy-align'
 NeoBundleLazy 'kannokanno/previm'
 NeoBundleLazy 'kmnk/vim-unite-giti'
-NeoBundleLazy 'majutsushi/tagbar'
 NeoBundleLazy 'osyo-manga/unite-quickfix'
-NeoBundleLazy 'scrooloose/syntastic'
-NeoBundleLazy 'thinca/vim-ft-help_fold', '', 'help'
 NeoBundleLazy 'thinca/vim-quickrun'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fireplace'
@@ -473,8 +439,6 @@ call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
 NeoBundle 'Pychimp/vim-sol'
 NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'vim-scripts/freya'
-NeoBundle 'vim-scripts/swamplight'
 
 " Shougo/neocomplete.vim {{{
 if neobundle#tap('neocomplete.vim')
@@ -605,35 +569,6 @@ if neobundle#tap('unite.vim')
       \ ]
     let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
 
-    if executable('lein') && g:neobundle#is_installed('vimshell') "{{{
-      let g:unite_source_menu_menus.lein = {
-        \   'description': 'Leiningen tasks',
-        \   'candidates': [
-        \     '?',
-        \     'repl', 'deps', 'test', 'clean',
-        \     'ring server', 'ring server-headless',
-        \     'cljsbuild auto', 'cljsbuild auto dev', 'cljsbuild once', 'cljsbuild clean',
-        \   ],
-        \ }
-      function! g:unite_source_menu_menus.lein.map(key, value)
-        if a:value ==# '?'
-          return {
-            \   'word': '[command?]',
-            \   'kind': 'command',
-            \   'action__command': s:unite_menu_input(
-            \     'lein task> ',
-            \     'execute ''VimShellInteractive --split="split | resize 10" lein '' . $1'),
-            \ }
-        endif
-        return {
-          \   'word': a:value,
-          \   'kind': 'command',
-          \   'action__command': 'VimShellInteractive --split="split | resize 10" lein ' . a:value,
-          \ }
-      endfunction
-    endif
-    " }}}
-
     autocmd MyAutoCmd FileType unite call s:unite_my_settings()
     function! s:unite_my_settings()
       imap <buffer><expr> <C-s> unite#do_action('split')
@@ -656,9 +591,6 @@ if neobundle#tap('unite.vim')
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
   nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
-  if executable('lein') && g:neobundle#is_installed('vimshell')
-    autocmd MyAutoCmd FileType clojure nnoremap <buffer><silent>[option]m :<C-u>Unite menu:lein<CR>
-  endif
 
   call neobundle#untap()
 endif
@@ -689,39 +621,6 @@ if neobundle#is_installed('vimfiler')
 endif
 "}}}
 
-" Shougo/vimshell {{{
-if neobundle#tap('vimshell')
-  call neobundle#config({
-    \   'autoload': {
-    \     'commands': [
-    \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
-    \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
-    \     ],
-    \     'mappings': '<Plug>(vimshell_'
-    \   }
-    \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:vimshell_prompt = ((has('win32') || has('win64')) ? $USERNAME : $USER) . '% '
-    let g:vimshell_split_command = 'split'
-    let g:vimshell_temporary_directory = expand(s:vimfiles . '/.cache/vimshell')
-    let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
-
-    if has('win32') || has('win64')
-      autocmd MyAutoCmd FileType vimshell setlocal fileencoding=cp932
-
-      if executable('lein')
-        call vimshell#util#set_variables({'$LEIN_JVM_OPTS': '-Djline.terminal=jline.UnsupportedTerminal'})
-      endif
-    endif
-  endfunction
-
-  nnoremap <silent>[option]s :<C-u>VimShell -split<CR>
-
-  call neobundle#untap()
-endif
-"}}}
-
 " Yggdroot/indentLine {{{
 if neobundle#is_installed('indentLine')
   call neobundle#config('indentLine', {
@@ -746,7 +645,6 @@ let g:airline_mode_map = {
   \   '' : 'S',
   \ }
 
-let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#branch#enabled = 0
 
 " statusline設定を抑制
@@ -849,49 +747,6 @@ if neobundle#is_installed('rainbow_parentheses.vim')
 endif
 "}}}
 
-" majutsushi/tagbar {{{
-if neobundle#tap('tagbar')
-  call neobundle#config({
-    \   'autoload': {'commands': 'TagbarToggle'}
-    \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    if executable('gotags') "{{{
-      let g:tagbar_type_go = {
-        \   'ctagstype' : 'go',
-        \   'kinds': [
-        \     'p:package',
-        \     'i:imports:1',
-        \     'c:constants',
-        \     'v:variables',
-        \     't:types',
-        \     'n:interfaces',
-        \     'w:fields',
-        \     'e:embedded',
-        \     'm:methods',
-        \     'r:constructor',
-        \     'f:functions'
-        \   ],
-        \   'sro': '.',
-        \   'kind2scope': {
-        \     't': 'ctype',
-        \     'n': 'ntype'
-        \   },
-        \   'scope2kind': {
-        \     'ctype': 't',
-        \     'ntype': 'n'
-        \   },
-        \   'ctagsbin': 'gotags',
-        \   'ctagsargs': '-sort -silent'
-        \ }
-    endif "}}}
-  endfunction
-
-  nnoremap [option]t :<C-u>TagbarToggle<CR>
-  call neobundle#untap()
-endif
-"}}}
-
 " nsf/gocode {{{
 if neobundle#tap('gocode')
   call neobundle#config({
@@ -917,20 +772,6 @@ if neobundle#is_installed('unite-quickfix')
   call neobundle#config('unite-quickfix', {
     \   'autoload': {'unite_sources': ['quickfix', 'location_list']}
     \ })
-endif
-"}}}
-
-" scrooloose/syntastic {{{
-if neobundle#is_installed('syntastic')
-  call neobundle#config('syntastic', {
-    \   'autoload': {'filetypes': ['python']}
-    \ })
-  let g:syntastic_mode_map = {
-    \   'mode': 'active',
-    \   'active_filetypes': ['python'],
-    \   'passive_filetypes': []
-    \ }
-  let g:syntastic_python_checkers = ['flake8']
 endif
 "}}}
 
@@ -1047,16 +888,6 @@ endif
 
 call neobundle#end()
 
-"}}}
-
-" JSONデータを整形 {{{
-if neobundle#is_installed('vim-operator-user') && executable('jq')
-  function! Op_json_format(motion_wise)
-    execute "'[,']" "!jq ."
-  endfunction
-  call operator#user#define('json-format', 'Op_json_format')
-  map X <Plug>(operator-json-format)
-endif
 "}}}
 
 " Colorscheme for CLI {{{
