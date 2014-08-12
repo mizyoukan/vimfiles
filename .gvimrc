@@ -21,11 +21,19 @@ set guioptions-=T
 set guioptions-=m
 
 " Font
-set linespace=1
 if has('win32') || has('win64')
-  set guifont=Consolas:h9:cDEFAULT
-  set guifontwide=MS_Gothic:h10.5:cDEFAULT
+  set linespace=0
+  set renderoptions=type:directx
+  let s:winfontdir = expand('$SYSTEMROOT/Fonts')
+  if filereadable(s:winfontdir . '/bdfUMplus-outline.ttf')
+    set guifont=BDF_UM+_OUTLINE:h10:cDEFAULT
+    set guifontwide=BDF_UM+_OUTLINE:h10:cDEFAULT
+  else
+    set guifont=Consolas:h9:cDEFAULT
+    set guifontwide=MS_Gothic:h9:cDEFAULT
+  endif
 elseif has('gui_macvim')
+  set linespace=1
   set guifont=Menlo:h12
 endif
 
