@@ -872,9 +872,6 @@ endif
 
 " $GOROOT/misc/vim {{{
 if neobundle#is_installed('go')
-  if executable('goimports')
-    let g:gofmt_command = 'goimports'
-  endif
   autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
 endif
 " }}}
