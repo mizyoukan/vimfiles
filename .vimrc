@@ -1,6 +1,7 @@
 " Initialize {{{
 
-let s:vimfiles = expand(has('win32') ? '~/vimfiles' : '~/.vim')
+let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
+let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 let s:bundledir = s:vimfiles . '/bundle'
 
@@ -273,10 +274,10 @@ noremap [option]j %
 
 " .vimrc/.gvimrcを編集
 if has('win32')
-  nnoremap <silent> [option]ev :<C-u>edit ~\vimfiles\.vimrc<CR>
-  nnoremap <silent> [option]eg :<C-u>edit ~\vimfiles\.gvimrc<CR>
-  nnoremap <silent> [option]ef :<C-u>edit ~\vimfiles\vimrc_local_first.vim<CR>
-  nnoremap <silent> [option]el :<C-u>edit ~\vimfiles\vimrc_local_last.vim<CR>
+  nnoremap <silent> [option]ev :<C-u>edit $USERPROFILE\vimfiles\.vimrc<CR>
+  nnoremap <silent> [option]eg :<C-u>edit $USERPROFILE\vimfiles\.gvimrc<CR>
+  nnoremap <silent> [option]ef :<C-u>edit $USERPROFILE\vimfiles\vimrc_local_first.vim<CR>
+  nnoremap <silent> [option]el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local_last.vim<CR>
 else
   nnoremap <silent> [option]ev :<C-u>edit ~/.vim/.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~/.vim/.gvimrc<CR>
@@ -288,7 +289,7 @@ endif
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 if has('win32')
-  nnoremap [option]vl :<C-u>source ~\vimfiles\vimrc_local_last.vim<CR>
+  nnoremap [option]vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local_last.vim<CR>
 else
   nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local_last.vim<CR>
 endif
@@ -666,7 +667,7 @@ if neobundle#is_installed('qfixhowm')
   let g:QFixHowm_HolidayFile = s:bundledir . '/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8'
   let g:QFixMRU_Filename = s:cachedir . '/qfixmru'
   let g:disable_QFixWin = 1
-  let g:qfixmemo_dir = expand('~/memo')
+  let g:qfixmemo_dir = s:homedir . '/memo'
   let g:qfixmemo_ext = 'md'
   let g:qfixmemo_filename = '%Y/%m/%Y-%m-%d-%H%M%S'
   let g:qfixmemo_filetype = ''
@@ -689,7 +690,7 @@ if neobundle#is_installed('qfixhowm')
     let myjpgrepprg = 'agrep.vim'
   endif
 
-  noremap mt :<C-u>call howm_schedule#QFixHowmSchedule('todo', expand('~/memo'), 'utf-8')<CR>
+  noremap mt :<C-u>call howm_schedule#QFixHowmSchedule('todo', s:homedir . '/memo'), 'utf-8')<CR>
 endif
 "}}}
 

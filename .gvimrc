@@ -1,5 +1,5 @@
 " 設定ファイル配置場所
-let s:vimfiles = expand(has('win32') ? '~/vimfiles' : '~/.vim')
+let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 
 " colorscheme
 try
