@@ -5,21 +5,13 @@ let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 let s:bundledir = s:vimfiles . '/bundle'
 
-" Load local setting file first
-if filereadable(s:vimfiles . '/vimrc_local_first.vim')
-  execute 'source' s:vimfiles . '/vimrc_local_first.vim'
-endif
-
-" 多重起動しない
-let g:SingleWindowBootEnable = get(g:, 'SingleWindowBootEnable', 1)
-if g:SingleWindowBootEnable == 1
-  if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
-    let s:file = expand('%:p')
-    bwipeout
-    call remote_send('GVIM', '<ESC>:tabnew ' . s:file . '<CR>')
-    call remote_foreground('GVIM')
-    quit
-  endif
+" Prevent to multi boot
+if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
+  let s:file = expand('%:p')
+  bwipeout
+  call remote_send('GVIM', '<ESC>:tabnew ' . s:file . '<CR>')
+  call remote_foreground('GVIM')
+  quit
 endif
 
 " Reset my autocmd group
@@ -276,22 +268,20 @@ noremap [option]j %
 if has('win32')
   nnoremap <silent> [option]ev :<C-u>edit $USERPROFILE\vimfiles\.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit $USERPROFILE\vimfiles\.gvimrc<CR>
-  nnoremap <silent> [option]ef :<C-u>edit $USERPROFILE\vimfiles\vimrc_local_first.vim<CR>
-  nnoremap <silent> [option]el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local_last.vim<CR>
+  nnoremap <silent> [option]el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
   nnoremap <silent> [option]ev :<C-u>edit ~/.vim/.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~/.vim/.gvimrc<CR>
-  nnoremap <silent> [option]ef :<C-u>edit ~/.vim/vimrc_local_first.vim<CR>
-  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local_last.vim<CR>
+  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
 endif
 
 " .vimrc/.gvimrcを反映
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 if has('win32')
-  nnoremap [option]vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local_last.vim<CR>
+  nnoremap [option]vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local_last.vim<CR>
+  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
 
 " 行末までヤンク
@@ -957,9 +947,9 @@ autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
 " Finalize {{{
 
-" Load local setting file last
-if filereadable(s:vimfiles . '/vimrc_local_last.vim')
-  execute 'source' s:vimfiles . '/vimrc_local_last.vim'
+" Load local setting file
+if filereadable(s:vimfiles . '/vimrc_local.vim')
+  execute 'source' s:vimfiles . '/vimrc_local.vim'
 endif
 
 " ファイルタイプ関連を有効化

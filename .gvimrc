@@ -41,7 +41,7 @@ if has('multi_byte_ime') || has('xim')
   highlight CursorIM guibg=#af0000
 endif
 
-" ローカル設定をgvimrc_local.vimから読み込む
+" Load local setting file
 if filereadable(s:vimfiles . '/gvimrc_local.vim')
   execute 'source' s:vimfiles . '/gvimrc_local.vim'
 endif
