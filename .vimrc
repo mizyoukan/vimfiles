@@ -13,9 +13,9 @@ endif
 let g:SingleWindowBootEnable = get(g:, 'SingleWindowBootEnable', 1)
 if g:SingleWindowBootEnable == 1
   if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
-    let l:file = expand('%:p')
+    let s:file = expand('%:p')
     bwipeout
-    call remote_send('GVIM', '<ESC>:tabnew ' . l:file . '<CR>')
+    call remote_send('GVIM', '<ESC>:tabnew ' . s:file . '<CR>')
     call remote_foreground('GVIM')
     quit
   endif
