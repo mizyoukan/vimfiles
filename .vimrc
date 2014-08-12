@@ -394,6 +394,7 @@ let g:neobundle#default_options = {
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
+NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'dannyob/quickfixstatus'
 NeoBundle 'fuenor/qfixhowm'
 NeoBundle 'jceb/vim-hier'
@@ -401,7 +402,6 @@ NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-line'
 NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'nsf/gocode' " error lazy loading on Windows
 NeoBundle 'tomtom/tcomment_vim'
@@ -644,6 +644,22 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:bufferline_echo = 0
 "}}}
 
+" ctrlpvim/ctrlp.vim {{{
+let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_custom_ignore = {
+  \   'file': '\v\.(dll|exe|jar|so)$',
+  \   'dir': '\v[\\/](out|repl|target)$'
+  \ }
+let g:ctrlp_map = '<C-@>'
+" C-hでBackspace (カーソル移動からC-hを除外)
+let g:ctrlp_prompt_mappings = {
+  \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
+  \   'PrtCurLeft()': ['<left>', '<C-^>']
+  \ }
+let g:ctrlp_use_migemo = 1
+"}}}
+
 " fuenor/qfixhowm {{{
 if neobundle#is_installed('qfixhowm')
   let g:QFixHowm_Convert = 0
@@ -709,22 +725,6 @@ if neobundle#is_installed('previm')
     \ })
   autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> [option]p :<C-u>PrevimOpen<CR>
 endif
-"}}}
-
-" kien/ctrlp.vim {{{
-let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = {
-  \   'file': '\v\.(dll|exe|jar|so)$',
-  \   'dir': '\v[\\/](out|repl|target)$'
-  \ }
-let g:ctrlp_map = '<C-@>'
-" C-hでBackspace (カーソル移動からC-hを除外)
-let g:ctrlp_prompt_mappings = {
-  \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
-  \   'PrtCurLeft()': ['<left>', '<C-^>']
-  \ }
-let g:ctrlp_use_migemo = 1
 "}}}
 
 " kien/rainbow_parentheses.vim {{{
