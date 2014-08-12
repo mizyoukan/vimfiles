@@ -1,9 +1,8 @@
 " Initialize {{{
 
-" Vi互換をオフ
-set nocompatible
-
-let s:vimfiles = expand((has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim')
+let s:vimfiles = expand(has('win32') ? '~/vimfiles' : '~/.vim')
+let s:cachedir = s:vimfiles . '/.cache'
+let s:bundledir = s:vimfiles . '/bundle'
 
 " Load local setting file first
 if filereadable(s:vimfiles . '/vimrc_local_first.vim')
@@ -14,9 +13,9 @@ endif
 let g:SingleWindowBootEnable = get(g:, 'SingleWindowBootEnable', 1)
 if g:SingleWindowBootEnable == 1
   if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
-    let file = expand('%:p')
+    let l:file = expand('%:p')
     bwipeout
-    call remote_send('GVIM', '<ESC>:tabnew ' . file . '<CR>')
+    call remote_send('GVIM', '<ESC>:tabnew ' . l:file . '<CR>')
     call remote_foreground('GVIM')
     quit
   endif
@@ -35,54 +34,44 @@ filetype plugin indent off
 " Commands and Functions {{{
 
 " Delete current buffer without closing window
-command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
 function! s:KillCurrentBuffer(bang) "{{{
   let l:bn = bufnr('%')
   bprevious
   try
-    execute 'bdelete'.a:bang l:bn
+    execute 'bdelete' . a:bang l:bn
   catch /E89:/
     execute 'buffer' l:bn
     echoerr v:exception
   endtry
 endfunction "}}}
+command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
 
 " フォールディングで表示する文字列設定
 function! s:mbslen(str) "{{{
-  let l:char_count = strlen(a:str)
-  let l:mchar_count = strlen(substitute(a:str, ".", "x", "g"))
-  return l:mchar_count + (l:char_count - l:mchar_count) / 2
+  let l:charcount = strlen(a:str)
+  let l:mcharcount = strlen(substitute(a:str, ".", "x", "g"))
+  return l:mcharcount + (l:charcount - l:mcharcount) / 2
 endfunction "}}}
 function! MyFoldText() "{{{
   let l:left = getline(v:foldstart) . " ..."
-  let l:folded_line_count = v:foldend - v:foldstart
-  let l:right = "[" . l:folded_line_count . "] "
-  let l:nu_col_width = &fdc + &number * &numberwidth
-  let l:line_width = winwidth(0) - l:nu_col_width
-  let l:space_count = l:line_width - s:mbslen(l:left) - strlen(l:right)
-  let l:space = l:space_count > 0 ? repeat(" ", l:space_count) : ""
+  let l:foldedlinecount = v:foldend - v:foldstart
+  let l:right = "[" . l:foldedlinecount . "] "
+  let l:numbercolwidth = &fdc + &number * &numberwidth
+  let l:linewidth = winwidth(0) - l:numbercolwidth
+  let l:spacecount = l:linewidth - s:mbslen(l:left) - strlen(l:right)
+  let l:space = l:spacecount > 0 ? repeat(" ", l:spacecount) : ""
   return l:left . l:space . l:right
 endfunction "}}}
 
 " Toggle golang impl/test file
-function! GolangToggleFile(editCmd)
-  let currFile = expand("%")
-  if match(currFile, "_test\.go$") >= 0
-    let fileToOpen = split(currFile, "_test\.go$")[0] . ".go"
+function! GolangToggleFile(editcmd)
+  let l:currentfile = expand("%")
+  if match(l:currentfile, "_test\.go$") >= 0
+    let l:openfile = split(l:currentfile, "_test\.go$")[0] . ".go"
   else
-    let fileToOpen = split(currFile, "\.go$")[0] . "_test.go"
+    let l:openfile = split(l:currentfile, "\.go$")[0] . "_test.go"
   endif
-  execute ":" . a:editCmd . " " . fileToOpen
-endfunction
-
-" Source all unsourced plugins
-command! -nargs=0 MyNeoBundleSourceAll silent call <SID>MyNeoBundleSourceAll()
-function! s:MyNeoBundleSourceAll()
-  for bundle in neobundle#config#get_neobundles()
-    if !neobundle#is_sourced(bundle.name)
-      call neobundle#config#source(bundle.name)
-    endif
-  endfor
+  execute ":" . a:editcmd l:openfile
 endfunction
 
 " Set IME off when insert leave
@@ -93,17 +82,17 @@ endif
 
 " Remove line end space
 function! s:removeLineEndSpace()
-  let cursor = getpos('.')
+  let l:cursor = getpos('.')
   execute '%s/\s\+$//ge'
-  call setpos('.', cursor)
+  call setpos('.', l:cursor)
 endfunction
 command! -nargs=0 RemoveLineEndSpace silent call <SID>removeLineEndSpace()
 
 " Capitalize last modified text
 function! s:lastModifyCapitalize()
-  let c = getpos('.')
+  let l:cursor = getpos('.')
   normal `[v`]U
-  call setpos('.', c)
+  call setpos('.', l:cursor)
 endfunction
 command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
 
@@ -113,7 +102,7 @@ command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
 
 set encoding=utf-8
 set fileencodings=utf-8,cp932,euc-up
-if has('win32') || has('win64')
+if has('win32')
   set termencoding=cp932
   set fileformats=dos,unix,mac
 else
@@ -254,21 +243,21 @@ set t_Co=256
 set autoread
 
 " バックアップファイル出力先
-let s:backupdir = expand(s:vimfiles . '/.backup')
+let s:backupdir = s:vimfiles . '/.backup'
 if !isdirectory(s:backupdir)
   call mkdir(s:backupdir)
 endif
 let &backupdir = s:backupdir
 
 " スワップファイル出力先
-let s:swapdir = expand(s:vimfiles . '/.swap')
+let s:swapdir = s:vimfiles . '/.swap'
 if !isdirectory(s:swapdir)
   call mkdir(s:swapdir)
 endif
 let &directory = s:swapdir
 
 " undoファイル出力先
-let &undodir = expand(s:vimfiles . '/.undo')
+let &undodir = s:vimfiles . '/.undo'
 
 "}}}
 
@@ -283,7 +272,7 @@ noremap [option]l $
 noremap [option]j %
 
 " .vimrc/.gvimrcを編集
-if has('win32') || has('win64')
+if has('win32')
   nnoremap <silent> [option]ev :<C-u>edit ~\vimfiles\.vimrc<CR>
   nnoremap <silent> [option]eg :<C-u>edit ~\vimfiles\.gvimrc<CR>
   nnoremap <silent> [option]ef :<C-u>edit ~\vimfiles\vimrc_local_first.vim<CR>
@@ -298,7 +287,7 @@ endif
 " .vimrc/.gvimrcを反映
 nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
-if has('win32') || has('win64')
+if has('win32')
   nnoremap [option]vl :<C-u>source ~\vimfiles\vimrc_local_last.vim<CR>
 else
   nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local_last.vim<CR>
@@ -354,7 +343,7 @@ cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
-cnoremap <C-g> :<C-u><Esc><CR>
+cnoremap <C-g> <Esc>
 " Delete without line end
 cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>")
 
@@ -365,22 +354,23 @@ inoremap <C-o> <C-x><C-o><C-p>
 
 " NeoBundle {{{
 
-if executable('git') && !isdirectory(expand(s:vimfiles . '/bundle/neobundle.vim'))
+let s:neobundledir = s:bundledir . '/neobundle.vim'
+if executable('git') && !isdirectory(s:neobundledir)
   echo 'install NeoBundle ...'
-  call mkdir(iconv(expand(s:vimfiles . '/bundle'), &encoding, &termencoding), 'p')
-  call system('git clone https://github.com/Shougo/neobundle.vim ' . shellescape(expand(s:vimfiles . '/bundle/neobundle.vim')))
+  call mkdir(iconv(s:bundledir, &encoding, &termencoding), 'p')
+  call system('git clone https://github.com/Shougo/neobundle.vim ' . shellescape(s:neobundledir))
 endif
 
 if has('vim_starting')
-  let &runtimepath = &runtimepath . ',' . expand(s:vimfiles . '/bundle/neobundle.vim')
+  let &runtimepath = &runtimepath . ',' . s:neobundledir
 endif
 
-call neobundle#begin(expand(s:vimfiles . '/bundle'))
+call neobundle#begin(s:bundledir)
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " vimproc Windows環境ではKaoriya付属のものを使用
-if !has('win32') && !has('win64')
+if !has('win32')
   NeoBundle 'Shougo/vimproc', {
     \   'build': {
     \     'mac'  : 'make -f make_mac.mak',
@@ -449,7 +439,7 @@ if neobundle#tap('neocomplete.vim')
     \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:neocomplete#data_directory = expand(s:vimfiles . '/.cache/neocomplete')
+    let g:neocomplete#data_directory = s:cachedir . '/neocomplete'
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_ignore_case = 1
     let g:neocomplete#enable_smart_case = 1
@@ -477,8 +467,8 @@ if neobundle#tap('neosnippet')
     \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:neosnippet#data_directory = expand(s:vimfiles . '/.cache/neosnippet')
-    let g:neosnippet#snippets_directory = expand(s:vimfiles . '/bundle/neosnippet-snippets/snippets')
+    let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
+    let g:neosnippet#snippets_directory = s:bundledir . '/neosnippet-snippets/snippets'
 
     if has('conceal')
       set conceallevel=2 concealcursor=i
@@ -519,10 +509,10 @@ if neobundle#tap('unite.vim')
 
   function! neobundle#tapped.hooks.on_source(bundle)
     " Shougo/neomru.vim
-    let g:neomru#file_mru_path = expand(s:vimfiles . '/.cache/neomru/file')
-    let g:neomru#directory_mru_path = expand(s:vimfiles . '/.cache/neomru/directory')
+    let g:neomru#file_mru_path = s:cachedir . '/neomru/file'
+    let g:neomru#directory_mru_path = s:cachedir . '/neomru/directory'
 
-    let g:unite_data_directory = expand(s:vimfiles . '/.cache/unite')
+    let g:unite_data_directory = s:cachedir . '/unite'
     let g:unite_enable_start_insert = 1
     let g:unite_split_rule = 'botright'
     let g:unite_winheight = 10
@@ -530,7 +520,7 @@ if neobundle#tap('unite.vim')
     let g:unite_source_file_mru_ignore_pattern = ''
     let g:unite_source_file_mru_ignore_pattern .= '\~$'
     let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
-    if has('win32') || has('win64')
+    if has('win32')
       let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
       let g:unite_source_file_mru_ignore_pattern .= '\|^//'
     endif
@@ -546,7 +536,6 @@ if neobundle#tap('unite.vim')
         \   'else',
         \     'echo "canceled."',
         \   'endif',
-        \   'unlet s:capture_input',
         \ ]
       return join(l:command, '|')
     endfunction
@@ -611,7 +600,7 @@ if neobundle#is_installed('vimfiler')
     \ })
 
   let g:vimfiler_as_default_explorer = 1
-  let g:vimfiler_data_directory = expand(s:vimfiles . '/.cache/vimfiler')
+  let g:vimfiler_data_directory = s:cachedir . '/vimfiler'
   let g:vimfiler_safe_mode_by_default = 0
   let g:vimfiler_tree_indentation = 2
   let g:vimfiler_tree_leaf_icon = ' '
@@ -658,8 +647,8 @@ let g:bufferline_echo = 0
 " fuenor/qfixhowm {{{
 if neobundle#is_installed('qfixhowm')
   let g:QFixHowm_Convert = 0
-  let g:QFixHowm_HolidayFile = expand(s:vimfiles . '/bundle/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8')
-  let g:QFixMRU_Filename = expand(s:vimfiles . '/.cache/qfixmru')
+  let g:QFixHowm_HolidayFile = s:bundledir . '/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8'
+  let g:QFixMRU_Filename = s:cachedir . '/qfixmru'
   let g:disable_QFixWin = 1
   let g:qfixmemo_dir = expand('~/memo')
   let g:qfixmemo_ext = 'md'
@@ -679,7 +668,7 @@ if neobundle#is_installed('qfixhowm')
   let g:qfixmemo_title = '#'
   let g:qfixmemo_use_howm_schedule = 0
   let g:qfixmemo_use_updatetime = 1
-  if (has('win32') || has('win64')) && !executable('grep')
+  if has('win32') && !executable('grep')
     let mygreparg = 'findstr'
     let myjpgrepprg = 'agrep.vim'
   endif
@@ -723,7 +712,7 @@ endif
 "}}}
 
 " kien/ctrlp.vim {{{
-let g:ctrlp_cache_dir = expand(s:vimfiles . '/.cache/ctrlp')
+let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_custom_ignore = {
   \   'file': '\v\.(dll|exe|jar|so)$',
@@ -794,7 +783,9 @@ if neobundle#tap('vim-quickrun')
       \   'runner/vimproc/sleep': 0
       \ }
 
-    if executable('CScript')
+    if has('win32')
+      let g:quickrun_config.dosbatch = {'runner': 'system'}
+
       let g:quickrun_config.vb = {
         \   'command': 'CScript',
         \   'exec': '%c //Nologo //E:VBScript %s',
@@ -810,10 +801,6 @@ if neobundle#tap('vim-quickrun')
         \ }
     endif
 
-    if has('win32') || has('win64')
-      let g:quickrun_config.dosbatch = {'runner': 'system'}
-    endif
-
     " silent syntax checker
     execute 'highlight SilentSyntaxChecker gui=undercurl guisp=Red'
     let g:hier_highlight_group_qf = 'SilentSyntaxChecker'
@@ -821,26 +808,23 @@ if neobundle#tap('vim-quickrun')
     let s:silent_quickfix = quickrun#outputter#quickfix#new()
     function! s:silent_quickfix.finish(session)
       call call(quickrun#outputter#quickfix#new().finish, [a:session], self)
-      :cclose
-      :HierUpdate
-      :QuickfixStatusEnable
+      cclose
+      HierUpdate
+      QuickfixStatusEnable
     endfunction
     call quickrun#register_outputter('silent_quickfix', s:silent_quickfix)
-    unlet! s:silent_quickfix
 
     let s:go_syntaxcheck_exec = ['%c build %o %s:p:t %a']
     if executable('golint')
       call add(s:go_syntaxcheck_exec, 'golint %s:p:t')
     endif
-    let s:device_null = has('win32') || has('win64') ? 'NUL' : '/dev/null'
+    let s:device_null = has('win32') ? 'NUL' : '/dev/null'
     let g:quickrun_config['go/syntaxcheck'] = {
       \   'type': 'go',
       \   'exec': s:go_syntaxcheck_exec,
       \   'cmdopt': '-o ' . s:device_null,
       \   'outputter': 'silent_quickfix'
       \ }
-    unlet! s:device_null
-    unlet! s:go_syntaxcheck_exec
 
     autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
   endfunction
@@ -848,7 +832,7 @@ if neobundle#tap('vim-quickrun')
   nnoremap <silent>[option]q :<C-u>QuickRun<CR>
 
   if executable('go')
-    autocmd MyAutoCmd BufWritePost *.go :QuickRun go/syntaxcheck
+    autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
   endif
 
   call neobundle#untap()
@@ -873,7 +857,7 @@ if neobundle#is_installed('vim-fireplace')
     \ })
 
   " tpope/vim-classpath
-  let g:classpath_cache = expand(s:vimfiles . '/.cache/classpath')
+  let g:classpath_cache = s:cachedir . '/classpath'
 endif
 "}}}
 

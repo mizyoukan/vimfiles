@@ -1,5 +1,5 @@
 " 設定ファイル配置場所
-let s:vimfiles = expand((has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim')
+let s:vimfiles = expand(has('win32') ? '~/vimfiles' : '~/.vim')
 
 " colorscheme
 try
@@ -21,13 +21,12 @@ set guioptions-=T
 set guioptions-=m
 
 " Font
-if has('win32') || has('win64')
+if has('win32')
   set linespace=0
   set renderoptions=type:directx
   let s:winfontdir = expand('$SYSTEMROOT/Fonts')
   if filereadable(s:winfontdir . '/bdfUMplus-outline.ttf')
     set guifont=BDF_UM+_OUTLINE:h10:cDEFAULT
-    set guifontwide=BDF_UM+_OUTLINE:h10:cDEFAULT
   else
     set guifont=Consolas:h9:cDEFAULT
     set guifontwide=MS_Gothic:h9:cDEFAULT
