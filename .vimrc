@@ -857,6 +857,12 @@ if neobundle#is_installed('vim-fireplace')
 
   " tpope/vim-classpath
   let g:classpath_cache = s:cachedir . '/classpath'
+
+  function! s:myClojureMapping()
+    nmap <buffer> <C-CR> <Plug>FireplacePrintip
+    vmap <buffer> <C-CR> <Plug>FireplacePrint
+  endfunction
+  autocmd MyAutoCmd FileType clojure call <SID>myClojureMapping()
 endif
 "}}}
 
