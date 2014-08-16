@@ -225,7 +225,28 @@ else
   set fileformats=unix,dos,mac
 endif
 
-set statusline=%F\ %m%r%h%w%=%<%y[%{&fenc}/%{&ff}]\ %p%%\ %l:%c
+let g:displaybuffers = ""
+function! MyUpdateDisplayBuffers()
+  let l:activebuf = bufnr('%')
+  let l:bufs = filter(range(1, bufnr('$')),
+    \   'buflisted(v:val)'
+    \ . ' && v:val != l:activebuf'
+    \ . ' && getbufvar(v:val, "&modifiable")'
+    \ )
+  let g:displaybuffers = len(l:bufs) > 0
+    \ ? "[" . join(map(l:bufs,
+    \       'v:val . ":"'
+    \     . ' . fnamemodify(bufname(v:val), ":t")'
+    \     . ' . (getbufvar(v:val, "&modified") ? "+" : "")'
+    \   ), "|") . "]"
+    \ : ""
+endfunction
+
+autocmd MyAutoCmd BufEnter * call MyUpdateDisplayBuffers()
+function! MyStatusLine()
+  return '%n:%F %m%r%h%w' . g:displaybuffers . '%=%<%y[%{&fenc}/%{&ff}] %p%% %l:%c'
+endfunction
+set statusline=%!MyStatusLine()
 
 function! s:mbslen(str) "{{{
   let l:charcount = strlen(a:str)
