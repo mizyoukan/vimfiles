@@ -5,6 +5,12 @@ let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 let s:bundledir = s:vimfiles . '/bundle'
 
+" Popup if has already opened other Vim
+try
+  runtime macros/editexisting.vim
+catch /E122:/
+endtry
+
 " Prevent to multi boot
 if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
   let s:file = expand('%:p')
