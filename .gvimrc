@@ -9,6 +9,11 @@ endtry
 " Ignore beep
 set visualbell t_vb=
 
+" Fix corruption of menu text
+source $VIMRUNTIME/delmenu.vim
+set langmenu=ja_JP.UTF-8
+source $VIMRUNTIME/menu.vim
+
 set guioptions&
 " Display horizontal scrollbar (limit length of the cursor line)
 set guioptions+=b
