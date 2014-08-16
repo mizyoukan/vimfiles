@@ -75,8 +75,6 @@ if s:bundled('neobundle.vim')
   endif
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
-  NeoBundle 'bling/vim-airline'
-  NeoBundle 'bling/vim-bufferline'
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
   NeoBundle 'fuenor/qfixhowm'
@@ -623,31 +621,6 @@ if s:bundled('vimfiler')
 
   nnoremap <silent>[option]f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
 endif
-"}}}
-
-" bling/vim-airline {{{
-let g:airline_mode_map = {
-  \   '__' : '-',
-  \   'n'  : 'N',
-  \   'i'  : 'I',
-  \   'R'  : 'R',
-  \   'c'  : 'C',
-  \   'v'  : 'V',
-  \   'V'  : 'V',
-  \   '' : 'V',
-  \   's'  : 'S',
-  \   'S'  : 'S',
-  \   '' : 'S',
-  \ }
-
-let g:airline#extensions#branch#enabled = 0
-
-" Prevent statusline settings
-let g:unite_force_overwrite_statusline = 0
-let g:vimfiler_force_overwrite_statusline = 0
-
-" Fix for vim-quickrun
-let g:bufferline_echo = 0
 "}}}
 
 " ctrlpvim/ctrlp.vim {{{
