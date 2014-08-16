@@ -1,15 +1,12 @@
-" 設定ファイル配置場所
 let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 
 " colorscheme
 try
   colorscheme sol
-  highlight Comment guifg=#a0a0a0
-  highlight Folded guifg=#8d8d8d
 catch
 endtry
 
-" ビープ音を消す
+" Ignore beep
 set visualbell t_vb=
 
 set guioptions&
@@ -37,7 +34,7 @@ elseif has('gui_macvim')
 endif
 
 if has('multi_byte_ime') || has('xim')
-  " IMEがONになったらキャレットの色を変更
+  " Change caret color when set IME on
   highlight CursorIM guibg=#af0000
 endif
 
