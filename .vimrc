@@ -789,12 +789,16 @@ if s:bundled('go')
 endif
 " }}}
 
-" colorscheme {{{
-augroup fix_colorscheme
-  autocmd!
-  autocmd ColorScheme sol highlight Comment guifg=#a0a0a0
-  autocmd ColorScheme sol highlight Folded guifg=#8d8d8d
-augroup END
+" Pychimp/vim-sol {{{
+if s:bundled('vim-sol')
+  augroup solcolorscheme
+    autocmd!
+    autocmd ColorScheme sol highlight Comment guifg=#a0a0a0
+    autocmd ColorScheme sol highlight Folded guifg=#8d8d8d
+    autocmd ColorScheme sol highlight StatusLine guibg=#404040 guifg=#dfdfdf
+    autocmd ColorScheme sol highlight StatusLineNC guibg=#8d8d8d guifg=#dfdfdf
+  augroup END
+endif
 " }}}
 
 " "}}}
