@@ -227,7 +227,7 @@ else
   set fileformats=unix,dos,mac
 endif
 
-set statusline=%F\ %m%r%h%w%=%{&ff}\ \|\ %{&fenc}\ \|\ %{&ft}\ \|\ %l:%c\ [%p%%]
+set statusline=%F\ %m%r%h%w%=%<%y[%{&fenc}/%{&ff}]\ %p%%\ %l:%c
 
 function! s:mbslen(str) "{{{
   let l:charcount = strlen(a:str)
