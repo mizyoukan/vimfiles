@@ -242,9 +242,17 @@ function! MyUpdateDisplayBuffers()
     \ : ""
 endfunction
 
+function! GetColumnNumber(expr)
+  let l:col = col(a:expr)
+  let l:line = getline(a:expr)
+  let l:ucslen = strlen(substitute(l:line[:l:col-1], '.', 'x', 'g'))
+  let l:linembs = matchstr(l:line, '.\{1,' . l:ucslen . '\}')
+  return s:mbslen(l:linembs)
+endfunction
+
 autocmd MyAutoCmd BufEnter * call MyUpdateDisplayBuffers()
 function! MyStatusLine()
-  return '%n:%F %m%r%h%w' . g:displaybuffers . '%=%<%y[%{&fenc}/%{&ff}] %p%% %l:%c'
+  return '%n:%t %m%r%h%w' . g:displaybuffers . '%=%<%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
 endfunction
 set statusline=%!MyStatusLine()
 
