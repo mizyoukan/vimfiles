@@ -225,42 +225,49 @@ else
   set fileformats=unix,dos,mac
 endif
 
-let g:displaybuffers = ""
-function! MyUpdateDisplayBuffers()
-  let l:activebuf = bufnr('%')
-  let l:bufs = filter(range(1, bufnr('$')),
-    \   'buflisted(v:val)'
-    \ . ' && v:val != l:activebuf'
-    \ . ' && getbufvar(v:val, "&modifiable")'
-    \ )
-  let g:displaybuffers = len(l:bufs) > 0
-    \ ? "[" . join(map(l:bufs,
-    \       'v:val . ":"'
-    \     . ' . fnamemodify(bufname(v:val), ":t")'
-    \     . ' . (getbufvar(v:val, "&modified") ? "+" : "")'
-    \   ), "|") . "]"
-    \ : ""
-endfunction
-
-function! GetColumnNumber(expr)
-  let l:col = col(a:expr)
-  let l:line = getline(a:expr)
-  let l:ucslen = strlen(substitute(l:line[:l:col-1], '.', 'x', 'g'))
-  let l:linembs = matchstr(l:line, '.\{1,' . l:ucslen . '\}')
-  return s:mbslen(l:linembs)
-endfunction
-
-autocmd MyAutoCmd BufEnter * call MyUpdateDisplayBuffers()
-function! MyStatusLine()
-  return '%n:%t %m%r%h%w' . g:displaybuffers . '%=%<%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
-endfunction
-set statusline=%!MyStatusLine()
-
 function! s:mbslen(str) "{{{
   let l:charcount = strlen(a:str)
   let l:mcharcount = strlen(substitute(a:str, ".", "x", "g"))
   return l:mcharcount + (l:charcount - l:mcharcount) / 2
 endfunction "}}}
+
+function! GetColumnNumber(expr) "{{{
+  let l:col = col(a:expr)
+  let l:line = getline(a:expr)
+  let l:ucslen = strlen(substitute(l:line[:l:col-1], '.', 'x', 'g'))
+  let l:linembs = matchstr(l:line, '.\{1,' . l:ucslen . '\}')
+  return s:mbslen(l:linembs)
+endfunction "}}}
+
+function! MyStatusLine(isactive) "{{{
+  if a:isactive
+    let l:activebuf = bufnr('%')
+    let l:bufs = filter(range(1, bufnr('$')),
+      \   'buflisted(v:val)'
+      \ . ' && v:val != l:activebuf'
+      \ . ' && getbufvar(v:val, "&modifiable")'
+      \ )
+    let l:dispbufs = len(l:bufs) > 0
+      \ ? "[" . join(map(l:bufs,
+      \       'v:val . ":"'
+      \     . ' . fnamemodify(bufname(v:val), ":t")'
+      \     . ' . (getbufvar(v:val, "&modified") ? "+" : "")'
+      \   ), "|") . "]"
+      \ : ""
+  else
+    let l:dispbufs = ''
+  endif
+  return '[%n]%t %m%r%h%w' . l:dispbufs . '»%=%<«%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+endfunction "}}}
+
+function! s:refreshStatusLine() "{{{
+  let l:activewin = winnr()
+  for l:n in range(1, winnr('$'))
+    call setwinvar(l:n, '&statusline', '%!MyStatusLine(' . (l:n == l:activewin) . ')')
+  endfor
+endfunction "}}}
+autocmd MyAutoCmd BufEnter * call <SID>refreshStatusLine()
+
 function! MyFoldText() "{{{
   let l:left = getline(v:foldstart) . " ..."
   let l:foldedlinecount = v:foldend - v:foldstart
