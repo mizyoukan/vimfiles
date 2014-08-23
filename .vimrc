@@ -709,7 +709,10 @@ endif
 "}}}
 
 " jiangmiao/auto-pairs {{{
-let g:AutoPairsMapSpace = 0
+if neobundle#is_installed('auto-pairs')
+  let g:AutoPairsMapSpace = 0
+  autocmd MyAutoCmd FileType lisp,clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
+endif
 "}}}
 
 " junegunn/vim-easy-align {{{
