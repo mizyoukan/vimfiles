@@ -266,7 +266,7 @@ function! s:refreshStatusLine() "{{{
     call setwinvar(l:n, '&statusline', '%!MyStatusLine(' . (l:n == l:activewin) . ')')
   endfor
 endfunction "}}}
-autocmd MyAutoCmd BufEnter * call <SID>refreshStatusLine()
+autocmd MyAutoCmd BufEnter,WinEnter * call <SID>refreshStatusLine()
 
 function! MyFoldText() "{{{
   let l:left = getline(v:foldstart) . " ..."
