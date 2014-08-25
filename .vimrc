@@ -4,6 +4,9 @@ let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 
+" Directory to save memo files
+let s:mymemodir = get(g:, 'mymemodir', expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo')
+
 " Popup if has already opened other Vim
 try
   runtime macros/editexisting.vim
@@ -77,7 +80,7 @@ if s:bundled('neobundle.vim')
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
-  NeoBundle 'fuenor/qfixhowm'
+  " NeoBundle 'fuenor/qfixhowm'
   NeoBundle 'jiangmiao/auto-pairs'
   NeoBundle 'kana/vim-operator-user'
   NeoBundle 'kana/vim-textobj-line'
@@ -335,6 +338,29 @@ function! s:lastModifyCapitalize()
 endfunction
 command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
 
+" Create memo file
+function! s:memonew() "{{{
+  if !isdirectory(s:mymemodir)
+    echomsg "Memo dir '" . s:mymemodir . "' is not exist, please makedir."
+    return
+  endif
+  let l:cmd = getbufvar('%', '&modified') ? 'split' : 'edit'
+  let l:memofile = s:mymemodir . strftime('/%Y/%m/%Y-%m-%d-%H%M%S.md', localtime())
+  let l:memodir = fnamemodify(l:memofile, ':p:h')
+  let l:memotemplate = [
+    \   substitute('# [] <_1_>', '_', '`', 'g'),
+    \   '',
+    \   substitute('<_0_>', '_', '`', 'g')
+    \ ]
+  if !isdirectory(l:memodir)
+    call mkdir(l:memodir, 'p')
+  endif
+  execute l:cmd l:memofile
+  call append(0, l:memotemplate)
+  normal ggf[a
+endfunction "}}}
+command! -nargs=0 MemoNew call <SID>memonew()
+
 "}}}
 
 " Key mappings {{{
@@ -418,6 +444,8 @@ if has('win32')
 else
   nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
+
+nnoremap mc :<C-u>MemoNew<CR>
 
 "}}}
 
@@ -660,19 +688,71 @@ endif
 "}}}
 
 " ctrlpvim/ctrlp.vim {{{
-let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = {
-  \   'file': '\v\.(dll|exe|jar|so)$',
-  \   'dir': '\v[\\/](out|repl|target)$'
-  \ }
-let g:ctrlp_map = '<C-@>'
-" C-h is backspace (prevent to replace cursor move)
-let g:ctrlp_prompt_mappings = {
-  \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
-  \   'PrtCurLeft()': ['<left>', '<C-^>']
-  \ }
-let g:ctrlp_use_migemo = 1
+if s:bundled('ctrlp.vim')
+  let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
+  let g:ctrlp_clear_cache_on_exit = 0
+  let g:ctrlp_custom_ignore = {
+    \   'file': '\v\.(dll|exe|jar|so)$',
+    \   'dir': '\v[\\/](out|repl|target)$'
+    \ }
+  let g:ctrlp_map = '<C-@>'
+  " C-h is backspace (prevent to replace cursor move)
+  let g:ctrlp_prompt_mappings = {
+    \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
+    \   'PrtCurLeft()': ['<left>', '<C-^>']
+    \ }
+  let g:ctrlp_use_migemo = 1
+
+  " List memo files
+  let s:bundle = neobundle#get('ctrlp.vim')
+  function! s:bundle.hooks.on_source(bundle) "{{{ 
+    function! s:memotitle(file)
+      for l:line in readfile(a:file, '', 1)
+        return [fnamemodify(a:file, ':t:r'), l:line[2:]]
+      endfor
+      return []
+    endfunction
+
+    function! MemoList()
+      if !isdirectory(s:mymemodir)
+        echomsg "Memo dir '" . s:mymemodir . "' is not exist, please makedir."
+        return []
+      endif
+      return map(filter(map(split(glob(s:mymemodir . '/**/*.md'), "\n"),
+        \ '<SID>memotitle(v:val)'), 'len(v:val) > 0'), 'join(v:val, "|")')
+    endfunction
+
+    function! MemoAccept(mode, str)
+      call ctrlp#exit()
+      let l:file = split(a:str, "|")[0]
+      let l:fpath = g:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
+      let l:cmd =
+        \ a:mode ==# 't' ? 'tabedit' :
+        \ a:mode ==# 'h' ? 'split' :
+        \ a:mode ==# 'v' ? 'vsplit' :
+        \ getbufvar('%', '&modified') ? 'split' : 'edit'
+      execute l:cmd l:fpath
+    endfunction
+
+    let g:ctrlp_ext_vars = add(get(g:, 'ctrlp_ext_vars', []), {
+      \   'init': 'MemoList()',
+      \   'accept': 'MemoAccept',
+      \   'lname': 'memolist',
+      \   'sname': 'memolist',
+      \   'type': 'line'
+      \ })
+
+    let s:ctrlp_memolist_id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
+
+    function! s:ctrlp_memolist()
+      return s:ctrlp_memolist_id
+    endfunction
+
+    command! -nargs=0 MemoList call ctrlp#init(<SID>ctrlp_memolist())
+    nnoremap ma :<C-u>MemoList<CR>
+  endfunction "}}}
+  unlet s:bundle
+endif
 "}}}
 
 " fuenor/qfixhowm {{{
