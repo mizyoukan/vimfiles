@@ -288,7 +288,7 @@ set foldopen&
 set foldopen-=block
 set foldtext=MyFoldText()
 
-function! s:letandmkdir(var, path)
+function! s:letandmkdir(var, path) "{{{
   try
     if !isdirectory(a:path)
       call mkdir(a:path, 'p')
@@ -299,7 +299,7 @@ function! s:letandmkdir(var, path)
     echohl None
   endtry
   execute printf("let %s = a:path", a:var)
-endfunction
+endfunction "}}}
 
 call s:letandmkdir('&backupdir', s:vimfiles . '/.backup')
 call s:letandmkdir('&directory', s:vimfiles . '/.swap')
