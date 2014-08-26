@@ -560,6 +560,7 @@ if s:bundled('neocomplete.vim')
 
     call neocomplete#custom#source('omni', 'disabled_filetypes', {'clojure': 1})
   endfunction
+  unlet s:bundle
 endif
 "}}}
 
@@ -583,6 +584,7 @@ if s:bundled('neosnippet')
     " Delete merkers when InsertLeave
     autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
   endfunction
+  unlet s:bundle
 endif
 "}}}
 
@@ -666,6 +668,7 @@ if s:bundled('unite.vim')
       imap <buffer> <C-d> <Del>
     endfunction
   endfunction
+  unlet s:bundle
 
   nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent>[option]/ :<C-u>Unite line<CR>
@@ -880,6 +883,7 @@ if s:bundled('vim-quickrun')
 
     autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
   endfunction
+  unlet s:bundle
 
   nnoremap <silent>[option]q :<C-u>QuickRun<CR>
 
