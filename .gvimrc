@@ -22,6 +22,15 @@ set guioptions+=h
 set guioptions-=T
 set guioptions-=m
 
+" Popup menu
+if has('win32')
+  function! OpenWinExplorer()
+    execute '!start explorer /select,' . shellescape(expand('%:p'))
+  endfunction
+  nmenu PopUp.-Sep- :
+  nmenu <silent> PopUp.Open\ Explorer(&E) :call OpenWinExplorer()<CR>
+endif
+
 " Font
 if has('win32')
   set linespace=0
