@@ -230,7 +230,8 @@ endif
 function! s:mbslen(str) "{{{
   let l:charcount = strlen(a:str)
   let l:mcharcount = strlen(substitute(a:str, ".", "x", "g"))
-  return l:mcharcount + (l:charcount - l:mcharcount) / 2
+  let l:hankanacount = strlen(substitute(substitute(a:str, "[^ｦ-ﾟ]", "", "g"), ".", "x", "g"))
+  return l:mcharcount + (l:charcount - l:mcharcount) / 2 - l:hankanacount
 endfunction "}}}
 
 function! GetColumnNumber(expr) "{{{
