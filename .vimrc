@@ -99,7 +99,7 @@ if s:bundled('neobundle.vim')
       \ })
   endif
   NeoBundle 'tomtom/tcomment_vim'
-  NeoBundle 'tpope/vim-fugitive', {'disabled': !executable('git')}
+  NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'tpope/vim-surround'
   NeoBundleLazy 'Shougo/neocomplete.vim', {
     \   'autoload': {'insert': 1},
@@ -144,7 +144,6 @@ if s:bundled('neobundle.vim')
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
   NeoBundleLazy 'kmnk/vim-unite-giti', {
-    \   'disabled': !executable('git'),
     \   'autoload': {'unite_sources': 'giti'}
     \ }
   NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
