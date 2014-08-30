@@ -704,7 +704,6 @@ if s:bundled('ctrlp.vim')
     \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
     \   'PrtCurLeft()': ['<left>', '<C-^>']
     \ }
-  let g:ctrlp_use_migemo = 1
 
   " List memo files
   let s:bundle = neobundle#get('ctrlp.vim')
