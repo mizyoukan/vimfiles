@@ -7,6 +7,8 @@ let s:cachedir = s:vimfiles . '/.cache'
 " Directory to save memo files
 let s:mymemodir = get(g:, 'mymemodir', expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo')
 
+let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
+
 " Popup if has already opened other Vim
 try
   runtime macros/editexisting.vim
@@ -86,18 +88,6 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kana/vim-textobj-line'
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
-  NeoBundle 'nsf/gocode', {
-    \   'rtp': 'vim',
-    \   'disabled': !executable('go') || !isdirectory(expand('$GOPATH'))
-    \ }
-  if executable('go') && isdirectory(expand('$GOPATH'))
-    call neobundle#config('gocode', {
-      \   'build': {
-      \     'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
-      \     'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
-      \   }
-      \ })
-  endif
   NeoBundle 'tomtom/tcomment_vim'
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'tpope/vim-surround'
@@ -155,7 +145,16 @@ if s:bundled('neobundle.vim')
     \   'disabled': !executable('java') || !has('python')
     \ }
 
-  call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
+  if s:has_go
+    call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
+    NeoBundle 'nsf/gocode', {
+      \   'rtp': 'vim',
+      \   'build': {
+      \     'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
+      \     'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+      \   }
+      \ }
+  endif
 
   " colorscheme
   NeoBundle 'Pychimp/vim-sol'
@@ -886,7 +885,7 @@ if s:bundled('vim-quickrun')
 
   nnoremap <silent>[option]q :<C-u>QuickRun<CR>
 
-  if executable('go')
+  if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
   endif
 endif
