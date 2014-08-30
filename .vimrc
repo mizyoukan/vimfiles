@@ -82,7 +82,6 @@ if s:bundled('neobundle.vim')
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
-  " NeoBundle 'fuenor/qfixhowm'
   NeoBundle 'jiangmiao/auto-pairs'
   NeoBundle 'kana/vim-operator-user'
   NeoBundle 'kana/vim-textobj-line'
@@ -753,39 +752,6 @@ if s:bundled('ctrlp.vim')
     nnoremap ma :<C-u>MemoList<CR>
   endfunction "}}}
   unlet s:bundle
-endif
-"}}}
-
-" fuenor/qfixhowm {{{
-if s:bundled('qfixhowm')
-  let g:QFixHowm_Convert = 0
-  let g:QFixHowm_HolidayFile = s:bundledir . '/qfixhowm/misc/holiday/Sche-Hd-0000-00-00-000000.utf8'
-  let g:QFixMRU_Filename = s:cachedir . '/qfixmru'
-  let g:disable_QFixWin = 1
-  let g:qfixmemo_dir = s:homedir . '/memo'
-  let g:qfixmemo_ext = 'md'
-  let g:qfixmemo_filename = '%Y/%m/%Y-%m-%d-%H%M%S'
-  let g:qfixmemo_filetype = ''
-  let g:qfixmemo_mapleader = 'm'
-  let g:qfixmemo_template = [
-    \   substitute('%TITLE% [] <_1_>', '_', '`', 'g'),
-    \   '%DATE%',
-    \   '',
-    \   substitute('<_0_>', '_', '`', 'g')
-    \ ]
-  let g:qfixmemo_template_keycmd = '$F[a'
-  let g:qfixmemo_timeformat = 'last update: %Y-%m-%d %H:%M'
-  let g:qfixmemo_timeformat_regxp = '^last update: \d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}'
-  let g:qfixmemo_timestamp_regxp  = g:qfixmemo_timeformat_regxp
-  let g:qfixmemo_title = '#'
-  let g:qfixmemo_use_howm_schedule = 0
-  let g:qfixmemo_use_updatetime = 1
-  if has('win32') && !executable('grep')
-    let mygreparg = 'findstr'
-    let myjpgrepprg = 'agrep.vim'
-  endif
-
-  noremap mt :<C-u>call howm_schedule#QFixHowmSchedule('todo', s:homedir . '/memo'), 'utf-8')<CR>
 endif
 "}}}
 
