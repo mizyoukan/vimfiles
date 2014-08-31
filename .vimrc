@@ -4,10 +4,10 @@ let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 
-" Directory to save memo files
-let s:mymemodir = get(g:, 'mymemodir', expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo')
-
 let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
+
+" Directory to save memo files
+let s:mymemodir = expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo'
 
 " Popup if has already opened other Vim
 try
@@ -725,7 +725,7 @@ if s:bundled('ctrlp.vim')
     function! MemoAccept(mode, str)
       call ctrlp#exit()
       let l:file = split(a:str, "|")[0]
-      let l:fpath = g:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
+      let l:fpath = s:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
       let l:cmd =
         \ a:mode ==# 't' ? 'tabedit' :
         \ a:mode ==# 'h' ? 'split' :
