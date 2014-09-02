@@ -355,7 +355,8 @@ function! s:memonew() "{{{
   endif
   execute l:cmd l:memofile
   call append(0, l:memotemplate)
-  normal ggf[a
+  normal ggf]
+  startinsert
 endfunction "}}}
 command! -nargs=0 MemoNew call <SID>memonew()
 
