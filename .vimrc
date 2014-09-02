@@ -145,7 +145,7 @@ if s:bundled('neobundle.vim')
     \ }
 
   if s:has_go
-    call neobundle#local(expand('$GOROOT/misc'), {'name': 'go'}, ['vim'])
+    NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
     NeoBundle 'nsf/gocode', {
       \   'rtp': 'vim',
       \   'build': {
@@ -486,18 +486,7 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
-autocmd MyAutoCmd FileType go nnoremap <buffer> <C-s> :<C-u>call GolangToggleFile("e")<CR>
 autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
-" Toggle impl/test file
-function! GolangToggleFile(editcmd)
-  let l:currentfile = expand("%")
-  if match(l:currentfile, "_test\.go$") >= 0
-    let l:openfile = split(l:currentfile, "_test\.go$")[0] . ".go"
-  else
-    let l:openfile = split(l:currentfile, "\.go$")[0] . "_test.go"
-  endif
-  execute ":" . a:editcmd l:openfile
-endfunction
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
@@ -556,7 +545,7 @@ if s:bundled('neocomplete.vim')
     let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-    call neocomplete#custom#source('omni', 'disabled_filetypes', {'clojure': 1})
+    call neocomplete#custom#source('omni', 'disabled_filetypes', {'go': 1, 'clojure': 1})
   endfunction
   unlet s:bundle
 endif
@@ -870,8 +859,8 @@ if s:bundled('vim-fireplace')
 endif
 "}}}
 
-" $GOROOT/misc/vim {{{
-if s:bundled('go')
+" vim-jp/vim-go-extra {{{
+if s:bundled('vim-go-extra')
   autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
 endif
 " }}}
