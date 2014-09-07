@@ -119,9 +119,9 @@ if s:bundled('neobundle.vim')
     \   }
     \ }
   NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
-  NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetype': 'scala'}}
-  NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload': {'filetype': 'javascript'}}
-  NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {'autoload': {'filetype': 'javascript'}}
+  NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
+  NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload': {'filetypes': 'javascript'}}
+  NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {'autoload': {'filetypes': 'javascript'}}
   NeoBundleLazy 'junegunn/vim-easy-align', {
     \   'autoload': {
     \     'commands': ['EasyAlign', 'LiveEasyAlign'],
