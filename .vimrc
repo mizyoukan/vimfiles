@@ -235,9 +235,15 @@ endfunction "}}}
 function! GetColumnNumber(expr) "{{{
   let l:col = col(a:expr)
   let l:line = getline(a:expr)
-  let l:ucslen = strlen(substitute(l:line[:l:col-1], '.', 'x', 'g'))
-  let l:linembs = matchstr(l:line, '.\{1,' . l:ucslen . '\}')
-  return s:mbslen(l:linembs)
+  if l:line ==# ''
+    return 1
+  endif
+  let l:colchars = matchstr(l:line, '.\{1,' . strchars(l:line[:l:col-1]) . '\}')
+  let l:dispwidth = strdisplaywidth(l:colchars)
+  if mode() ==# 'i' && strlen(l:line) == (l:col - 1)
+    let l:dispwidth += 1
+  endif
+  return l:dispwidth
 endfunction "}}}
 
 function! MyStatusLine(isactive) "{{{
@@ -258,7 +264,9 @@ function! MyStatusLine(isactive) "{{{
   else
     let l:dispbufs = ''
   endif
-  return '[%n]%t %m%r%h%w' . l:dispbufs . '»%=%<«%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+  let l:divchars = has('gui_running') ? ['»', '«'] : ['>', '<']
+  return '[%n]%t %m%r%h%w' . l:dispbufs . l:divchars[0] . '%=%<'
+    \ . l:divchars[1] . '%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
 endfunction "}}}
 
 function! s:refreshStatusLine() "{{{
