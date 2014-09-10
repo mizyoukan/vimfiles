@@ -493,6 +493,9 @@ autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
 let g:clojure_align_multiline_strings = 1
 autocmd MyAutoCmd BufNewFile,BufRead *.cljx setfiletype clojure
 
+" Groovy
+autocmd MyAutoCmd BufNewFile,BufRead *.gradle setfiletype groovy
+
 " Markdown
 autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setfiletype markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
