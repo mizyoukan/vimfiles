@@ -3,5 +3,5 @@ bundle/
 .cache/
 .undo/
 .swap/
-vimrc_local.vim
-gvimrc_local.vim
+vimrc_local*.vim
+gvimrc_local*.vim

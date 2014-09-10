@@ -1,6 +1,11 @@
 " Initialize {{{
 
 let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
+
+if filereadable(s:vimfiles . '/vimrc_local_pre.vim')
+  execute 'source' s:vimfiles . '/vimrc_local_pre.vim'
+endif
+
 let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
 let s:cachedir = s:vimfiles . '/.cache'
 
