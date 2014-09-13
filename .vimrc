@@ -123,6 +123,15 @@ if s:bundled('neobundle.vim')
     \     'explorer': 1
     \   }
     \ }
+  NeoBundleLazy 'Shougo/vimshell', {
+    \   'autoload': {
+    \     'commands': [
+    \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
+    \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
+    \     ],
+    \     'mappings': '<Plug>(vimshell_'
+    \   }
+    \ }
   NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
   NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
   NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload': {'filetypes': 'javascript'}}
@@ -691,6 +700,17 @@ if s:bundled('vimfiler')
   let g:vimfiler_tree_leaf_icon = ' '
 
   nnoremap <silent>[option]f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
+endif
+"}}}
+
+" Shougo/vimshell {{{
+if s:bundled('vimshell')
+  let s:bundle = neobundle#get('vimshell')
+  function! s:bundle.hooks.on_source(bundle)
+    let g:vimshell_temporary_directory = s:cachedir . '/vimshell'
+    let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+  endfunction
+  unlet s:bundle
 endif
 "}}}
 
