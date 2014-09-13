@@ -385,13 +385,13 @@ command! -nargs=0 MemoNew call <SID>memonew()
 
 " Key mappings {{{
 
-noremap [option] <Nop>
-map <Space> [option]
+" Create empty map
+noremap <Space> <Nop>
 
 " Replace key because hard to type
-noremap [option]h ^
-noremap [option]l $
-noremap [option]j %
+noremap <Space>h ^
+noremap <Space>l $
+noremap <Space>j %
 
 nnoremap Y y$
 
@@ -404,12 +404,12 @@ cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 " Toggle folding
-noremap [option]a za
+noremap <Space>a za
 " close folding without current cursor
-noremap [option]i zMzv
+noremap <Space>i zMzv
 
 " Toggle wrap
-nnoremap [option]w :set invwrap<CR>
+nnoremap <Space>w :set invwrap<CR>
 
 " Swap j,k and gj,gk
 nnoremap j gj
@@ -425,7 +425,7 @@ vnoremap gk k
 nnoremap / /\v
 
 " Change local cd to current buffer's dir
-nnoremap <silent> [option]cd :<C-u>lcd %:p:h<CR>:pwd<CR>
+nnoremap <silent> <Space>cd :<C-u>lcd %:p:h<CR>:pwd<CR>
 
 " Select buffer list
 nnoremap <C-n> :<C-u>bnext<CR>
@@ -448,21 +448,21 @@ inoremap <C-x><C-o> <C-x><C-o><C-p>
 
 " Edit/source to .vimrc/.gvimrc
 if has('win32')
-  nnoremap <silent> [option]ev :<C-u>edit $USERPROFILE\vimfiles\.vimrc<CR>
-  nnoremap <silent> [option]eg :<C-u>edit $USERPROFILE\vimfiles\.gvimrc<CR>
-  nnoremap <silent> [option]el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <silent> <Space>ev :<C-u>edit $USERPROFILE\vimfiles\.vimrc<CR>
+  nnoremap <silent> <Space>eg :<C-u>edit $USERPROFILE\vimfiles\.gvimrc<CR>
+  nnoremap <silent> <Space>el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap <silent> [option]ev :<C-u>edit ~/.vim/.vimrc<CR>
-  nnoremap <silent> [option]eg :<C-u>edit ~/.vim/.gvimrc<CR>
-  nnoremap <silent> [option]el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
+  nnoremap <silent> <Space>ev :<C-u>edit ~/.vim/.vimrc<CR>
+  nnoremap <silent> <Space>eg :<C-u>edit ~/.vim/.gvimrc<CR>
+  nnoremap <silent> <Space>el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
 endif
 
-nnoremap <silent> [option]vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
-nnoremap <silent> [option]vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> <Space>vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+nnoremap <silent> <Space>vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
 if has('win32')
-  nnoremap [option]vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <Space>vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap [option]vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
+  nnoremap <Space>vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
 
 nnoremap mc :<C-u>MemoNew<CR>
@@ -602,8 +602,8 @@ endif
 
 " Shougo/unite-outline {{{
 if s:bundled('unite-outline')
-  nnoremap <silent> [option]o :<C-u>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
-  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> [option]o :<C-u>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  nnoremap <silent> <Space>o :<C-u>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> <Space>o :<C-u>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 endif
 "}}}
 
@@ -682,10 +682,10 @@ if s:bundled('unite.vim')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent>[option]u :<C-u>Unite buffer bookmark file file_mru<CR>
-  nnoremap <silent>[option]/ :<C-u>Unite line<CR>
+  nnoremap <silent><Space>u :<C-u>Unite buffer bookmark file file_mru<CR>
+  nnoremap <silent><Space>/ :<C-u>Unite line<CR>
   if executable('git')
-    nnoremap <silent>[option]g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
+    nnoremap <silent><Space>g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
   endif
 endif
 " }}}
@@ -698,7 +698,7 @@ if s:bundled('vimfiler')
   let g:vimfiler_tree_indentation = 2
   let g:vimfiler_tree_leaf_icon = ' '
 
-  nnoremap <silent>[option]f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
+  nnoremap <silent><Space>f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
 endif
 "}}}
 
@@ -797,7 +797,7 @@ endif
 
 " kannokanno/previm {{{
 if s:bundled('previm')
-  autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> [option]p :<C-u>PrevimOpen<CR>
+  autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> <Space>p :<C-u>PrevimOpen<CR>
 endif
 "}}}
 
@@ -876,7 +876,7 @@ if s:bundled('vim-quickrun')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent>[option]q :<C-u>QuickRun<CR>
+  nnoremap <silent><Space>q :<C-u>QuickRun<CR>
 
   if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
