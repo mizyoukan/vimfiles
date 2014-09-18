@@ -709,6 +709,8 @@ if s:bundled('vimshell')
   function! s:bundle.hooks.on_source(bundle)
     let g:vimshell_temporary_directory = s:cachedir . '/vimshell'
     let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+
+    autocmd MyAutoCmd FileType lisp vnoremap <buffer> <C-CR> :VimShellSendString<CR>
   endfunction
   unlet s:bundle
 endif
