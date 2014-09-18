@@ -519,7 +519,7 @@ autocmd MyAutoCmd BufNewFile,BufRead *.cljx setfiletype clojure
 autocmd MyAutoCmd BufNewFile,BufRead *.gradle setfiletype groovy
 
 " Markdown
-autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setfiletype markdown
+autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
 let g:markdown_fenced_languages = [
