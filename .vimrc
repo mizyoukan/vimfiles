@@ -370,7 +370,7 @@ function! s:memonew() "{{{
   let l:memotemplate = [
     \   substitute('# [] <_1_>', '_', '`', 'g'),
     \   '',
-    \   substitute('<_0_>', '_', '`', 'g')
+    \   substitute('<_2_>', '_', '`', 'g')
     \ ]
   if !isdirectory(l:memodir)
     call mkdir(l:memodir, 'p')
