@@ -153,9 +153,8 @@ if s:bundled('neobundle.vim')
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
   NeoBundleLazy 'tpope/vim-fireplace', {
-    \   'depends': 'tpope/vim-classpath',
     \   'autoload': {'filetypes': 'clojure'},
-    \   'disabled': !executable('java') || !has('python')
+    \   'disabled': !executable('lein') || !has('python')
     \ }
 
   if s:has_go
@@ -888,8 +887,6 @@ endif
 
 " tpope/vim-fireplace {{{
 if s:bundled('vim-fireplace')
-  let g:classpath_cache = s:cachedir . '/classpath'
-
   function! s:myClojureMapping()
     nmap <buffer> <C-CR> <Plug>FireplacePrintip
     vmap <buffer> <C-CR> <Plug>FireplacePrint
