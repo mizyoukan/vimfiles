@@ -913,7 +913,7 @@ if s:bundled('vim-sol')
 endif
 " }}}
 
-" "}}}
+" }}}
 
 " Finalize {{{
 
