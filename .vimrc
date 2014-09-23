@@ -85,6 +85,9 @@ if s:bundled('neobundle.vim')
   endif
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
+  NeoBundle 'basyura/TweetVim', {
+    \   'depends': ['tyru/open-browser.vim', 'basyura/twibill.vim']
+    \ }
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
   NeoBundle 'jiangmiao/auto-pairs'
@@ -714,6 +717,12 @@ if s:bundled('vimshell')
   unlet s:bundle
 endif
 "}}}
+
+" basyura/TweetVim {{{
+if s:bundled('TweetVim')
+  nnoremap <Space>tw :<C-u>TweetVimSay<CR>
+endif
+" }}}
 
 " ctrlpvim/ctrlp.vim {{{
 if s:bundled('ctrlp.vim')
