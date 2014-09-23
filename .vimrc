@@ -149,9 +149,7 @@ if s:bundled('neobundle.vim')
     \   'depends': 'tyru/open-browser.vim',
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
-  NeoBundleLazy 'kmnk/vim-unite-giti', {
-    \   'autoload': {'unite_sources': 'giti'}
-    \ }
+  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
   NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
