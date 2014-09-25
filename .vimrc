@@ -279,7 +279,7 @@ function! MyStatusLine(isactive) "{{{
     let l:dispbufs = ''
   endif
   let l:divchars = has('gui_running') ? ['»', '«'] : ['>', '<']
-  return '[%n]%t %m%r%h%w' . l:dispbufs . l:divchars[0] . '%=%<'
+  return '[%n]%t %m%r%h%w%<' . l:dispbufs . l:divchars[0] . '%='
     \ . l:divchars[1] . '%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
 endfunction "}}}
 
