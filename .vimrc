@@ -95,6 +95,7 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kana/vim-textobj-line'
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
+  NeoBundle 'mattn/emmet-vim'
   NeoBundle 'tomtom/tcomment_vim'
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'tpope/vim-surround'
