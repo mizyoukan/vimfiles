@@ -22,6 +22,19 @@ set guioptions+=h
 set guioptions-=T
 set guioptions-=m
 
+if has('win32')
+  function! ToggleFullscreen()
+    if &guioptions =~# 'C'
+      set guioptions-=C
+      simalt ~r
+    else
+      set guioptions+=C
+      simalt ~x
+    endif
+  endfunction
+  nnoremap <F11> :call ToggleFullscreen()<CR>
+endif
+
 " Popup menu
 if has('win32')
   function! OpenWinExplorer()
