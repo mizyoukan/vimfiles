@@ -740,7 +740,7 @@ if s:bundled('ctrlp.vim')
 
   " List memo files
   let s:bundle = neobundle#get('ctrlp.vim')
-  function! s:bundle.hooks.on_source(bundle) "{{{ 
+  function! s:bundle.hooks.on_source(bundle) "{{{
     function! s:memotitle(file)
       for l:line in readfile(a:file, '', 1)
         return [fnamemodify(a:file, ':t:r'), l:line[2:]]
