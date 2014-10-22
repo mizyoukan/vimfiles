@@ -893,6 +893,13 @@ endif
 
 "}}}
 
+" tomtom/tcomment_vim {{{
+if s:bundled('tcomment_vim')
+  let g:tcomment_types = get(g:, 'tcomment_types', {})
+  let g:tcomment_types['markdown'] = '<!-- %s -->'
+endif
+" }}}
+
 " tpope/vim-fireplace {{{
 if s:bundled('vim-fireplace')
   function! s:myClojureMapping()
