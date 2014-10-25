@@ -63,7 +63,7 @@ if has('vim_starting') && isdirectory(s:neobundledir)
 endif
 
 if s:bundled('neobundle.vim')
-  let g:neobundle#default_options = { '_' : {'verbose': 1, 'focus': 1}}
+  let g:neobundle#default_options = { '_' : {'verbose': 1}}
 
   call neobundle#begin(s:bundledir)
 
