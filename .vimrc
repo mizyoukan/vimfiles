@@ -109,7 +109,7 @@ if s:bundled('neobundle.vim')
     \   'vim_version' : '7.3.885'
     \ }
   NeoBundleLazy 'Shougo/neosnippet', {
-    \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
+    \   'depends': ['Shougo/neocomplete.vim', 'honza/vim-snippets'],
     \   'autoload': {
     \     'insert': 1,
     \     'mappings': '<Plug>(neosnippet_'
@@ -586,8 +586,11 @@ endif
 if s:bundled('neosnippet')
   let s:bundle = neobundle#get('neosnippet')
   function! s:bundle.hooks.on_source(bundle)
+    let g:neosnippet#disable_runtime_snippets = {'_': 1}
+    let g:neosnippet#enable_snipmate_compatibility = 1
+
     let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
-    let g:neosnippet#snippets_directory = s:bundledir . '/neosnippet-snippets/snippets'
+    let g:neosnippet#snippets_directory = s:bundledir . '/honza/vim-snippets'
 
     if has('conceal')
       set conceallevel=2 concealcursor=i
