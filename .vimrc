@@ -590,7 +590,7 @@ if s:bundled('neosnippet')
     let g:neosnippet#enable_snipmate_compatibility = 1
 
     let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
-    let g:neosnippet#snippets_directory = s:bundledir . '/honza/vim-snippets'
+    let g:neosnippet#snippets_directory = s:bundledir . '/vim-snippets/snippets'
 
     if has('conceal')
       set conceallevel=2 concealcursor=i
