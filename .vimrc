@@ -930,6 +930,7 @@ if s:bundled('vim-fireplace')
     vmap <buffer> <C-CR> <Plug>FireplacePrint
   endfunction
   autocmd MyAutoCmd FileType clojure call <SID>myClojureMapping()
+  autocmd MyAutoCmd FileType clojure command! -nargs=0 Austin :Piggieback (reset! cemerick.austin.repls/browser-repl-env (cemerick.austin/repl-env))
 endif
 "}}}
 
