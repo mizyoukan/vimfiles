@@ -755,13 +755,19 @@ if s:bundled('ctrlp.vim')
       return []
     endfunction
 
+    function! s:memocomp(lhs, rhs)
+      let l:lhs = join(split(a:lhs[:stridx(a:lhs, "|") - 1], "-"), "")
+      let l:rhs = join(split(a:rhs[:stridx(a:rhs, "|") - 1], "-"), "")
+      return l:rhs - l:lhs
+    endfunction
+
     function! MemoList()
       if !isdirectory(s:mymemodir)
         echomsg "Memo dir '" . s:mymemodir . "' is not exist, please makedir."
         return []
       endif
-      return map(filter(map(split(glob(s:mymemodir . '/**/*.md'), "\n"),
-        \ '<SID>memotitle(v:val)'), 'len(v:val) > 0'), 'join(v:val, "|")')
+      return sort(map(filter(map(split(glob(s:mymemodir . '/**/*.md'), "\n"),
+        \ '<SID>memotitle(v:val)'), 'len(v:val) > 0'), 'join(v:val, "|")'), 's:memocomp')
     endfunction
 
     function! MemoAccept(mode, str)
@@ -781,7 +787,8 @@ if s:bundled('ctrlp.vim')
       \   'accept': 'MemoAccept',
       \   'lname': 'memolist',
       \   'sname': 'memolist',
-      \   'type': 'line'
+      \   'type': 'line',
+      \   'sort': 0
       \ })
 
     let s:ctrlp_memolist_id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
