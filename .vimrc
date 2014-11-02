@@ -96,7 +96,7 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
   NeoBundle 'mattn/emmet-vim'
-  NeoBundle 'mizyoukan/ctrlp-matcher-gomigemo', {
+  NeoBundle 'mizyoukan/ctrlp-matcher-gomigemo', 'dev', {
     \   'depends': 'ctrlpvim/ctrlp.vim',
     \   'disabled': !executable('gomigemo-server')
     \ }
@@ -839,6 +839,7 @@ endif
 if s:bundled('ctrlp-matcher-gomigemo')
   if executable('gomigemo-server')
     let g:ctrlp_match_func = {'match': 'ctrlp#matcher#gomigemo#match'}
+    let g:ctrlp#matcher#gomigemo#case_insensitive = 1
   endif
 endif
 " }}}
