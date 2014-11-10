@@ -1,0 +1,84 @@
+snippet header
+options head
+	@if (0)==(0) echo off
+	pushd %~dp0
+	CScript //Nologo //E:{16d51579-a30b-4c8b-a276-0ff4dc41e755} "%~f0" %*
+	popd
+	goto :EOF
+	@end
+
+	${0:TARGET}
+
+	/* vim: set ft=javascript.wsh : */
+
+snippet println
+alias   p
+options head
+	WScript.Echo(${0:TARGET})
+
+snippet scriptfullname
+abbr    WScript.ScriptFullName
+options word
+	WScript.ScriptFullName
+
+snippet scriptname
+abbr    WScript.ScriptName
+options word
+	WScript.ScriptName
+
+snippet scriptdir
+abbr    Script Directory
+options head
+	var ${1:ScriptDir} = (function() {
+		var name = WScript.ScriptFullName;
+		return name.slice(0, name.lastIndexOf('\\'));
+	})();
+	${0}
+
+snippet activex
+abbr    new ActiveXObject
+alias   newact
+	new ActiveXObject('${1}')${0}
+
+snippet creaobj
+abbr    WScript.CreateObject
+	WScript.CreateObject('${1}')${0}
+
+snippet scriptfso
+abbr    Scripting.FileSystemObject
+alias   fso
+options word
+	Scripting.FileSystemObject
+
+snippet excelapp
+abbr    Excel.Application
+options word
+	Excel.Application
+
+snippet exceltemplate
+abbr    Excel Open Template
+options head
+	var ${1:excel} = new ActiveXObject('Excel.Application');
+	try {
+		$1.Visible = false;
+		$1.DisplayAlerts = false;
+		$1.ScreenUpdating = false;
+
+		var ${2:workbook} = $1.Workbooks.Open(${3:FILE});
+		try {
+			$1.Calculation = -4135; // xlCalculationManual
+
+			${0:TARGET}
+
+			$1.Calculation = -4105; // xlCalculationAutomatic
+
+		} finally {
+			$2.Close();
+		}
+	} finally {
+		$1.ScreenUpdating = true;
+		$1.DisplayAlerts = true;
+		$1.Visible = true;
+
+		$1.Quit();
+	}
