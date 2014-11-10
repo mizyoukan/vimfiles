@@ -525,6 +525,10 @@ autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
+let g:clojure_fuzzy_indent_patterns = [
+  \   '^with', '^def', '^let',
+  \   'context', 'defroutes', 'deftemplate', 'go-loop'
+  \ ]
 autocmd MyAutoCmd BufNewFile,BufRead *.cljx setfiletype clojure
 
 " Groovy
