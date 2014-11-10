@@ -14,6 +14,8 @@ let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
 " Directory to save memo files
 let s:mymemodir = expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo'
 
+let s:mysnippets = s:vimfiles . '/snippets'
+
 " Popup if has already opened other Vim
 try
   runtime macros/editexisting.vim
@@ -112,6 +114,8 @@ if s:bundled('neobundle.vim')
     \   'depends': ['Shougo/neocomplete.vim', 'honza/vim-snippets'],
     \   'autoload': {
     \     'insert': 1,
+    \     'commands': 'NeoSnippetEdit',
+    \     'filename_patterns': '\.snip$',
     \     'mappings': '<Plug>(neosnippet_'
     \   }
     \ }
@@ -501,6 +505,9 @@ autocmd MyAutoCmd FileType diff setlocal foldlevel=99
 autocmd MyAutoCmd FileType help setlocal nolist
 autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
 
+" Snippet
+autocmd MyAutoCmd FileType neosnippet setlocal noexpandtab
+
 " Git
 autocmd MyAutoCmd FileType git setlocal foldlevel=99
 autocmd MyAutoCmd FileType gitcommit setlocal foldlevel=99
@@ -590,7 +597,10 @@ if s:bundled('neosnippet')
     let g:neosnippet#enable_snipmate_compatibility = 1
 
     let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
-    let g:neosnippet#snippets_directory = s:bundledir . '/vim-snippets/snippets'
+    let g:neosnippet#snippets_directory = [
+      \   s:bundledir . '/vim-snippets/snippets',
+      \   s:mysnippets
+      \ ]
 
     if has('conceal')
       set conceallevel=2 concealcursor=i
