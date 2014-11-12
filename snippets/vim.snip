@@ -1,0 +1,6 @@
+snippet reltime
+abbr    let start = reltime() ...
+options head
+	let ${1:start} = reltime()
+	${0:TARGET}
+	echo split(reltimestr(reltime($1)))[0]
