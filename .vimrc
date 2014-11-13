@@ -48,6 +48,11 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
+" Avoid loading menu.vim
+if &guioptions !~# 'M'
+  set guioptions+=M
+endif
+
 "}}}
 
 " NeoBundle {{{
