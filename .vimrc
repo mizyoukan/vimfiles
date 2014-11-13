@@ -6,16 +6,6 @@ if filereadable(s:vimfiles . '/vimrc_local_pre.vim')
   execute 'source' s:vimfiles . '/vimrc_local_pre.vim'
 endif
 
-let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
-let s:cachedir = s:vimfiles . '/.cache'
-
-let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
-
-" Directory to save memo files
-let s:mymemodir = expand(has('win32') ? '$USERPROFILE' : '$HOME') . '/memo'
-
-let s:mysnippets = s:vimfiles . '/snippets'
-
 " Popup if has already opened other Vim
 try
   runtime macros/editexisting.vim
@@ -31,8 +21,15 @@ if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
   quit
 endif
 
+let s:homedir = expand(has('win32') ? '$USERPROFILE' : '$HOME')
+let s:cachedir = s:vimfiles . '/.cache'
 let s:bundledir = s:vimfiles . '/bundle'
 let s:neobundledir = s:bundledir . '/neobundle.vim'
+let s:snippetsdir = s:vimfiles . '/snippets'
+
+let s:mymemodir = s:homedir . '/memo'
+
+let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
 
 function! s:bundled(bundle)
   if !isdirectory(s:bundledir)
@@ -606,7 +603,7 @@ if s:bundled('neosnippet')
     let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
     let g:neosnippet#snippets_directory = [
       \   s:bundledir . '/vim-snippets/snippets',
-      \   s:mysnippets
+      \   s:snippetsdir
       \ ]
 
     if has('conceal')
