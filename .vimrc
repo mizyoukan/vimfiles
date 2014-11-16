@@ -98,9 +98,9 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
   NeoBundle 'mattn/emmet-vim'
-  NeoBundle 'mizyoukan/ctrlp-matcher-gomigemo', 'dev', {
+  NeoBundle 'mizyoukan/gomigemo-matchers.vim', {
     \   'depends': 'ctrlpvim/ctrlp.vim',
-    \   'disabled': !executable('gomigemo-server')
+    \   'disabled': !executable('gmigemo')
     \ }
   NeoBundle 'tomtom/tcomment_vim'
   NeoBundle 'tpope/vim-fugitive'
@@ -847,12 +847,9 @@ if s:bundled('rainbow_parentheses.vim')
 endif
 "}}}
 
-" mizyoukan/ctrlp-matcher-gomigemo {{{
-if s:bundled('ctrlp-matcher-gomigemo')
-  if executable('gomigemo-server')
-    let g:ctrlp_match_func = {'match': 'ctrlp#matcher#gomigemo#match'}
-    let g:ctrlp#matcher#gomigemo#case_insensitive = 1
-  endif
+" mizyoukan/gomigemo-matchers.vim {{{
+if s:bundled('gomigemo-matchers.vim')
+  let g:ctrlp_match_func = {'match': 'g:ctrlp#matcher#gomigemo#match'}
 endif
 " }}}
 
