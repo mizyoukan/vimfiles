@@ -916,7 +916,7 @@ if s:bundled('vim-quickrun')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent><Space>q :<C-u>QuickRun<CR>
+  nnoremap <silent><Space>r :<C-u>QuickRun<CR>
 
   if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
