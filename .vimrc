@@ -268,26 +268,28 @@ function! GetColumnNumber(expr) "{{{
 endfunction "}}}
 
 function! MyStatusLine(isactive) "{{{
+  let l:line = '[%n]%t %m%r%h%w%<'
+
   if a:isactive
     let l:activebuf = bufnr('%')
     let l:bufs = filter(range(1, bufnr('$')),
-      \   'buflisted(v:val)'
-      \ . ' && v:val != l:activebuf'
-      \ . ' && getbufvar(v:val, "&modifiable")'
-      \ )
-    let l:dispbufs = len(l:bufs) > 0
-      \ ? "[" . join(map(l:bufs,
-      \       'v:val . ":"'
-      \     . ' . fnamemodify(bufname(v:val), ":t")'
-      \     . ' . (getbufvar(v:val, "&modified") ? "+" : "")'
-      \   ), "|") . "]"
-      \ : ""
-  else
-    let l:dispbufs = ''
+      \ 'buflisted(v:val) && v:val != l:activebuf && getbufvar(v:val, "&ma")')
+    if len(l:bufs) > 0
+      let l:line .= "[" . join(map(l:bufs, 'v:val . ":" . ' .
+        \ 'fnamemodify(bufname(v:val), ":t") . ' .
+        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), "|") . "]"
+    endif
   endif
-  let l:divchars = has('gui_running') ? ['»', '«'] : ['>', '<']
-  return '[%n]%t %m%r%h%w%<' . l:dispbufs . l:divchars[0] . '%='
-    \ . l:divchars[1] . '%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+
+  if has('gui_running')
+    let l:line .= '»%=«'
+  else
+    let l:line .= '>%=<'
+  endif
+
+  let l:line .= '%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+
+  return l:line
 endfunction "}}}
 
 function! s:refreshStatusLine() "{{{
