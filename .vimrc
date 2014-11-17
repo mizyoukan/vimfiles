@@ -527,7 +527,7 @@ let g:clojure_fuzzy_indent_patterns = [
   \   '^with', '^def', '^let',
   \   'context', 'defroutes', 'deftemplate', 'go-loop'
   \ ]
-autocmd MyAutoCmd BufNewFile,BufRead *.cljx setfiletype clojure
+autocmd MyAutoCmd BufNewFile,BufRead *.{cljs,cljx} setlocal filetype=clojure.clojurescript
 
 " Groovy
 autocmd MyAutoCmd BufNewFile,BufRead *.gradle setfiletype groovy
