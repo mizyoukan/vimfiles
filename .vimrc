@@ -287,7 +287,15 @@ function! MyStatusLine(isactive) "{{{
     let l:line .= '>%=<'
   endif
 
-  let l:line .= '%y[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+  let l:ft = &filetype
+  if l:ft ==# 'clojure.clojurescript'
+    let l:ft = 'clojurescript'
+  elseif l:ft ==# 'javascript.wsh'
+    let l:ft = 'jscript'
+  endif
+  let l:line .= l:ft == '' ? '' : ('[' . l:ft . ']')
+
+  let l:line .= '[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
 
   return l:line
 endfunction "}}}
