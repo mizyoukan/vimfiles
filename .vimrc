@@ -111,7 +111,7 @@ if s:bundled('neobundle.vim')
     \   'vim_version' : '7.3.885'
     \ }
   NeoBundleLazy 'Shougo/neosnippet', {
-    \   'depends': ['Shougo/neocomplete.vim', 'honza/vim-snippets'],
+    \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
     \   'autoload': {
     \     'insert': 1,
     \     'commands': 'NeoSnippetEdit',
@@ -610,7 +610,7 @@ if s:bundled('neosnippet')
 
     let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
     let g:neosnippet#snippets_directory = [
-      \   s:bundledir . '/vim-snippets/snippets',
+      \   s:bundledir . '/neosnippet-snippets/neosnippets',
       \   s:snippetsdir
       \ ]
 
