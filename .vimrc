@@ -955,7 +955,7 @@ endif
 
 " vim-jp/vim-go-extra {{{
 if s:bundled('vim-go-extra')
-  autocmd MyAutoCmd FileType go autocmd BufWritePre <buffer> Fmt
+  autocmd MyAutoCmd BufWritePre *.go Fmt
 endif
 " }}}
 
