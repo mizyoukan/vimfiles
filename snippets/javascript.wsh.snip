@@ -1,5 +1,5 @@
-snippet header
-options head
+snippet     header
+options     head
 	@if (0)==(0) echo off
 	pushd %~dp0
 	CScript //Nologo //E:{16d51579-a30b-4c8b-a276-0ff4dc41e755} "%~f0" %*
@@ -11,53 +11,53 @@ options head
 
 	/* vim: set ft=javascript.wsh : */
 
-snippet println
-alias   p
-options head
+snippet     println
+alias       p
+options     head
 	WScript.Echo(${0:TARGET})
 
-snippet scriptfullname
-abbr    WScript.ScriptFullName
-options word
+snippet     scriptfullname
+abbr        WScript.ScriptFullName
+options     word
 	WScript.ScriptFullName
 
-snippet scriptname
-abbr    WScript.ScriptName
-options word
+snippet     scriptname
+abbr        WScript.ScriptName
+options     word
 	WScript.ScriptName
 
-snippet scriptdir
-abbr    Script Directory
-options head
+snippet     scriptdir
+abbr        Script Directory
+options     head
 	var ${1:ScriptDir} = (function() {
 		var name = WScript.ScriptFullName;
 		return name.slice(0, name.lastIndexOf('\\'));
 	})();
 	${0}
 
-snippet activex
-abbr    new ActiveXObject
-alias   newact
+snippet     activex
+abbr        new ActiveXObject
+alias       newact
 	new ActiveXObject('${1}')${0}
 
-snippet creaobj
-abbr    WScript.CreateObject
+snippet     creaobj
+abbr        WScript.CreateObject
 	WScript.CreateObject('${1}')${0}
 
-snippet scriptfso
-abbr    Scripting.FileSystemObject
-alias   fso
-options word
+snippet     scriptfso
+abbr        Scripting.FileSystemObject
+alias       fso
+options     word
 	Scripting.FileSystemObject
 
-snippet excelapp
-abbr    Excel.Application
-options word
+snippet     excelapp
+abbr        Excel.Application
+options     word
 	Excel.Application
 
-snippet exceltemplate
-abbr    Excel Open Template
-options head
+snippet     exceltemplate
+abbr        Excel Open Template
+options     head
 	var ${1:excel} = new ActiveXObject('Excel.Application');
 	try {
 		$1.Visible = false;
