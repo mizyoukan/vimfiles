@@ -216,18 +216,14 @@ set laststatus=2
 set list lcs=tab:^_,trail:_
 set mouse=a
 set nrformats=hex
-set nonumber
 set scrolloff=5
 set shiftwidth=2
-set showcmd
 set smartcase
 set smartindent
 set softtabstop=2
 set splitright splitbelow
 set t_Co=256
 set tabstop=2
-set textwidth=0
-set title
 set wildignore=.git,.hg,.svn
 set wildignore+=*.bmp,*.jpg,*.jpeg,*.png,*.gif
 set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest,*.so,*.out,*.class
@@ -319,7 +315,6 @@ function! MyFoldText() "{{{
   return l:left . l:space . l:right
 endfunction "}}}
 set fillchars=vert:\|
-set foldcolumn=0
 set foldmethod=marker
 set foldopen&
 set foldopen-=block
