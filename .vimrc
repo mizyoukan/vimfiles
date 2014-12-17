@@ -34,7 +34,7 @@ let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
 function! s:bundled(bundle)
   if !isdirectory(s:bundledir)
     return 0
-  elseif a:bundle ==# 'neobundle.vim'
+  elseif a:bundle ==# 'neobundle.vim' && isdirectory(s:neobundledir)
     return 1
   else
     return neobundle#is_installed(a:bundle)
@@ -56,9 +56,11 @@ endif
 
 filetype plugin indent off
 
-if !s:bundled('neobundle.vim') && executable('git') && has('iconv')
+if !s:bundled('neobundle.vim') && executable('git')
   echo 'install NeoBundle ...'
-  call mkdir(iconv(s:bundledir, &encoding, &termencoding), 'p')
+  if !isdirectory(s:bundledir)
+    call mkdir(iconv(s:bundledir, &encoding, &termencoding), 'p')
+  endif
   call system('git clone https://github.com/Shougo/neobundle.vim ' . shellescape(s:neobundledir))
 endif
 
