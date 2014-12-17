@@ -162,10 +162,10 @@ if s:bundled('neobundle.vim')
   NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
-  NeoBundleLazy 'tpope/vim-fireplace', {
-    \   'autoload': {'filetypes': 'clojure'},
-    \   'disabled': !executable('lein') || !has('python')
-    \ }
+  NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
+  if !executable('lein') || !has('python')
+    NeoBundleDisable 'tpope/vim-fireplace'
+  endif
 
   if s:has_go
     NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
