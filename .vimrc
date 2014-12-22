@@ -498,6 +498,7 @@ endif
 
 " VimScript
 let g:vim_indent_cont = 2
+autocmd MyAutoCmd FileType vim command! -nargs=0 Vint cexpr system('vint ' . expand('%'))
 
 " QuickFix
 autocmd MyAutoCmd FileType qf nnoremap <buffer> p <CR>zz<C-w>p
