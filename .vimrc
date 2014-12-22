@@ -1,5 +1,9 @@
 " Initialize {{{
 
+let &termencoding = &encoding
+set encoding=utf-8
+scriptencoding utf-8
+
 let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 
 if filereadable(s:vimfiles . '/vimrc_local_pre.vim')
@@ -13,7 +17,7 @@ catch /E122:/
 endtry
 
 " Prevent to multi boot
-if has('gui_running') && has('clientserver') && v:servername == 'GVIM1'
+if has('gui_running') && has('clientserver') && v:servername ==# 'GVIM1'
   let s:file = expand('%:p')
   bwipeout
   call remote_send('GVIM', '<ESC>:tabnew ' . s:file . '<CR>')
@@ -234,9 +238,6 @@ set wildignore+=*.DS_Store
 set wildmenu
 set nowrap
 
-let &termencoding = &encoding
-set encoding=utf-8
-set fileencoding=utf-8
 set fileencodings=utf-8,cp932,euc-jp
 if has('win32')
   set fileformats=dos,unix,mac
@@ -246,8 +247,8 @@ endif
 
 function! s:mbslen(str) "{{{
   let l:charcount = strlen(a:str)
-  let l:mcharcount = strlen(substitute(a:str, ".", "x", "g"))
-  let l:hankanacount = strlen(substitute(substitute(a:str, "[^ｦ-ﾟ]", "", "g"), ".", "x", "g"))
+  let l:mcharcount = strlen(substitute(a:str, '.', 'x', 'g'))
+  let l:hankanacount = strlen(substitute(substitute(a:str, '[^\uff61-\uff9f]', '', 'g'), '.', 'x', 'g'))
   return l:mcharcount + (l:charcount - l:mcharcount) / 2 - l:hankanacount
 endfunction "}}}
 
@@ -273,12 +274,11 @@ function! MyStatusLine(isactive) "{{{
     let l:bufs = filter(range(1, bufnr('$')),
       \ 'buflisted(v:val) && v:val != l:activebuf && getbufvar(v:val, "&ma")')
     if len(l:bufs) > 0
-      let l:line .= "[" . join(map(l:bufs, 'v:val . ":" . ' .
+      let l:line .= '[' . join(map(l:bufs, 'v:val . ":" . ' .
         \ 'fnamemodify(bufname(v:val), ":t") . ' .
-        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), "|") . "]"
+        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), ':') . ']'
     endif
   endif
-
   if has('gui_running')
     let l:line .= '»%=«'
   else
@@ -291,7 +291,7 @@ function! MyStatusLine(isactive) "{{{
   elseif l:ft ==# 'javascript.wsh'
     let l:ft = 'jscript'
   endif
-  let l:line .= l:ft == '' ? '' : ('[' . l:ft . ']')
+  let l:line .= l:ft ==# '' ? '' : ('[' . l:ft . ']')
 
   let l:line .= '[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
 
@@ -307,13 +307,13 @@ endfunction "}}}
 autocmd MyAutoCmd BufEnter,WinEnter * call <SID>refreshStatusLine()
 
 function! MyFoldText() "{{{
-  let l:left = getline(v:foldstart) . " ..."
+  let l:left = getline(v:foldstart) . ' ...'
   let l:foldedlinecount = v:foldend - v:foldstart
-  let l:right = "[" . l:foldedlinecount . "] "
-  let l:numbercolwidth = &fdc + &number * &numberwidth
+  let l:right = '[' . l:foldedlinecount . '] '
+  let l:numbercolwidth = &foldcolumn + &number * &numberwidth
   let l:linewidth = winwidth(0) - l:numbercolwidth
   let l:spacecount = l:linewidth - s:mbslen(l:left) - strlen(l:right)
-  let l:space = l:spacecount > 0 ? repeat(" ", l:spacecount) : ""
+  let l:space = repeat(' ', l:spacecount)
   return l:left . l:space . l:right
 endfunction "}}}
 set fillchars=vert:\|
@@ -332,7 +332,7 @@ function! s:letandmkdir(var, path) "{{{
     echom '[error] failed to mkdir: ' . a:path
     echohl None
   endtry
-  execute printf("let %s = a:path", a:var)
+  execute printf('let %s = a:path', a:var)
 endfunction "}}}
 
 call s:letandmkdir('&backupdir', s:vimfiles . '/.backup')
@@ -367,7 +367,7 @@ command! -nargs=0 RemoveLineEndSpace silent call <SID>removeLineEndSpace()
 " Capitalize last modified text
 function! s:lastModifyCapitalize()
   let l:cursor = getpos('.')
-  normal `[v`]U
+  normal! `[v`]U
   call setpos('.', l:cursor)
 endfunction
 command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
@@ -375,7 +375,7 @@ command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
 " Create memo file
 function! s:memonew() "{{{
   if !isdirectory(s:mymemodir)
-    echomsg "Memo dir '" . s:mymemodir . "' is not exist, please makedir."
+    echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
     return
   endif
   let l:cmd = getbufvar('%', '&modified') ? 'split' : 'edit'
@@ -391,7 +391,7 @@ function! s:memonew() "{{{
   endif
   execute l:cmd l:memofile
   call append(0, l:memotemplate)
-  normal ggf]
+  normal! ggf]
   startinsert
 endfunction "}}}
 command! -nargs=0 MemoNew call <SID>memonew()
@@ -569,7 +569,7 @@ let s:jsbat_template = [
   \   '',
   \   '/* vim: set ft=javascript.wsh : */',
   \ ]
-autocmd MyAutoCmd BufNewFile *.js.bat call append(0, s:jsbat_template)|normal Gdd{
+autocmd MyAutoCmd BufNewFile *.js.bat call append(0, s:jsbat_template)|normal! Gdd{
 
 " VBScript
 autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
@@ -775,14 +775,14 @@ if s:bundled('ctrlp.vim')
     endfunction
 
     function! s:memocomp(lhs, rhs)
-      let l:lhs = join(split(a:lhs[:stridx(a:lhs, "|") - 1], "-"), "")
-      let l:rhs = join(split(a:rhs[:stridx(a:rhs, "|") - 1], "-"), "")
+      let l:lhs = join(split(a:lhs[:stridx(a:lhs, '|') - 1], '-'), '')
+      let l:rhs = join(split(a:rhs[:stridx(a:rhs, '|') - 1], '-'), '')
       return l:rhs - l:lhs
     endfunction
 
     function! MemoList()
       if !isdirectory(s:mymemodir)
-        echomsg "Memo dir '" . s:mymemodir . "' is not exist, please makedir."
+        echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
         return []
       endif
       return sort(map(filter(map(split(glob(s:mymemodir . '/**/*.md'), "\n"),
@@ -791,7 +791,7 @@ if s:bundled('ctrlp.vim')
 
     function! MemoAccept(mode, str)
       call ctrlp#exit()
-      let l:file = split(a:str, "|")[0]
+      let l:file = split(a:str, '|')[0]
       let l:fpath = s:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
       let l:cmd =
         \ a:mode ==# 't' ? 'tabedit' :
