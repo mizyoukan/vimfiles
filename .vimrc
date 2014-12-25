@@ -562,9 +562,7 @@ autocmd MyAutoCmd FileType rst setlocal shiftwidth=3 nosmartindent smarttab soft
 autocmd MyAutoCmd BufNewFile,BufRead *.js.bat setlocal filetype=javascript.wsh fileencoding=sjis
 let s:jsbat_template = [
   \   '@if (0)==(0) echo off',
-  \   'pushd %~dp0',
   \   'CScript //Nologo //E:{16d51579-a30b-4c8b-a276-0ff4dc41e755} "%~f0" %*',
-  \   'popd',
   \   'goto :EOF',
   \   '@end',
   \   '',
