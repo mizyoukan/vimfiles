@@ -480,6 +480,8 @@ else
   nnoremap <Space>vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
 
+nnoremap <Space>v. :<C-u>source %:p<CR>
+
 nnoremap mc :<C-u>MemoNew<CR>
 
 "}}}
