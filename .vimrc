@@ -276,7 +276,7 @@ function! MyStatusLine(isactive) "{{{
     if len(l:bufs) > 0
       let l:line .= '[' . join(map(l:bufs, 'v:val . ":" . ' .
         \ 'fnamemodify(bufname(v:val), ":t") . ' .
-        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), ':') . ']'
+        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), '|') . ']'
     endif
   endif
   if has('gui_running')
