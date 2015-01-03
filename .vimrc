@@ -77,8 +77,8 @@ if s:bundled('neobundle.vim')
 
   NeoBundleFetch 'Shougo/neobundle.vim'
 
-  " Use bundled plugin when kaoriya
-  if !has('kaoriya')
+  " Use bundled plugin when windows-kaoriya
+  if !has('win32') || !has('kaoriya')
     NeoBundle 'Shougo/vimproc', {
       \   'build': {
       \     'mac'  : 'make -f make_mac.mak',
