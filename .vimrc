@@ -232,7 +232,7 @@ set t_Co=256
 set tabstop=2
 set wildignore=.git,.hg,.svn
 set wildignore+=*.bmp,*.jpg,*.jpeg,*.png,*.gif
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest,*.so,*.out,*.class
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest,*.so,*.out,*.class,*.db
 set wildignore+=*.swp,*.swo,*.swn
 set wildignore+=*.DS_Store
 set wildmenu
