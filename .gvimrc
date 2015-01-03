@@ -65,6 +65,11 @@ if has('multi_byte_ime') || has('xim')
   highlight CursorIM guibg=#af0000
 endif
 
+if has('gui_macvim')
+  " Fix IME auto off
+  set imdisable
+endif
+
 " Load local setting file
 if filereadable(s:vimfiles . '/gvimrc_local.vim')
   execute 'source' s:vimfiles . '/gvimrc_local.vim'
