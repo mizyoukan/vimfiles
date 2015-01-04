@@ -279,10 +279,10 @@ function! MyStatusLine(isactive) "{{{
         \ '(getbufvar(v:val, "&mod") ? "+" : "")'), '|') . ']'
     endif
   endif
-  if has('gui_running')
-    let l:line .= '»%=«'
-  else
+  if has('win32') && !has('gui_running')
     let l:line .= '>%=<'
+  else
+    let l:line .= '»%=«'
   endif
 
   let l:ft = &filetype
