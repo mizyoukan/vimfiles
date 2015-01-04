@@ -831,6 +831,17 @@ if neobundle#is_installed('auto-pairs')
 endif
 "}}}
 
+" jnurmine/Zenburn {{{
+if s:bundled('Zenburn')
+  if !has('win32') && !has('gui_running')
+    try
+      colorscheme zenburn
+    catch
+    endtry
+  endif
+endif
+" }}}
+
 " junegunn/vim-easy-align {{{
 if s:bundled('vim-easy-align')
   vmap <CR> <Plug>(EasyAlign)
