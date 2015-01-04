@@ -252,20 +252,6 @@ function! s:mbslen(str) "{{{
   return l:mcharcount + (l:charcount - l:mcharcount) / 2 - l:hankanacount
 endfunction "}}}
 
-function! GetColumnNumber(expr) "{{{
-  let l:col = col(a:expr)
-  let l:line = getline(a:expr)
-  if l:line ==# ''
-    return 1
-  endif
-  let l:colchars = matchstr(l:line, '.\{1,' . strchars(l:line[:l:col-1]) . '\}')
-  let l:dispwidth = strdisplaywidth(l:colchars)
-  if mode() ==# 'i' && strlen(l:line) == (l:col - 1)
-    let l:dispwidth += 1
-  endif
-  return l:dispwidth
-endfunction "}}}
-
 function! MyStatusLine(isactive) "{{{
   let l:line = '[%n]%t %m%r%h%w%<'
 
@@ -293,7 +279,7 @@ function! MyStatusLine(isactive) "{{{
   endif
   let l:line .= l:ft ==# '' ? '' : ('[' . l:ft . ']')
 
-  let l:line .= '[%{&fenc}/%{&ff}] %p%% %l:%{GetColumnNumber(".")}'
+  let l:line .= '[%{&fenc}/%{&ff}] %p%% %l:%c'
 
   return l:line
 endfunction "}}}
