@@ -245,13 +245,6 @@ else
   set fileformats=unix,dos,mac
 endif
 
-function! s:mbslen(str) "{{{
-  let l:charcount = strlen(a:str)
-  let l:mcharcount = strlen(substitute(a:str, '.', 'x', 'g'))
-  let l:hankanacount = strlen(substitute(substitute(a:str, '[^\uff61-\uff9f]', '', 'g'), '.', 'x', 'g'))
-  return l:mcharcount + (l:charcount - l:mcharcount) / 2 - l:hankanacount
-endfunction "}}}
-
 function! MyStatusLine(isactive) "{{{
   let l:line = '[%n]%t %m%r%h%w%<'
 
@@ -298,9 +291,8 @@ function! MyFoldText() "{{{
   let l:right = '[' . l:foldedlinecount . '] '
   let l:numbercolwidth = &foldcolumn + &number * &numberwidth
   let l:linewidth = winwidth(0) - l:numbercolwidth
-  let l:spacecount = l:linewidth - s:mbslen(l:left) - strlen(l:right)
-  let l:space = repeat(' ', l:spacecount)
-  return l:left . l:space . l:right
+  let l:spacecount = l:linewidth - strdisplaywidth(l:left) - strwidth(l:right)
+  return l:left . repeat(' ', l:spacecount) . l:right
 endfunction "}}}
 set fillchars=vert:\|
 set foldmethod=marker
