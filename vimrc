@@ -251,11 +251,11 @@ function! MyStatusLine(isactive) "{{{
   if a:isactive
     let l:activebuf = bufnr('%')
     let l:bufs = filter(range(1, bufnr('$')),
-      \ 'buflisted(v:val) && v:val != l:activebuf && getbufvar(v:val, "&ma")')
+      \ 'buflisted(v:val) && v:val != l:activebuf && getbufvar(v:val, "&modifiable")')
     if len(l:bufs) > 0
       let l:line .= '[' . join(map(l:bufs, 'v:val . ":" . ' .
         \ 'fnamemodify(bufname(v:val), ":t") . ' .
-        \ '(getbufvar(v:val, "&mod") ? "+" : "")'), '|') . ']'
+        \ '(getbufvar(v:val, "&modified") ? "+" : "")'), '|') . ']'
     endif
   endif
   if has('win32') && !has('gui_running')
