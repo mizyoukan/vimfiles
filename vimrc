@@ -632,6 +632,10 @@ if s:bundled('unite.vim')
       let g:unite_source_file_mru_ignore_pattern .= '\|^//'
     endif
 
+    if executable('files')
+      let g:unite_source_rec_async_command = 'files -A'
+    endif
+
     let g:unite_source_menu_menus = get(g:, 'unite_source_menu_menus', {})
     let g:unite_source_alias_aliases = get(g:, 'unite_source_alias_aliases', {})
 
@@ -740,6 +744,10 @@ if s:bundled('ctrlp.vim')
     \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
     \   'PrtCurLeft()': ['<left>', '<C-^>']
     \ }
+
+  if executable('files')
+    let g:ctrlp_user_command = 'files -p %s'
+  endif
 
   " List memo files
   let s:bundle = neobundle#get('ctrlp.vim')
