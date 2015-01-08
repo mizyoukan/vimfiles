@@ -246,7 +246,7 @@ else
 endif
 
 function! MyStatusLine(isactive) "{{{
-  let l:line = '[%n]%t %m%r%h%w%<'
+  let l:line = '[%n]%{winnr("$")>1?"[".winnr()."/".winnr("$")."]":""}%t %m%r%h%w%<'
 
   if a:isactive
     let l:activebuf = bufnr('%')
