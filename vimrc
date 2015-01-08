@@ -245,6 +245,11 @@ else
   set fileformats=unix,dos,mac
 endif
 
+let g:mystatusline_ftmap = {
+  \   'clojure.clojurescript': 'clojurescript',
+  \   'javascript.wsh': 'jscript'
+  \ }
+
 function! MyStatusLine(isactive) "{{{
   let l:line = '[%n]%{winnr("$")>1?"[".winnr()."/".winnr("$")."]":""}%t %m%r%h%w%<'
 
@@ -264,14 +269,7 @@ function! MyStatusLine(isactive) "{{{
     let l:line .= '»%=«'
   endif
 
-  let l:ft = &filetype
-  if l:ft ==# 'clojure.clojurescript'
-    let l:ft = 'clojurescript'
-  elseif l:ft ==# 'javascript.wsh'
-    let l:ft = 'jscript'
-  endif
-  let l:line .= l:ft ==# '' ? '' : ('[' . l:ft . ']')
-
+  let l:line .= '%{&ft==#"" ? "" : "[".get(g:mystatusline_ftmap,&ft,&ft)."]"}'
   let l:line .= '[%{&fenc}/%{&ff}] %p%% %l:%c'
 
   return l:line
