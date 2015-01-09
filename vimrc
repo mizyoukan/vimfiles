@@ -372,6 +372,21 @@ function! s:memonew() "{{{
 endfunction "}}}
 command! -nargs=0 MemoNew call <SID>memonew()
 
+" Rename file
+function! s:RenameTo(file, bang) abort "{{{
+  if filereadable(a:file) && a:bang !=# '!'
+    echomsg 'File already exists'
+  elseif isdirectory(a:file)
+    echomsg 'Directory with same name already exists'
+  else
+    let l:prev = expand('%')
+    execute 'saveas' . a:bang a:file
+    call delete(l:prev)
+    execute 'bdelete' l:prev
+  endif
+endfunction "}}}
+command! -nargs=1 -bang RenameTo call <SID>RenameTo(<q-args>, '<bang>')
+
 command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
 
 " Reopen file in a different format
