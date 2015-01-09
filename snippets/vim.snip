@@ -4,3 +4,16 @@ options head
 	let ${1:start} = reltime()
 	${0:TARGET}
 	echo split(reltimestr(reltime($1)))[0]
+
+snippet ifbundled
+abbr    if s:bundled(plugin)...
+options head
+	" ${1:author}/${2:plugin} {{{
+	if s:bundled('$2')
+		let s:bundle = neobundle#get('$2')
+		function! s:bundle.hooks.on_source(bundle)
+			${0:TARGET}
+		endfunction
+		unlet s:bundle
+	endif
+	"}}}
