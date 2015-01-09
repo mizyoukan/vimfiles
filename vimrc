@@ -374,6 +374,12 @@ command! -nargs=0 MemoNew call <SID>memonew()
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
 
+" Reopen file in a different format
+command! Utf8 edit ++enc=utf8 %
+command! Cp932 edit ++enc=cp932 %
+command! Unix edit ++ff=unix %
+command! Dos edit ++ff=dos %
+
 "}}}
 
 " Key mappings {{{
