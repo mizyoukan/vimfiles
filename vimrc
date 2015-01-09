@@ -248,7 +248,8 @@ endif
 
 let g:mystatusline_ftmap = {
   \   'clojure.clojurescript': 'clojurescript',
-  \   'javascript.wsh': 'jscript'
+  \   'javascript.chakra': 'chakra',
+  \   'javascript.jscript': 'jscript'
   \ }
 
 function! MyStatusLine(isactive) "{{{
@@ -567,7 +568,10 @@ function! s:detect_filetype_jscript() abort "{{{
     for l:i in range(2, 5)
       let l:line = getline(l:i)
       if l:line =~? '^CScript.\+//E:{16d51579-a30b-4c8b-a276-0ff4dc41e755}'
-        setlocal filetype=javascript.wsh
+        setlocal filetype=javascript.chakra
+        return
+      elseif l:line =~? '^CScript.\+//E:JScript'
+        setlocal filetype=javascript.jscript
         return
       endif
     endfor
@@ -914,11 +918,18 @@ if s:bundled('vim-quickrun')
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
         \ }
 
-      let g:quickrun_config['javascript.wsh'] = {
+      let g:quickrun_config['javascript.chakra'] = {
         \   'command': 'CScript',
         \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
         \   'hook/output_encode/encoding': 'cp932',
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
+        \ }
+
+      let g:quickrun_config['javascript.jscript'] = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:JScript %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
         \ }
     endif
 

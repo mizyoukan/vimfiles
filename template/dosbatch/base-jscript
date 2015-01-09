@@ -1,0 +1,4 @@
+@if (0)==(0) echo off
+CScript //Nologo //E:JScript "%~f0" %*
+goto :EOF
+@end
