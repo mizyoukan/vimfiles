@@ -372,6 +372,8 @@ function! s:memonew() "{{{
 endfunction "}}}
 command! -nargs=0 MemoNew call <SID>memonew()
 
+command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
+
 "}}}
 
 " Key mappings {{{
