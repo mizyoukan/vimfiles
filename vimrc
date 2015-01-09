@@ -104,6 +104,7 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
   NeoBundle 'mattn/emmet-vim'
+  NeoBundle 'mattn/sonictemplate-vim'
   NeoBundle 'mizyoukan/gomigemo-matchers.vim', {
     \   'depends': 'ctrlpvim/ctrlp.vim',
     \   'disabled': !executable('gmigemo')
@@ -872,6 +873,12 @@ if s:bundled('rainbow_parentheses.vim')
   augroup END
 endif
 "}}}
+
+" mattn/sonictemplate-vim {{{
+if s:bundled('sonictemplate-vim')
+  let g:sonictemplate_vim_template_dir = s:vimfiles . '/template'
+endif
+" }}}
 
 " mizyoukan/gomigemo-matchers.vim {{{
 if s:bundled('gomigemo-matchers.vim')
