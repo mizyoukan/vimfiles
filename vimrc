@@ -463,13 +463,11 @@ cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>"
 inoremap <C-x><C-o> <C-x><C-o><C-p>
 
 " Edit/source to vimrc/gvimrc
+nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
+nnoremap <silent> <Space>eg :<C-u>edit $MYGVIMRC<CR>
 if has('win32')
-  nnoremap <silent> <Space>ev :<C-u>edit $USERPROFILE\vimfiles\vimrc<CR>
-  nnoremap <silent> <Space>eg :<C-u>edit $USERPROFILE\vimfiles\gvimrc<CR>
   nnoremap <silent> <Space>el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap <silent> <Space>ev :<C-u>edit ~/.vim/vimrc<CR>
-  nnoremap <silent> <Space>eg :<C-u>edit ~/.vim/gvimrc<CR>
   nnoremap <silent> <Space>el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
 endif
 
