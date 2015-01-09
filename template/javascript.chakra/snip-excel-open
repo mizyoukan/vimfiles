@@ -1,0 +1,23 @@
+var {{_input_:excel}} = new ActiveXObject('Excel.Application');
+try {
+	{{_input_:excel}}.Visible = false;
+	{{_input_:excel}}.DisplayAlerts = false;
+	{{_input_:excel}}.ScreenUpdating = false;
+
+	var {{_input_:workbook}} = $1.Workbooks.Open({{_input_:file}});
+	try {
+		{{_input_:excel}}.Calculation = -4135; // xlCalculationManual
+
+		{{_cursor_}}
+
+		{{_input_:excel}}.Calculation = -4105; // xlCalculationAutomatic
+
+	} finally {
+		{{_input_:workbook}}.Close();
+	}
+} finally {
+	{{_input_:excel}}.ScreenUpdating = true;
+	{{_input_:excel}}.DisplayAlerts = true;
+
+	{{_input_:excel}}.Quit();
+}
