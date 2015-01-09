@@ -561,16 +561,18 @@ let g:markdown_fenced_languages = [
 autocmd MyAutoCmd FileType rst setlocal shiftwidth=3 nosmartindent smarttab softtabstop=3 tabstop=3 wrap
 
 " JScript
-autocmd MyAutoCmd BufNewFile,BufRead *.js.bat setlocal filetype=javascript.wsh fileencoding=sjis
-let s:jsbat_template = [
-  \   '@if (0)==(0) echo off',
-  \   'CScript //Nologo //E:{16d51579-a30b-4c8b-a276-0ff4dc41e755} "%~f0" %*',
-  \   'goto :EOF',
-  \   '@end',
-  \   '',
-  \   '/* vim: set ft=javascript.wsh : */',
-  \ ]
-autocmd MyAutoCmd BufNewFile *.js.bat call append(0, s:jsbat_template)|normal! Gdd{
+autocmd MyAutoCmd BufRead,BufNewFile *.bat call <SID>detect_filetype_jscript()
+function! s:detect_filetype_jscript() abort "{{{
+  if getline(1) =~? '^@if\s*(0)\s*==\s*(0)'
+    for l:i in range(2, 5)
+      let l:line = getline(l:i)
+      if l:line =~? '^CScript.\+//E:{16d51579-a30b-4c8b-a276-0ff4dc41e755}'
+        setlocal filetype=javascript.wsh
+        return
+      endif
+    endfor
+  endif
+endfunction "}}}
 
 " VBScript
 autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
