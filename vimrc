@@ -397,6 +397,20 @@ command! Cp932 edit ++enc=cp932 %
 command! Unix edit ++ff=unix %
 command! Dos edit ++ff=dos %
 
+" Change local directory to git root
+function! s:lcdToGitRoot(dir) abort "{{{
+  let l:curr = fnamemodify(a:dir, ':p')
+  while l:curr !=# fnamemodify(l:curr, ':h')
+    if isdirectory(l:curr . '/.git')
+      execute 'lcd' l:curr
+      pwd
+      return
+    endif
+    let l:curr = fnamemodify(l:curr, ':h')
+  endwhile
+  echo 'Git root is not found of [' . fnamemodify(a:dir, ':p') . ']'
+endfunction "}}}
+
 "}}}
 
 " Key mappings {{{
@@ -442,6 +456,9 @@ nnoremap / /\v
 
 " Change local cd to current buffer's dir
 nnoremap <silent> <Space>cd :<C-u>lcd %:p:h<CR>:pwd<CR>
+
+" Change local cd to git root with current buffer's file
+nnoremap <silent> <Space>cg :<C-u>call <SID>lcdToGitRoot(expand('%'))<CR>
 
 " Select buffer list
 nnoremap <C-n> :<C-u>bnext<CR>
