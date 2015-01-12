@@ -334,6 +334,22 @@ function! s:KillCurrentBuffer(bang) "{{{
 endfunction "}}}
 command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
 
+function! s:foldl(op, state, list) abort
+  return eval(join(insert(a:list, a:state), a:op))
+endfunction
+
+" Wipeout hidden and nomodified buffers
+function! s:bwipeoutNinjaly(bang) abort "{{{
+  let l:leave_bufnrs = s:foldl('+', [], map(range(1, tabpagenr('$')), 'tabpagebuflist(v:val)'))
+  let l:filter_pred = 'index(l:leave_bufnrs, v:val)==-1 && bufexists(v:val)'
+  let l:filter_pred .= a:bang !=# '!' ? ' && !getbufvar(v:val, "&modified")' : ''
+  let l:bw_bufnrs = filter(range(1, bufnr('$')), l:filter_pred)
+  for l:bufnr in l:bw_bufnrs
+    execute "bwipeout" . a:bang l:bufnr
+  endfor
+endfunction "}}}
+command! -nargs=0 -bang BufferWipeoutNinjaly call <SID>bwipeoutNinjaly('<bang>')
+
 " Remove line end space
 function! s:removeLineEndSpace()
   let l:cursor = getpos('.')
