@@ -277,13 +277,13 @@ function! MyStatusLine(isactive) "{{{
   return l:line
 endfunction "}}}
 
-function! s:refreshStatusLine() "{{{
+function! s:refresh_statusline() "{{{
   let l:activewin = winnr()
   for l:n in range(1, winnr('$'))
     call setwinvar(l:n, '&statusline', '%!MyStatusLine(' . (l:n == l:activewin) . ')')
   endfor
 endfunction "}}}
-autocmd MyAutoCmd BufEnter,WinEnter * call <SID>refreshStatusLine()
+autocmd MyAutoCmd BufEnter,WinEnter * call <SID>refresh_statusline()
 
 function! MyFoldText() "{{{
   let l:left = getline(v:foldstart) . ' ...'
@@ -322,7 +322,7 @@ call s:letandmkdir('&undodir', s:vimfiles . '/.undo')
 " Commands and Functions {{{
 
 " Delete current buffer without closing window
-function! s:KillCurrentBuffer(bang) "{{{
+function! s:bdelete_currbuf(bang) "{{{
   let l:bn = bufnr('%')
   bprevious
   try
@@ -332,14 +332,14 @@ function! s:KillCurrentBuffer(bang) "{{{
     echoerr v:exception
   endtry
 endfunction "}}}
-command! -nargs=0 -bang KillCurrentBuffer call <SID>KillCurrentBuffer('<bang>')
+command! -nargs=0 -bang KillCurrentBuffer call <SID>bdelete_currbuf('<bang>')
 
 function! s:foldl(op, state, list) abort
   return eval(join(insert(a:list, a:state), a:op))
 endfunction
 
 " Wipeout hidden and nomodified buffers
-function! s:bwipeoutNinjaly(bang) abort "{{{
+function! s:bwipeout_ninjaly(bang) abort "{{{
   let l:leave_bufnrs = s:foldl('+', [], map(range(1, tabpagenr('$')), 'tabpagebuflist(v:val)'))
   let l:filter_pred = 'index(l:leave_bufnrs, v:val)==-1 && bufexists(v:val)'
   let l:filter_pred .= a:bang !=# '!' ? ' && !getbufvar(v:val, "&modified")' : ''
@@ -348,23 +348,23 @@ function! s:bwipeoutNinjaly(bang) abort "{{{
     execute "bwipeout" . a:bang l:bufnr
   endfor
 endfunction "}}}
-command! -nargs=0 -bang BufferWipeoutNinjaly call <SID>bwipeoutNinjaly('<bang>')
+command! -nargs=0 -bang BufferWipeoutNinjaly call <SID>bwipeout_ninjaly('<bang>')
 
 " Remove line end space
-function! s:removeLineEndSpace()
+function! s:remove_trailing_spaces()
   let l:cursor = getpos('.')
   execute '%s/\s\+$//ge'
   call setpos('.', l:cursor)
 endfunction
-command! -nargs=0 RemoveLineEndSpace silent call <SID>removeLineEndSpace()
+command! -nargs=0 RemoveTrailingSpaces call <SID>remove_trailing_spaces()
 
 " Capitalize last modified text
-function! s:lastModifyCapitalize()
+function! s:capitalize_last_modified()
   let l:cursor = getpos('.')
   normal! `[v`]U
   call setpos('.', l:cursor)
 endfunction
-command! -nargs=0 LastModifyCapitalize silent call <SID>lastModifyCapitalize()
+command! -nargs=0 LastModifiedCapitalize silent call <SID>capitalize_last_modified()
 
 " Create memo file
 function! s:memonew() "{{{
@@ -391,7 +391,7 @@ endfunction "}}}
 command! -nargs=0 MemoNew call <SID>memonew()
 
 " Rename file
-function! s:RenameTo(file, bang) abort "{{{
+function! s:renameto(file, bang) abort "{{{
   if filereadable(a:file) && a:bang !=# '!'
     echomsg 'File already exists'
   elseif isdirectory(a:file)
@@ -403,7 +403,7 @@ function! s:RenameTo(file, bang) abort "{{{
     execute 'bdelete' l:prev
   endif
 endfunction "}}}
-command! -nargs=1 -bang RenameTo call <SID>RenameTo(<q-args>, '<bang>')
+command! -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
 
@@ -414,7 +414,7 @@ command! Unix edit ++ff=unix %
 command! Dos edit ++ff=dos %
 
 " Change local directory to git root
-function! s:lcdToGitRoot(dir) abort "{{{
+function! s:lcd_gitroot(dir) abort "{{{
   let l:curr = fnamemodify(a:dir, ':p')
   while l:curr !=# fnamemodify(l:curr, ':h')
     if isdirectory(l:curr . '/.git')
@@ -474,7 +474,7 @@ nnoremap / /\v
 nnoremap <silent> <Space>cd :<C-u>lcd %:p:h<CR>:pwd<CR>
 
 " Change local cd to git root with current buffer's file
-nnoremap <silent> <Space>cg :<C-u>call <SID>lcdToGitRoot(expand('%'))<CR>
+nnoremap <silent> <Space>cg :<C-u>call <SID>lcd_gitroot(expand('%'))<CR>
 
 " Select buffer list
 nnoremap <C-n> :<C-u>bnext<CR>
@@ -593,8 +593,8 @@ let g:markdown_fenced_languages = [
 autocmd MyAutoCmd FileType rst setlocal shiftwidth=3 nosmartindent smarttab softtabstop=3 tabstop=3 wrap
 
 " JScript
-autocmd MyAutoCmd BufRead,BufNewFile *.bat call <SID>detect_filetype_jscript()
-function! s:detect_filetype_jscript() abort "{{{
+autocmd MyAutoCmd BufRead,BufNewFile *.bat call <SID>ftdetect_jscript()
+function! s:ftdetect_jscript() abort "{{{
   if getline(1) =~? '^@if\s*(0)\s*==\s*(0)'
     for l:i in range(2, 5)
       let l:line = getline(l:i)
@@ -1011,11 +1011,11 @@ endif
 
 " tpope/vim-fireplace {{{
 if s:bundled('vim-fireplace')
-  function! s:myClojureMapping()
+  function! s:my_clojure_mapping()
     nmap <buffer> <C-CR> <Plug>FireplacePrintip
     vmap <buffer> <C-CR> <Plug>FireplacePrint
   endfunction
-  autocmd MyAutoCmd FileType clojure call <SID>myClojureMapping()
+  autocmd MyAutoCmd FileType clojure call <SID>my_clojure_mapping()
   autocmd MyAutoCmd FileType clojure command! -nargs=0 Austin :Piggieback (reset! cemerick.austin.repls/browser-repl-env (cemerick.austin/repl-env))
 endif
 "}}}
