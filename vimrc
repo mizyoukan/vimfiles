@@ -35,7 +35,7 @@ let s:mymemodir = s:homedir . '/memo'
 
 let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
 
-function! s:bundled(bundle)
+function! s:bundled(bundle) abort
   if !isdirectory(s:bundledir)
     return 0
   elseif a:bundle ==# 'neobundle.vim' && isdirectory(s:neobundledir)
@@ -252,7 +252,7 @@ let g:mystatusline_ftmap = {
   \   'javascript.jscript': 'jscript'
   \ }
 
-function! MyStatusLine(isactive) "{{{
+function! MyStatusLine(isactive) abort "{{{
   let l:line = '[%n]%{winnr("$")>1?"[".winnr()."/".winnr("$")."]":""}%t %m%r%h%w%<'
 
   if a:isactive
@@ -277,7 +277,7 @@ function! MyStatusLine(isactive) "{{{
   return l:line
 endfunction "}}}
 
-function! s:refresh_statusline() "{{{
+function! s:refresh_statusline() abort "{{{
   let l:activewin = winnr()
   for l:n in range(1, winnr('$'))
     call setwinvar(l:n, '&statusline', '%!MyStatusLine(' . (l:n == l:activewin) . ')')
@@ -285,7 +285,7 @@ function! s:refresh_statusline() "{{{
 endfunction "}}}
 autocmd MyAutoCmd BufEnter,WinEnter * call <SID>refresh_statusline()
 
-function! MyFoldText() "{{{
+function! MyFoldText() abort "{{{
   let l:left = getline(v:foldstart) . ' ...'
   let l:foldedlinecount = v:foldend - v:foldstart
   let l:right = '[' . l:foldedlinecount . '] '
@@ -300,7 +300,7 @@ set foldopen&
 set foldopen-=block
 set foldtext=MyFoldText()
 
-function! s:letandmkdir(var, path) "{{{
+function! s:letandmkdir(var, path) abort "{{{
   try
     if !isdirectory(a:path)
       call mkdir(a:path, 'p')
@@ -322,7 +322,7 @@ call s:letandmkdir('&undodir', s:vimfiles . '/.undo')
 " Commands and Functions {{{
 
 " Delete current buffer without closing window
-function! s:bdelete_currbuf(bang) "{{{
+function! s:bdelete_currbuf(bang) abort "{{{
   let l:bn = bufnr('%')
   bprevious
   try
@@ -351,7 +351,7 @@ endfunction "}}}
 command! -nargs=0 -bang BufferWipeoutNinjaly call <SID>bwipeout_ninjaly('<bang>')
 
 " Remove line end space
-function! s:remove_trailing_spaces()
+function! s:remove_trailing_spaces() abort
   let l:cursor = getpos('.')
   execute '%s/\s\+$//ge'
   call setpos('.', l:cursor)
@@ -359,7 +359,7 @@ endfunction
 command! -nargs=0 RemoveTrailingSpaces call <SID>remove_trailing_spaces()
 
 " Capitalize last modified text
-function! s:capitalize_last_modified()
+function! s:capitalize_last_modified() abort
   let l:cursor = getpos('.')
   normal! `[v`]U
   call setpos('.', l:cursor)
@@ -367,7 +367,7 @@ endfunction
 command! -nargs=0 LastModifiedCapitalize silent call <SID>capitalize_last_modified()
 
 " Create memo file
-function! s:memonew() "{{{
+function! s:memonew() abort "{{{
   if !isdirectory(s:mymemodir)
     echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
     return
@@ -619,7 +619,7 @@ autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 " Shougo/neocomplete.vim {{{
 if s:bundled('neocomplete.vim')
   let s:bundle = neobundle#get('neocomplete.vim')
-  function! s:bundle.hooks.on_source(bundle)
+  function! s:bundle.hooks.on_source(bundle) abort
     let g:neocomplete#data_directory = s:cachedir . '/neocomplete'
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_ignore_case = 1
@@ -639,7 +639,7 @@ endif
 " Shougo/neosnippet {{{
 if s:bundled('neosnippet')
   let s:bundle = neobundle#get('neosnippet')
-  function! s:bundle.hooks.on_source(bundle)
+  function! s:bundle.hooks.on_source(bundle) abort
     let g:neosnippet#disable_runtime_snippets = {'_': 1}
     let g:neosnippet#enable_snipmate_compatibility = 1
 
@@ -676,7 +676,7 @@ endif
 " Shougo/unite.vim {{{
 if s:bundled('unite.vim')
   let s:bundle = neobundle#get('unite.vim')
-  function! s:bundle.hooks.on_source(bundle)
+  function! s:bundle.hooks.on_source(bundle) abort
     let g:neomru#file_mru_path = s:cachedir . '/neomru/file'
     let g:neomru#directory_mru_path = s:cachedir . '/neomru/directory'
 
@@ -700,7 +700,7 @@ if s:bundled('unite.vim')
     let g:unite_source_menu_menus = get(g:, 'unite_source_menu_menus', {})
     let g:unite_source_alias_aliases = get(g:, 'unite_source_alias_aliases', {})
 
-    function! s:unite_menu_input(prompt, exec_command)
+    function! s:unite_menu_input(prompt, exec_command) abort
       let l:command = [
         \   'let s:capture_input = input("' . a:prompt . '")',
         \   'if s:capture_input !=# ""',
@@ -733,7 +733,7 @@ if s:bundled('unite.vim')
     endif
 
     autocmd MyAutoCmd FileType unite call s:unite_my_settings()
-    function! s:unite_my_settings()
+    function! s:unite_my_settings() abort
       imap <buffer><expr> <C-s> unite#do_action('split')
       " Quit
       nmap <buffer> q <Plug>(unite_exit)
@@ -775,7 +775,7 @@ endif
 " Shougo/vimshell {{{
 if s:bundled('vimshell')
   let s:bundle = neobundle#get('vimshell')
-  function! s:bundle.hooks.on_source(bundle)
+  function! s:bundle.hooks.on_source(bundle) abort
     let g:vimshell_temporary_directory = s:cachedir . '/vimshell'
     let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 
@@ -812,21 +812,21 @@ if s:bundled('ctrlp.vim')
 
   " List memo files
   let s:bundle = neobundle#get('ctrlp.vim')
-  function! s:bundle.hooks.on_post_source(bundle) "{{{
-    function! s:memotitle(file)
+  function! s:bundle.hooks.on_post_source(bundle) abort "{{{
+    function! s:memotitle(file) abort
       for l:line in readfile(a:file, '', 1)
         return [fnamemodify(a:file, ':t:r'), l:line[2:]]
       endfor
       return []
     endfunction
 
-    function! s:memocomp(lhs, rhs)
+    function! s:memocomp(lhs, rhs) abort
       let l:lhs = join(split(a:lhs[:stridx(a:lhs, '|') - 1], '-'), '')
       let l:rhs = join(split(a:rhs[:stridx(a:rhs, '|') - 1], '-'), '')
       return l:rhs - l:lhs
     endfunction
 
-    function! MemoList()
+    function! MemoList() abort
       if !isdirectory(s:mymemodir)
         echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
         return []
@@ -835,7 +835,7 @@ if s:bundled('ctrlp.vim')
         \ '<SID>memotitle(v:val)'), 'len(v:val) > 0'), 'join(v:val, "|")'), 's:memocomp')
     endfunction
 
-    function! MemoAccept(mode, str)
+    function! MemoAccept(mode, str) abort
       call ctrlp#exit()
       let l:file = split(a:str, '|')[0]
       let l:fpath = s:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
@@ -858,7 +858,7 @@ if s:bundled('ctrlp.vim')
 
     let s:ctrlp_memolist_id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
 
-    function! s:ctrlp_memolist()
+    function! s:ctrlp_memolist() abort
       return s:ctrlp_memolist_id
     endfunction
 
@@ -926,7 +926,7 @@ endif
 " thinca/vim-quickrun {{{
 if s:bundled('vim-quickrun')
   let s:bundle = neobundle#get('vim-quickrun')
-  function! s:bundle.hooks.on_source(bundle)
+  function! s:bundle.hooks.on_source(bundle) abort
     let g:quickrun_config = get(g:, 'quickrun_config', {})
 
     let g:quickrun_config._ = {
@@ -969,7 +969,7 @@ if s:bundled('vim-quickrun')
     let g:hier_highlight_group_qf = 'SilentSyntaxChecker'
 
     let s:silent_quickfix = quickrun#outputter#quickfix#new()
-    function! s:silent_quickfix.finish(session)
+    function! s:silent_quickfix.finish(session) abort
       call call(quickrun#outputter#quickfix#new().finish, [a:session], self)
       cclose
       HierUpdate
@@ -1011,7 +1011,7 @@ endif
 
 " tpope/vim-fireplace {{{
 if s:bundled('vim-fireplace')
-  function! s:my_clojure_mapping()
+  function! s:my_clojure_mapping() abort
     nmap <buffer> <C-CR> <Plug>FireplacePrintip
     vmap <buffer> <C-CR> <Plug>FireplacePrint
   endfunction
