@@ -159,11 +159,14 @@ if s:bundled('neobundle.vim')
     \     'mappings': '<Plug>(EasyAlign)'
     \   }
     \ }
+  NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
   NeoBundleLazy 'kannokanno/previm', {
     \   'depends': 'tyru/open-browser.vim',
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
   NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
+  NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
+  NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
   NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
@@ -922,6 +925,57 @@ if s:bundled('gomigemo-matchers.vim')
   let g:ctrlp_match_func = {'match': 'g:ctrlp#matcher#gomigemo#match'}
 endif
 " }}}
+
+" osyo-manga/vim-textobj-multiblock {{{
+if s:bundled('vim-textobj-multiblock')
+  let g:textobj_multiblock_blocks = [
+    \   ['(', ')'],
+    \   ['[', ']'],
+    \   ['{', '}'],
+    \   ['<', '>']
+    \ ]
+  "Disable default settings
+  let g:textobj#multiblock#default_blocks = []
+endif
+"}}}
+
+" osyo-manga/vim-textobj-multitextobj {{{
+if s:bundled('vim-textobj-multitextobj')
+  let g:textobj_multitextobj_textobjects_i = [
+    \   '<Plug>(textobj-multiblock-i)',
+    \   '<Plug>(textobj-jabraces-parens-i)',
+    \   '<Plug>(textobj-jabraces-braces-i)',
+    \   '<Plug>(textobj-jabraces-brackets-i)',
+    \   '<Plug>(textobj-jabraces-angles-i)',
+    \   '<Plug>(textobj-jabraces-double-angles-i)',
+    \   '<Plug>(textobj-jabraces-kakko-i)',
+    \   '<Plug>(textobj-jabraces-double-kakko-i)',
+    \   '<Plug>(textobj-jabraces-yama-kakko-i)',
+    \   '<Plug>(textobj-jabraces-double-yama-kakko-i)',
+    \   '<Plug>(textobj-jabraces-kikkou-kakko-i)',
+    \   '<Plug>(textobj-jabraces-sumi-kakko-i)'
+    \ ]
+  let g:textobj_multitextobj_textobjects_a = [
+    \   '<Plug>(textobj-multiblock-a)',
+    \   '<Plug>(textobj-jabraces-parens-a)',
+    \   '<Plug>(textobj-jabraces-braces-a)',
+    \   '<Plug>(textobj-jabraces-brackets-a)',
+    \   '<Plug>(textobj-jabraces-angles-a)',
+    \   '<Plug>(textobj-jabraces-double-angles-a)',
+    \   '<Plug>(textobj-jabraces-kakko-a)',
+    \   '<Plug>(textobj-jabraces-double-kakko-a)',
+    \   '<Plug>(textobj-jabraces-yama-kakko-a)',
+    \   '<Plug>(textobj-jabraces-double-yama-kakko-a)',
+    \   '<Plug>(textobj-jabraces-kikkou-kakko-a)',
+    \   '<Plug>(textobj-jabraces-sumi-kakko-a)',
+    \ ]
+
+  omap ab <Plug>(textobj-multitextobj-a)
+  omap ib <Plug>(textobj-multitextobj-i)
+  vmap ab <Plug>(textobj-multitextobj-a)
+  vmap ib <Plug>(textobj-multitextobj-i)
+endif
+"}}}
 
 " thinca/vim-quickrun {{{
 if s:bundled('vim-quickrun')
