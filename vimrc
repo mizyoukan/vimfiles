@@ -348,7 +348,7 @@ function! s:bwipeout_ninjaly(bang) abort "{{{
   let l:filter_pred .= a:bang !=# '!' ? ' && !getbufvar(v:val, "&modified")' : ''
   let l:bw_bufnrs = filter(range(1, bufnr('$')), l:filter_pred)
   for l:bufnr in l:bw_bufnrs
-    execute "bwipeout" . a:bang l:bufnr
+    execute 'bwipeout' . a:bang l:bufnr
   endfor
 endfunction "}}}
 command! -nargs=0 -bang BufferWipeoutNinjaly call <SID>bwipeout_ninjaly('<bang>')
