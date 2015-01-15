@@ -697,10 +697,6 @@ if s:bundled('unite.vim')
       let g:unite_source_file_mru_ignore_pattern .= '\|^//'
     endif
 
-    if executable('files')
-      let g:unite_source_rec_async_command = 'files -A'
-    endif
-
     let g:unite_source_menu_menus = get(g:, 'unite_source_menu_menus', {})
     let g:unite_source_alias_aliases = get(g:, 'unite_source_alias_aliases', {})
 
