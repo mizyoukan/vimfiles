@@ -218,6 +218,7 @@ set completeopt=menuone
 set display=lastline
 set noequalalways
 set expandtab
+set fileencoding=utf-8
 set hidden
 set hlsearch
 set ignorecase
