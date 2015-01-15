@@ -215,6 +215,7 @@ set autoread
 set backspace=indent,eol,start
 set clipboard=unnamed,unnamedplus
 set completeopt=menuone
+set display=lastline
 set noequalalways
 set expandtab
 set hidden
@@ -233,6 +234,7 @@ set smartcase
 set smartindent
 set softtabstop=2
 set splitright splitbelow
+set synmaxcol=300
 set t_Co=256
 set tabstop=2
 set wildignore=.git,.hg,.svn
