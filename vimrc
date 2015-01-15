@@ -165,6 +165,7 @@ if s:bundled('neobundle.vim')
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
   NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
+  NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
   NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
@@ -925,6 +926,15 @@ if s:bundled('gomigemo-matchers.vim')
   let g:ctrlp_match_func = {'match': 'g:ctrlp#matcher#gomigemo#match'}
 endif
 " }}}
+
+" osyo-manga/vim-anzu {{{
+if s:bundled('vim-anzu')
+  nmap n <Plug>(anzu-n-with-echo)
+  nmap N <Plug>(anzu-N-with-echo)
+  nmap * <Plug>(anzu-star-with-echo)
+  nmap # <Plug>(anzu-sharp-with-echo)
+endif
+"}}}
 
 " osyo-manga/vim-textobj-multiblock {{{
 if s:bundled('vim-textobj-multiblock')
