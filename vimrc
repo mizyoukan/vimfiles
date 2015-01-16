@@ -700,41 +700,6 @@ if s:bundled('unite.vim')
       let g:unite_source_file_mru_ignore_pattern .= '\|^//'
     endif
 
-    let g:unite_source_menu_menus = get(g:, 'unite_source_menu_menus', {})
-    let g:unite_source_alias_aliases = get(g:, 'unite_source_alias_aliases', {})
-
-    function! s:unite_menu_input(prompt, exec_command) abort
-      let l:command = [
-        \   'let s:capture_input = input("' . a:prompt . '")',
-        \   'if s:capture_input !=# ""',
-        \     substitute(a:exec_command, '$1', 's:capture_input', 'g'),
-        \   'else',
-        \     'echo "canceled."',
-        \   'endif',
-        \ ]
-      return join(l:command, '|')
-    endfunction
-
-    if executable('git')
-      let g:unite_source_menu_menus.fugitive = {'description': 'A Git wrapper so awesome, it should be illegal'}
-      let g:unite_source_menu_menus.fugitive.command_candidates = [
-        \   ['[command?]',     s:unite_menu_input('git> ', 'execute "Git!" . $1')],
-        \   ['add',            'Gwrite'],
-        \   ['checkout',       'Gread'],
-        \   ['commit',         'Gcommit --verbose'],
-        \   ['commit --amend', 'Gcommit --amend --verbose'],
-        \   ['diff',           'Gdiff'],
-        \   ['grep...',        s:unite_menu_input('git grep> ', 'execute("silent Glgrep!" . $1 . " | Unite -auto-preview -auto-resize -winheight=20 location_list")')],
-        \   ['move...',        s:unite_menu_input('git mv dest> ', 'execute "Gmove " . $1')],
-        \   ['pull',           'Gpull'],
-        \   ['pull --rebase',  'Gpull --rebase'],
-        \   ['push',           'Gpush'],
-        \   ['remove',         'Gremove'],
-        \   ['status',         'Gstatus'],
-        \ ]
-      let g:unite_source_alias_aliases.fugitive = {'source': 'menu'}
-    endif
-
     autocmd MyAutoCmd FileType unite call s:unite_my_settings()
     function! s:unite_my_settings() abort
       imap <buffer><expr> <C-s> unite#do_action('split')
@@ -758,7 +723,11 @@ if s:bundled('unite.vim')
   nnoremap <silent><Space>u :<C-u>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent><Space>/ :<C-u>Unite line<CR>
   if executable('git')
-    nnoremap <silent><Space>g :<C-u>Glcd \| execute('Unite fugitive:fugitive giti')<CR>
+    nnoremap <silent> <Space>gf :<C-u>Glcd \| Unite file_rec/git<CR>
+    nnoremap <silent> <Space>gg :<C-u>Glcd \| Unite giti<CR>
+    nnoremap <silent> <Space>gb :<C-u>Glcd \| Unite giti/branch<CR>
+    nnoremap <silent> <Space>gl :<C-u>Glcd \| Unite giti/log<CR>
+    nnoremap <silent> <Space>gs :<C-u>Glcd \| Unite giti/status<CR>
   endif
 endif
 " }}}
