@@ -238,7 +238,7 @@ set splitright splitbelow
 set synmaxcol=300
 set t_Co=256
 set tabstop=2
-set wildignore=.git,.hg,.svn
+set wildignore=.git/,.hg/,.svn/
 set wildignore+=*.bmp,*.jpg,*.jpeg,*.png,*.gif
 set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest,*.so,*.out,*.class,*.db
 set wildignore+=*.swp,*.swo,*.swn
