@@ -226,11 +226,13 @@ set iminsert=0
 set imsearch=0
 set incsearch
 set laststatus=2
+set linebreak
 set list lcs=tab:^_,trail:_
 set mouse=a
 set nrformats=hex
 set scrolloff=5
 set shiftwidth=2
+set showbreak=+\ "
 set smartcase
 set smartindent
 set softtabstop=2
@@ -245,6 +247,11 @@ set wildignore+=*.swp,*.swo,*.swn
 set wildignore+=*.DS_Store
 set wildmenu
 set nowrap
+
+if has('patch-7.4.338')
+  set breakindent
+  autocmd MyAutoCmd BufEnter * setlocal breakindentopt=min:20,shift:0
+endif
 
 set fileencodings=utf-8,cp932,euc-jp
 if has('win32')
