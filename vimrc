@@ -740,7 +740,7 @@ if s:bundled('unite.vim')
     nnoremap <silent> <Space>gf :<C-u>Glcd \| Unite file_rec/git<CR>
     nnoremap <silent> <Space>gg :<C-u>Glcd \| Unite giti<CR>
     nnoremap <silent> <Space>gb :<C-u>Glcd \| Unite giti/branch<CR>
-    nnoremap <silent> <Space>gl :<C-u>Glcd \| Unite giti/log<CR>
+    nnoremap <silent> <Space>gl :<C-u>Glcd \| Unite giti/log -no-start-insert<CR>
     nnoremap <silent> <Space>gs :<C-u>Glcd \| Unite giti/status<CR>
   endif
 endif
