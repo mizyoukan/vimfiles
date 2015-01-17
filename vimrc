@@ -543,6 +543,8 @@ if executable('fcitx-remote')
   autocmd MyAutoCmd InsertLeave * call system('fcitx-remote -c')
 endif
 
+" Set readonly with existing swap file
+autocmd MyAutoCmd SwapExists * let v:swapchoice = 'o'
 
 " VimScript
 let g:vim_indent_cont = 2
