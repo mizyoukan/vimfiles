@@ -48,8 +48,7 @@ endif
 if has('win32')
   set linespace=0
   set renderoptions=type:directx
-  let s:winfontdir = expand('$SYSTEMROOT/Fonts')
-  if filereadable(s:winfontdir . '/bdfUMplus-outline.ttf')
+  if filereadable(expand('$SYSTEMROOT') . '/Fonts/bdfUMplus-outline.ttf')
     set guifont=BDF_UM+_OUTLINE:h10:cDEFAULT
   else
     set guifont=Consolas:h9:cDEFAULT
@@ -58,6 +57,10 @@ if has('win32')
 elseif has('gui_macvim')
   set linespace=1
   set guifont=Menlo:h12
+elseif has('unix')
+  if filereadable(expand('$HOME') . '/.fonts/bdfUMplus-outline.ttf')
+    set guifont=BDF\ UM+\ OUTLINE\ Medium\ 10
+  endif
 endif
 
 if has('multi_byte_ime') || has('xim')
