@@ -422,7 +422,7 @@ function! s:renameto(file, bang) abort "{{{
 endfunction "}}}
 command! -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
 
-command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
+command! -bang MyScouter Scouter<bang> $MYVIMRC
 
 " Reopen file in a different format
 command! Utf8 edit ++enc=utf8 %
@@ -512,20 +512,22 @@ cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>"
 " Omni completion without select first matching
 inoremap <C-x><C-o> <C-x><C-o><C-p>
 
-" Edit/source to vimrc/gvimrc
-nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
-nnoremap <silent> <Space>eg :<C-u>edit $MYGVIMRC<CR>
-if has('win32')
-  nnoremap <silent> <Space>el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-else
-  nnoremap <silent> <Space>el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
-endif
+" Edit/source vimrc
+nnoremap <Space>ev :<C-u>edit $MYVIMRC<CR>
+nnoremap <Space>sv :<C-u>split $MYVIMRC<CR>
+nnoremap <Space>vv :<C-u>source $MYVIMRC<CR>
+nnoremap <Space>eg <Nop>
+nnoremap <Space>sg <Nop>
+nnoremap <Space>vg <Nop>
 
-nnoremap <silent> <Space>vv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif<CR>
-nnoremap <silent> <Space>vg :<C-u>if has('gui_running') \| source $MYGVIMRC \| endif<CR>
+" Edit/source local vimrc
 if has('win32')
+  nnoremap <Space>el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <Space>sl :<C-u>split $USERPROFILE\vimfiles\vimrc_local.vim<CR>
   nnoremap <Space>vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
+  nnoremap <Space>el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
+  nnoremap <Space>sl :<C-u>split ~/.vim/vimrc_local.vim<CR>
   nnoremap <Space>vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
 endif
 

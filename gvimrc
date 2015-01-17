@@ -70,6 +70,14 @@ if has('gui_macvim')
   set imdisable
 endif
 
+" Edit/source gvimrc
+nnoremap <Space>eg :<C-u>edit $MYGVIMRC<CR>
+nnoremap <Space>sg :<C-u>split $MYGVIMRC<CR>
+nnoremap <Space>vv :<C-u>source $MYVIMRC \| source $MYGVIMRC<CR>
+nnoremap <Space>vg :<C-u>source $MYGVIMRC<CR>
+
+command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
+
 " Load local setting file
 if filereadable(s:vimfiles . '/gvimrc_local.vim')
   execute 'source' s:vimfiles . '/gvimrc_local.vim'
