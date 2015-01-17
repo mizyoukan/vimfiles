@@ -217,6 +217,7 @@ set autoindent
 set autoread
 set backspace=indent,eol,start
 set clipboard=unnamed,unnamedplus
+set cmdheight=2
 set completeopt=menuone
 set display=lastline
 set noequalalways
