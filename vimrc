@@ -178,13 +178,16 @@ if s:bundled('neobundle.vim')
 
   if s:has_go
     NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
-    NeoBundle 'nsf/gocode', {
-      \   'rtp': 'vim',
-      \   'build': {
-      \     'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
-      \     'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
-      \   }
-      \ }
+    try
+      NeoBundle 'nsf/gocode', {
+        \   'rtp': 'vim',
+        \   'build': {
+        \     'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
+        \     'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+        \   }
+        \ }
+    catch /E48:/ " For opening from Linux filer
+    endtry
   endif
 
   " colorscheme
