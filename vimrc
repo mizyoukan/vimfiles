@@ -678,8 +678,8 @@ if s:bundled('neosnippet')
     imap <C-K> <Plug>(neosnippet_expand_or_jump)
     smap <C-K> <Plug>(neosnippet_expand_or_jump)
 
-    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : pumvisible() ? '<C-N>' : '<TAB>'
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : '<TAB>'
+    imap <expr> <TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : pumvisible() ? '<C-N>' : '<TAB>'
+    smap <expr> <TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : '<TAB>'
 
     " Delete merkers when InsertLeave
     autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
@@ -691,7 +691,7 @@ endif
 " Shougo/unite-outline {{{
 if s:bundled('unite-outline')
   nnoremap <silent> <Space>o :<C-U>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
-  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> <Space>o :<C-U>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  autocmd MyAutoCmd FileType vim nnoremap <silent> <buffer> <Space>o :<C-U>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 endif
 "}}}
 
@@ -717,7 +717,7 @@ if s:bundled('unite.vim')
 
     autocmd MyAutoCmd FileType unite call s:unite_my_settings()
     function! s:unite_my_settings() abort
-      imap <buffer><expr> <C-S> unite#do_action('split')
+      imap <buffer> <expr> <C-S> unite#do_action('split')
       " Quit
       nmap <buffer> q <Plug>(unite_exit)
       nmap <buffer> <C-Q> <Plug>(unite_exit)
@@ -735,8 +735,8 @@ if s:bundled('unite.vim')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent><Space>u :<C-U>Unite buffer bookmark file file_mru<CR>
-  nnoremap <silent><Space>/ :<C-U>Unite line<CR>
+  nnoremap <silent> <Space>u :<C-U>Unite buffer bookmark file file_mru<CR>
+  nnoremap <silent> <Space>/ :<C-U>Unite line<CR>
   if executable('git')
     nnoremap <silent> <Space>gf :<C-U>Glcd \| Unite file_rec/git<CR>
     nnoremap <silent> <Space>gg :<C-U>Glcd \| Unite giti<CR>
@@ -755,7 +755,7 @@ if s:bundled('vimfiler')
   let g:vimfiler_tree_indentation = 2
   let g:vimfiler_tree_leaf_icon = ' '
 
-  nnoremap <silent><Space>f :<C-U>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
+  nnoremap <silent> <Space>f :<C-U>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
 endif
 "}}}
 
@@ -1040,7 +1040,7 @@ if s:bundled('vim-quickrun')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent><Space>r :<C-U>QuickRun<CR>
+  nnoremap <silent> <Space>r :<C-U>QuickRun<CR>
 
   if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
