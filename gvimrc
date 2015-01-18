@@ -74,10 +74,10 @@ if has('gui_macvim')
 endif
 
 " Edit/source gvimrc
-nnoremap <Space>eg :<C-u>edit $MYGVIMRC<CR>
-nnoremap <Space>sg :<C-u>split $MYGVIMRC<CR>
-nnoremap <Space>vv :<C-u>source $MYVIMRC \| source $MYGVIMRC<CR>
-nnoremap <Space>vg :<C-u>source $MYGVIMRC<CR>
+nnoremap <Space>eg :<C-U>edit $MYGVIMRC<CR>
+nnoremap <Space>sg :<C-U>split $MYGVIMRC<CR>
+nnoremap <Space>vv :<C-U>source $MYVIMRC \| source $MYGVIMRC<CR>
+nnoremap <Space>vg :<C-U>source $MYGVIMRC<CR>
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
 

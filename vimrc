@@ -461,11 +461,11 @@ nnoremap Y y$
 
 " Highlight off
 nnoremap <silent> <ESC><ESC> :nohlsearch<CR><ESC>
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent> <C-L> :<C-U>nohlsearch<CR><C-L>
 
 " Select command history
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
 
 " Toggle folding
 noremap <Space>a za
@@ -489,52 +489,52 @@ vnoremap gk k
 nnoremap / /\v
 
 " Change local cd to current buffer's dir
-nnoremap <silent> <Space>cd :<C-u>lcd %:p:h<CR>:pwd<CR>
+nnoremap <silent> <Space>cd :<C-U>lcd %:p:h<CR>:pwd<CR>
 
 " Change local cd to git root with current buffer's file
-nnoremap <silent> <Space>cg :<C-u>call <SID>lcd_gitroot(expand('%'))<CR>
+nnoremap <silent> <Space>cg :<C-U>call <SID>lcd_gitroot(expand('%'))<CR>
 
 " Select buffer list
-nnoremap <C-n> :<C-u>bnext<CR>
-nnoremap <C-p> :<C-u>bprev<CR>
+nnoremap <C-N> :<C-U>bnext<CR>
+nnoremap <C-P> :<C-U>bprev<CR>
 
 " Paste clipboard text
-cnoremap <C-v> <C-r>+
+cnoremap <C-V> <C-R>+
 
 " Emacs keybind on command mode
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-g> <Esc>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-G> <Esc>
 " Delete without line end
-cnoremap <expr> <C-d> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-d>" : "\<Del>")
+cnoremap <expr> <C-D> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-D>" : "\<Del>")
 
 " Omni completion without select first matching
-inoremap <C-x><C-o> <C-x><C-o><C-p>
+inoremap <C-X><C-O> <C-X><C-O><C-P>
 
 " Edit/source vimrc
-nnoremap <Space>ev :<C-u>edit $MYVIMRC<CR>
-nnoremap <Space>sv :<C-u>split $MYVIMRC<CR>
-nnoremap <Space>vv :<C-u>source $MYVIMRC<CR>
+nnoremap <Space>ev :<C-U>edit $MYVIMRC<CR>
+nnoremap <Space>sv :<C-U>split $MYVIMRC<CR>
+nnoremap <Space>vv :<C-U>source $MYVIMRC<CR>
 nnoremap <Space>eg <Nop>
 nnoremap <Space>sg <Nop>
 nnoremap <Space>vg <Nop>
 
 " Edit/source local vimrc
 if has('win32')
-  nnoremap <Space>el :<C-u>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-  nnoremap <Space>sl :<C-u>split $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-  nnoremap <Space>vl :<C-u>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <Space>el :<C-U>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <Space>sl :<C-U>split $USERPROFILE\vimfiles\vimrc_local.vim<CR>
+  nnoremap <Space>vl :<C-U>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
 else
-  nnoremap <Space>el :<C-u>edit ~/.vim/vimrc_local.vim<CR>
-  nnoremap <Space>sl :<C-u>split ~/.vim/vimrc_local.vim<CR>
-  nnoremap <Space>vl :<C-u>source ~/.vim/vimrc_local.vim<CR>
+  nnoremap <Space>el :<C-U>edit ~/.vim/vimrc_local.vim<CR>
+  nnoremap <Space>sl :<C-U>split ~/.vim/vimrc_local.vim<CR>
+  nnoremap <Space>vl :<C-U>source ~/.vim/vimrc_local.vim<CR>
 endif
 
-nnoremap <Space>v. :<C-u>source %:p<CR>
+nnoremap <Space>v. :<C-U>source %:p<CR>
 
-nnoremap mc :<C-u>MemoNew<CR>
+nnoremap mc :<C-U>MemoNew<CR>
 
 "}}}
 
@@ -557,7 +557,7 @@ let g:vim_indent_cont = 2
 autocmd MyAutoCmd FileType vim command! -nargs=0 Vint cexpr system('vint ' . expand('%'))
 
 " QuickFix
-autocmd MyAutoCmd FileType qf nnoremap <buffer> p <CR>zz<C-w>p
+autocmd MyAutoCmd FileType qf nnoremap <buffer> p <CR>zz<C-W>p
 autocmd MyAutoCmd FileType qf nnoremap <buffer> q :quit<CR>
 
 " Diff
@@ -583,7 +583,7 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
-autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-u>Godoc<CR>
+autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-U>Godoc<CR>
 
 " Clojure
 let g:clojure_align_multiline_strings = 1
@@ -675,10 +675,10 @@ if s:bundled('neosnippet')
       set conceallevel=2 concealcursor=i
     endif
 
-    imap <C-k> <Plug>(neosnippet_expand_or_jump)
-    smap <C-k> <Plug>(neosnippet_expand_or_jump)
+    imap <C-K> <Plug>(neosnippet_expand_or_jump)
+    smap <C-K> <Plug>(neosnippet_expand_or_jump)
 
-    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-N>" : "\<TAB>"
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
     " Delete merkers when InsertLeave
@@ -690,8 +690,8 @@ endif
 
 " Shougo/unite-outline {{{
 if s:bundled('unite-outline')
-  nnoremap <silent> <Space>o :<C-u>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
-  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> <Space>o :<C-u>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  nnoremap <silent> <Space>o :<C-U>Unite outline:filetype -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
+  autocmd MyAutoCmd FileType vim nnoremap <buffer> <silent> <Space>o :<C-U>Unite outline:folding -no-start-insert -no-quit -winwidth=35 -direction=rightbelow -vertical<CR>
 endif
 "}}}
 
@@ -717,32 +717,32 @@ if s:bundled('unite.vim')
 
     autocmd MyAutoCmd FileType unite call s:unite_my_settings()
     function! s:unite_my_settings() abort
-      imap <buffer><expr> <C-s> unite#do_action('split')
+      imap <buffer><expr> <C-S> unite#do_action('split')
       " Quit
       nmap <buffer> q <Plug>(unite_exit)
-      nmap <buffer> <C-q> <Plug>(unite_exit)
-      imap <buffer> <C-q> <Plug>(unite_exit)
+      nmap <buffer> <C-Q> <Plug>(unite_exit)
+      imap <buffer> <C-Q> <Plug>(unite_exit)
       " Ctrlp like
-      imap <buffer> <C-j> <Plug>(unite_select_next_line)
-      imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+      imap <buffer> <C-J> <Plug>(unite_select_next_line)
+      imap <buffer> <C-K> <Plug>(unite_select_previous_line)
       " Emacs like
-      imap <buffer> <C-b> <Left>
-      imap <buffer> <C-f> <Right>
-      imap <buffer> <C-a> <Home>
-      imap <buffer> <C-e> <End>
-      imap <buffer> <C-d> <Del>
+      imap <buffer> <C-B> <Left>
+      imap <buffer> <C-F> <Right>
+      imap <buffer> <C-A> <Home>
+      imap <buffer> <C-E> <End>
+      imap <buffer> <C-D> <Del>
     endfunction
   endfunction
   unlet s:bundle
 
-  nnoremap <silent><Space>u :<C-u>Unite buffer bookmark file file_mru<CR>
-  nnoremap <silent><Space>/ :<C-u>Unite line<CR>
+  nnoremap <silent><Space>u :<C-U>Unite buffer bookmark file file_mru<CR>
+  nnoremap <silent><Space>/ :<C-U>Unite line<CR>
   if executable('git')
-    nnoremap <silent> <Space>gf :<C-u>Glcd \| Unite file_rec/git<CR>
-    nnoremap <silent> <Space>gg :<C-u>Glcd \| Unite giti<CR>
-    nnoremap <silent> <Space>gb :<C-u>Glcd \| Unite giti/branch<CR>
-    nnoremap <silent> <Space>gl :<C-u>Glcd \| Unite giti/log -no-start-insert<CR>
-    nnoremap <silent> <Space>gs :<C-u>Glcd \| Unite giti/status<CR>
+    nnoremap <silent> <Space>gf :<C-U>Glcd \| Unite file_rec/git<CR>
+    nnoremap <silent> <Space>gg :<C-U>Glcd \| Unite giti<CR>
+    nnoremap <silent> <Space>gb :<C-U>Glcd \| Unite giti/branch<CR>
+    nnoremap <silent> <Space>gl :<C-U>Glcd \| Unite giti/log -no-start-insert<CR>
+    nnoremap <silent> <Space>gs :<C-U>Glcd \| Unite giti/status<CR>
   endif
 endif
 " }}}
@@ -755,7 +755,7 @@ if s:bundled('vimfiler')
   let g:vimfiler_tree_indentation = 2
   let g:vimfiler_tree_leaf_icon = ' '
 
-  nnoremap <silent><Space>f :<C-u>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
+  nnoremap <silent><Space>f :<C-U>VimFilerBufferDir -buffer-name=explorer -explorer -split -simple -toggle -winwidth=35 -no-quit<CR>
 endif
 "}}}
 
@@ -774,7 +774,7 @@ endif
 
 " basyura/TweetVim {{{
 if s:bundled('TweetVim')
-  nnoremap <Space>tw :<C-u>TweetVimSay<CR>
+  nnoremap <Space>tw :<C-U>TweetVimSay<CR>
 endif
 " }}}
 
@@ -787,10 +787,10 @@ if s:bundled('ctrlp.vim')
     \   'dir': '\v[\\/](out|repl|target)$'
     \ }
   let g:ctrlp_map = '<C-@>'
-  " C-h is backspace (prevent to replace cursor move)
+  " C-H is backspace (prevent to replace cursor move)
   let g:ctrlp_prompt_mappings = {
-    \   'PrtBS()': ['<bs>', '<C-h>', '<C-]>'],
-    \   'PrtCurLeft()': ['<left>', '<C-^>']
+    \   'PrtBS()': ['<BS>', '<C-H>', '<C-]>'],
+    \   'PrtCurLeft()': ['<Left>', '<C-^>']
     \ }
 
   if executable('files')
@@ -850,7 +850,7 @@ if s:bundled('ctrlp.vim')
     endfunction
 
     command! -nargs=0 MemoList call ctrlp#init(<SID>ctrlp_memolist())
-    nnoremap ma :<C-u>MemoList<CR>
+    nnoremap ma :<C-U>MemoList<CR>
   endfunction "}}}
   unlet s:bundle
 endif
@@ -882,7 +882,7 @@ endif
 
 " kannokanno/previm {{{
 if s:bundled('previm')
-  autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> <Space>p :<C-u>PrevimOpen<CR>
+  autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> <Space>p :<C-U>PrevimOpen<CR>
 endif
 "}}}
 
@@ -1040,7 +1040,7 @@ if s:bundled('vim-quickrun')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent><Space>r :<C-u>QuickRun<CR>
+  nnoremap <silent><Space>r :<C-U>QuickRun<CR>
 
   if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
