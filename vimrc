@@ -508,7 +508,7 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-G> <Esc>
 " Delete without line end
-cnoremap <expr> <C-D> (getcmdpos()==strlen(getcmdline())+1 ? "\<C-D>" : "\<Del>")
+cnoremap <expr> <C-D> (getcmdpos()==strlen(getcmdline())+1 ? '<C-D>' : '<Del>')
 
 " Omni completion without select first matching
 inoremap <C-X><C-O> <C-X><C-O><C-P>
@@ -678,8 +678,8 @@ if s:bundled('neosnippet')
     imap <C-K> <Plug>(neosnippet_expand_or_jump)
     smap <C-K> <Plug>(neosnippet_expand_or_jump)
 
-    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-N>" : "\<TAB>"
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : pumvisible() ? '<C-N>' : '<TAB>'
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? '<Plug>(neosnippet_expand_or_jump)' : '<TAB>'
 
     " Delete merkers when InsertLeave
     autocmd MyAutoCmd InsertLeave * NeoSnippetClearMarkers
