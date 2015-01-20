@@ -31,8 +31,6 @@ let s:bundledir = s:vimfiles . '/bundle'
 let s:neobundledir = s:bundledir . '/neobundle.vim'
 let s:snippetsdir = s:vimfiles . '/snippets'
 
-let s:mymemodir = s:homedir . '/memo'
-
 let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
 
 function! s:bundled(bundle) abort
@@ -105,10 +103,6 @@ if s:bundled('neobundle.vim')
   NeoBundle 'kien/rainbow_parentheses.vim'
   NeoBundle 'mattn/emmet-vim'
   NeoBundle 'mattn/sonictemplate-vim'
-  NeoBundle 'mizyoukan/gomigemo-matchers.vim', {
-    \   'depends': 'ctrlpvim/ctrlp.vim',
-    \   'disabled': !executable('gmigemo')
-    \ }
   NeoBundle 'tomtom/tcomment_vim'
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'tpope/vim-surround'
@@ -165,6 +159,10 @@ if s:bundled('neobundle.vim')
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
   NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
+  NeoBundleLazy 'mizyoukan/gomigemo-matchers.vim', {
+    \   'autoload': {'unite_sources': 'mymemo'},
+    \   'disabled': !executable('gmigemo')
+    \ }
   NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
@@ -384,30 +382,6 @@ function! s:capitalize_last_modified() abort
 endfunction
 command! -nargs=0 LastModifiedCapitalize silent call <SID>capitalize_last_modified()
 
-" Create memo file
-function! s:memonew() abort "{{{
-  if !isdirectory(s:mymemodir)
-    echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
-    return
-  endif
-  let l:cmd = getbufvar('%', '&modified') ? 'split' : 'edit'
-  let l:memofile = s:mymemodir . strftime('/%Y/%m/%Y-%m-%d-%H%M%S.md', localtime())
-  let l:memodir = fnamemodify(l:memofile, ':p:h')
-  let l:memotemplate = [
-    \   substitute('# [] <_1_>', '_', '`', 'g'),
-    \   '',
-    \   substitute('<_2_>', '_', '`', 'g')
-    \ ]
-  if !isdirectory(l:memodir)
-    call mkdir(l:memodir, 'p')
-  endif
-  execute l:cmd l:memofile
-  call append(0, l:memotemplate)
-  normal! ggf]
-  startinsert
-endfunction "}}}
-command! -nargs=0 MemoNew call <SID>memonew()
-
 " Rename file
 function! s:renameto(file, bang) abort "{{{
   if filereadable(a:file) && a:bang !=# '!'
@@ -535,6 +509,7 @@ endif
 nnoremap <Space>v. :<C-U>source %:p<CR>
 
 nnoremap mc :<C-U>MemoNew<CR>
+nnoremap ma :<C-U>Unite mymemo<CR>
 
 "}}}
 
@@ -732,6 +707,11 @@ if s:bundled('unite.vim')
       imap <buffer> <C-E> <End>
       imap <buffer> <C-D> <Del>
     endfunction
+
+    call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
+    if s:bundled('gomigemo-matchers.vim')
+      call unite#custom#source('mymemo', 'matchers', 'matcher_gomigemo')
+    endif
   endfunction
   unlet s:bundle
 
@@ -796,63 +776,6 @@ if s:bundled('ctrlp.vim')
   if executable('files')
     let g:ctrlp_user_command = 'files -p %s'
   endif
-
-  " List memo files
-  let s:bundle = neobundle#get('ctrlp.vim')
-  function! s:bundle.hooks.on_post_source(bundle) abort "{{{
-    function! s:memotitle(file) abort
-      for l:line in readfile(a:file, '', 1)
-        return [fnamemodify(a:file, ':t:r'), l:line[2:]]
-      endfor
-      return []
-    endfunction
-
-    function! s:memocomp(lhs, rhs) abort
-      let l:lhs = join(split(a:lhs[:stridx(a:lhs, '|') - 1], '-'), '')
-      let l:rhs = join(split(a:rhs[:stridx(a:rhs, '|') - 1], '-'), '')
-      return l:rhs - l:lhs
-    endfunction
-
-    function! MemoList() abort
-      if !isdirectory(s:mymemodir)
-        echomsg 'Memo dir "' . s:mymemodir . '" is not exist, please makedir.'
-        return []
-      endif
-      return sort(map(filter(map(split(glob(s:mymemodir . '/**/*.md'), "\n"),
-        \ '<SID>memotitle(v:val)'), 'len(v:val) > 0'), 'join(v:val, "|")'), 's:memocomp')
-    endfunction
-
-    function! MemoAccept(mode, str) abort
-      call ctrlp#exit()
-      let l:file = split(a:str, '|')[0]
-      let l:fpath = s:mymemodir . '/' . l:file[:3] . '/' . l:file[5:6] . '/' . l:file . '.md'
-      let l:cmd =
-        \ a:mode ==# 't' ? 'tabedit' :
-        \ a:mode ==# 'h' ? 'split' :
-        \ a:mode ==# 'v' ? 'vsplit' :
-        \ getbufvar('%', '&modified') ? 'split' : 'edit'
-      execute l:cmd l:fpath
-    endfunction
-
-    let g:ctrlp_ext_vars = add(get(g:, 'ctrlp_ext_vars', []), {
-      \   'init': 'MemoList()',
-      \   'accept': 'MemoAccept',
-      \   'lname': 'memolist',
-      \   'sname': 'memolist',
-      \   'type': 'line',
-      \   'sort': 0
-      \ })
-
-    let s:ctrlp_memolist_id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
-
-    function! s:ctrlp_memolist() abort
-      return s:ctrlp_memolist_id
-    endfunction
-
-    command! -nargs=0 MemoList call ctrlp#init(<SID>ctrlp_memolist())
-    nnoremap ma :<C-U>MemoList<CR>
-  endfunction "}}}
-  unlet s:bundle
 endif
 "}}}
 
@@ -901,12 +824,6 @@ endif
 " mattn/sonictemplate-vim {{{
 if s:bundled('sonictemplate-vim')
   let g:sonictemplate_vim_template_dir = s:vimfiles . '/template'
-endif
-" }}}
-
-" mizyoukan/gomigemo-matchers.vim {{{
-if s:bundled('gomigemo-matchers.vim')
-  let g:ctrlp_match_func = {'match': 'g:ctrlp#matcher#gomigemo#match'}
 endif
 " }}}
 
