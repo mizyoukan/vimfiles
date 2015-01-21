@@ -91,9 +91,6 @@ if s:bundled('neobundle.vim')
   endif
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
-  NeoBundle 'basyura/TweetVim', {
-    \   'depends': ['tyru/open-browser.vim', 'basyura/twibill.vim']
-    \ }
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
   NeoBundle 'jiangmiao/auto-pairs'
@@ -144,6 +141,11 @@ if s:bundled('neobundle.vim')
     \     ],
     \     'mappings': '<Plug>(vimshell_'
     \   }
+    \ }
+  NeoBundleLazy 'basyura/TweetVim', {
+    \   'depends': ['tyru/open-browser.vim', 'basyura/twibill.vim'],
+    \   'autoload': {'commands': 'TweetVimSay'},
+    \   'disabled': !executable('curl')
     \ }
   NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
   NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
