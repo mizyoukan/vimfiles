@@ -172,6 +172,7 @@ if s:bundled('neobundle.vim')
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
   NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
+  NeoBundleLazy 'tyru/open-browser.vim', {'autoload': {'functions': 'openbrowser#open'}}
   if !executable('lein') || !has('python')
     NeoBundleDisable 'tpope/vim-fireplace'
   endif
@@ -983,6 +984,13 @@ if s:bundled('vim-fireplace')
   endfunction
   autocmd MyAutoCmd FileType clojure call <SID>my_clojure_mapping()
   autocmd MyAutoCmd FileType clojure command! -nargs=0 Austin :Piggieback (reset! cemerick.austin.repls/browser-repl-env (cemerick.austin/repl-env))
+endif
+"}}}
+
+" tyru/open-browser.vim {{{
+if s:bundled('open-browser.vim')
+  let openbrowser_open_filepath_in_vim = 0
+  autocmd MyAutoCmd FileType html nnoremap <buffer> <Space>p :<C-U>call openbrowser#open(expand('%:p'))<CR>
 endif
 "}}}
 
