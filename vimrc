@@ -509,8 +509,6 @@ else
   nnoremap <Space>vl :<C-U>source ~/.vim/vimrc_local.vim<CR>
 endif
 
-nnoremap <Space>v. :<C-U>source %:p<CR>
-
 nnoremap mc :<C-U>MemoNew<CR>
 nnoremap ma :<C-U>Unite mymemo<CR>
 
@@ -533,6 +531,7 @@ autocmd MyAutoCmd SwapExists * let v:swapchoice = 'o'
 " VimScript
 let g:vim_indent_cont = 2
 autocmd MyAutoCmd FileType vim command! -nargs=0 Vint cexpr system('vint ' . expand('%'))
+autocmd MyAutoCmd FileType vim nnoremap <buffer> <Space>v. :<C-U>source %:p<CR>
 
 " QuickFix
 autocmd MyAutoCmd FileType qf nnoremap <buffer> p <CR>zz<C-W>p
