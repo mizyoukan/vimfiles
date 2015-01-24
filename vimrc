@@ -516,7 +516,7 @@ nnoremap ma :<C-U>Unite mymemo<CR>
 
 " Filetypes {{{
 
-autocmd MyAutoCmd BufEnter * setlocal formatoptions& fo-= fo-=o
+autocmd MyAutoCmd BufEnter * setlocal formatoptions=tcrqjM
 autocmd MyAutoCmd FileType * setlocal textwidth=0
 " Set IME off when insert leave
 autocmd MyAutoCmd InsertLeave * setlocal iminsert=0 imsearch=0
