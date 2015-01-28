@@ -156,14 +156,14 @@ if s:bundled('neobundle.vim')
     \   }
     \ }
   NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
-  NeoBundleLazy 'kannokanno/previm', {
-    \   'depends': 'tyru/open-browser.vim',
-    \   'autoload': {'commands': 'PrevimOpen'}
-    \ }
   NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
   NeoBundleLazy 'mizyoukan/gomigemo-matchers.vim', {
     \   'autoload': {'unite_sources': 'mymemo'},
     \   'disabled': !executable('gmigemo')
+    \ }
+  NeoBundleLazy 'mizyoukan/previm', {
+    \   'depends': 'tyru/open-browser.vim',
+    \   'autoload': {'commands': 'PrevimOpen'}
     \ }
   NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
@@ -802,6 +802,7 @@ endif
 
 " kannokanno/previm {{{
 if s:bundled('previm')
+  let g:previm_parse_yaml_format_matter = 1
   autocmd MyAutoCmd FileType markdown nnoremap <silent> <buffer> <Space>p :<C-U>PrevimOpen<CR>
 endif
 "}}}
