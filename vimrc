@@ -968,6 +968,7 @@ endif
 if s:bundled('tcomment_vim')
   let g:tcomment_types = get(g:, 'tcomment_types', {})
   let g:tcomment_types['markdown'] = '<!-- %s -->'
+  let tcomment#ignore_comment_def = ['clojurescript']
 endif
 " }}}
 
