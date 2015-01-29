@@ -127,7 +127,8 @@ if s:bundled('neobundle.vim')
     \   'autoload': {
     \     'commands': [
     \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
-    \       'VimFilerBufferDir', 'Edit', 'Read', 'Source', 'Write'
+    \       'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',
+    \       'Edit', 'Read', 'Source', 'Write'
     \     ],
     \     'mappings': '<Plug>(vimfiler_',
     \     'explorer': 1
