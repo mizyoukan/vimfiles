@@ -117,7 +117,7 @@ if s:bundled('neobundle.vim')
     \     'mappings': '<Plug>(neosnippet_'
     \   }
     \ }
-  NeoBundleLazy 'Shougo/unite-outline', {'autoload': {'unite_sources': 'outline'}}
+  NeoBundleLazy 'Shougo/unite-outline', {'autoload': {'unite_sources': ['outline']}}
   NeoBundleLazy 'Shougo/unite.vim', {
     \   'depends': 'Shougo/neomru.vim',
     \   'autoload': {'commands': 'Unite'}
@@ -156,9 +156,9 @@ if s:bundled('neobundle.vim')
     \   }
     \ }
   NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
-  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': 'giti'}}
+  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
   NeoBundleLazy 'mizyoukan/gomigemo-matchers.vim', {
-    \   'autoload': {'unite_sources': 'mymemo'},
+    \   'autoload': {'unite_sources': ['mymemo']},
     \   'disabled': !executable('gmigemo')
     \ }
   NeoBundleLazy 'mizyoukan/previm', {
@@ -707,7 +707,7 @@ if s:bundled('unite.vim')
 
     call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
     if s:bundled('gomigemo-matchers.vim')
-      call unite#custom#source('mymemo', 'matchers', 'matcher_gomigemo')
+      call unite#custom#source('mymemo', 'matchers', ['matcher_gomigemo'])
     endif
   endfunction
   unlet s:bundle
