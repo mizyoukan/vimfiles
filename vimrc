@@ -252,6 +252,7 @@ set nowrap
 if has('patch-7.4.338')
   set breakindent
   autocmd MyAutoCmd BufEnter * setlocal breakindentopt=min:20,shift:0
+  autocmd MyAutoCmd FileType {markdown,text} setlocal breakat=
 endif
 
 set fileencodings=utf-8,cp932,euc-jp
