@@ -232,6 +232,8 @@ set mouse=a
 set nrformats=hex
 set scrolloff=5
 set shiftwidth=2
+set sidescroll=1
+set sidescrolloff=5
 set smartcase
 set smartindent
 set softtabstop=2
@@ -486,6 +488,21 @@ cnoremap <expr> <C-D> (getcmdpos()==strlen(getcmdline())+1 ? '<C-D>' : '<Del>')
 
 " Omni completion without select first matching
 inoremap <C-X><C-O> <C-X><C-O><C-P>
+
+" Navigate splits
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+
+" Key repeat hack for resizing splits
+nmap <C-W>+ <C-W>+<SID>ws
+nmap <C-W>- <C-W>-<SID>ws
+nmap <C-W>< <C-W><<SID>ws
+nmap <C>W>> <C>W>><SID>ws
+nnoremap <script> <SID>ws+ <C-W>+<SID>ws
+nnoremap <script> <SID>ws- <C-W>-<SID>ws
+nnoremap <script> <SID>ws< <C-W><<SID>ws
+nnoremap <script> <SID>ws> <C>W>><SID>ws
+nmap <SID>ws <Nop>
 
 " Edit/source vimrc
 nnoremap <Space>ev :<C-U>edit $MYVIMRC<CR>

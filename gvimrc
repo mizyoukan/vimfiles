@@ -54,7 +54,7 @@ if has('win32')
     set guifont=Consolas:h9:cDEFAULT
     set guifontwide=MS_Gothic:h9:cDEFAULT
   endif
-elseif has('gui_macvim')
+elseif has('macunix')
   set linespace=1
   set guifont=Menlo:h12
 elseif has('unix')
@@ -68,7 +68,7 @@ if has('multi_byte_ime') || has('xim')
   highlight CursorIM guibg=#af0000
 endif
 
-if has('gui_macvim')
+if has('macunix')
   " Fix IME auto off
   set imdisable
 endif
