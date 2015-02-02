@@ -88,7 +88,6 @@ if s:bundled('neobundle.vim')
   endif
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
-  NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'dannyob/quickfixstatus'
   NeoBundle 'jiangmiao/auto-pairs'
   NeoBundle 'kana/vim-operator-user'
@@ -769,27 +768,6 @@ if s:bundled('TweetVim')
   nnoremap <Space>tw :<C-U>TweetVimSay<CR>
 endif
 " }}}
-
-" ctrlpvim/ctrlp.vim {{{
-if s:bundled('ctrlp.vim')
-  let g:ctrlp_cache_dir = s:cachedir . '/ctrlp'
-  let g:ctrlp_clear_cache_on_exit = 0
-  let g:ctrlp_custom_ignore = {
-    \   'file': '\v\.(dll|exe|jar|so)$',
-    \   'dir': '\v[\\/](out|repl|target)$'
-    \ }
-  let g:ctrlp_map = '<C-@>'
-  " C-H is backspace (prevent to replace cursor move)
-  let g:ctrlp_prompt_mappings = {
-    \   'PrtBS()': ['<BS>', '<C-H>', '<C-]>'],
-    \   'PrtCurLeft()': ['<Left>', '<C-^>']
-    \ }
-
-  if executable('files')
-    let g:ctrlp_user_command = 'files -p %s'
-  endif
-endif
-"}}}
 
 " jiangmiao/auto-pairs {{{
 if neobundle#is_installed('auto-pairs')
