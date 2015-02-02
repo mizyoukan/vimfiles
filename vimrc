@@ -149,7 +149,6 @@ if s:bundled('neobundle.vim')
     \   'disabled': !executable('curl')
     \ }
   NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
-  NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': 'scala'}}
   NeoBundleLazy 'junegunn/vim-easy-align', {
     \   'autoload': {
     \     'commands': ['EasyAlign', 'LiveEasyAlign'],
