@@ -88,7 +88,6 @@ if s:bundled('neobundle.vim')
   endif
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
-  NeoBundle 'dannyob/quickfixstatus'
   NeoBundle 'jiangmiao/auto-pairs'
   NeoBundle 'kana/vim-operator-user'
   NeoBundle 'kana/vim-textobj-line'
@@ -145,6 +144,7 @@ if s:bundled('neobundle.vim')
     \   'disabled': !executable('curl')
     \ }
   NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
+  NeoBundleLazy 'dannyob/quickfixstatus', {'autoload': {'commands': 'QuickfixStatusEnable'}}
   NeoBundleLazy 'junegunn/vim-easy-align', {
     \   'autoload': {
     \     'commands': ['EasyAlign', 'LiveEasyAlign'],
