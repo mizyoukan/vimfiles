@@ -1,10 +1,7 @@
 let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 
 " colorscheme
-try
-  colorscheme sol
-catch
-endtry
+silent! colorscheme sol
 
 " Ignore beep
 set visualbell t_vb=

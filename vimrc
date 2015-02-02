@@ -11,10 +11,7 @@ if filereadable(s:vimfiles . '/vimrc_local_pre.vim')
 endif
 
 " Popup if has already opened other Vim
-try
-  runtime macros/editexisting.vim
-catch /E122:/
-endtry
+silent! runtime macros/editexisting.vim
 
 " Prevent to multi boot
 if has('gui_running') && has('clientserver') && v:servername ==# 'GVIM1'
@@ -804,10 +801,7 @@ endif
 " jnurmine/Zenburn {{{
 if s:bundled('Zenburn')
   if !has('win32') && !has('gui_running')
-    try
-      colorscheme zenburn
-    catch
-    endtry
+    silent! colorscheme zenburn
   endif
 endif
 " }}}
