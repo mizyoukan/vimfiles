@@ -185,7 +185,6 @@ if s:bundled('neobundle.vim')
   " colorscheme
   NeoBundle 'Pychimp/vim-sol'
   NeoBundle 'jnurmine/Zenburn'
-  NeoBundle 'jonathanfilip/vim-lucius'
 
   call neobundle#end()
 
