@@ -638,6 +638,12 @@ if s:bundled('neocomplete.vim')
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
     call neocomplete#custom#source('omni', 'disabled_filetypes', {'go': 1, 'clojure': 1})
+
+    if s:bundled('auto-pairs')
+      " Close popup and delete backword char
+      inoremap <expr> <C-H> pumvisible() ? neocomplete#smart_close_popup().'<C-H>' : AutoPairsDelete()
+      inoremap <expr> <BS> pumvisible() ? neocomplete#smart_close_popup().'<C-H>' : AutoPairsDelete()
+    endif
   endfunction
   unlet s:bundle
 endif
@@ -770,6 +776,10 @@ endif
 
 " jiangmiao/auto-pairs {{{
 if neobundle#is_installed('auto-pairs')
+  " For avoiding conflict with neocomplete.vim
+  if s:bundled('neocomplete.vim')
+    let g:AutoPairsMapBS = 0
+  endif
   let g:AutoPairsMapSpace = 0
   autocmd MyAutoCmd FileType lisp,clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
 endif
