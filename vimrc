@@ -89,7 +89,6 @@ if s:bundled('neobundle.vim')
 
   NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
   NeoBundle 'jiangmiao/auto-pairs'
-  NeoBundle 'kana/vim-operator-user'
   NeoBundle 'kana/vim-textobj-line'
   NeoBundle 'kana/vim-textobj-user'
   NeoBundle 'kien/rainbow_parentheses.vim'
