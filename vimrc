@@ -305,6 +305,8 @@ function! MyFoldText() abort "{{{
   return l:left . repeat(' ', l:spacecount) . l:right
 endfunction "}}}
 set fillchars=vert:\|
+set foldlevel=99
+set foldlevelstart=99
 set foldmethod=marker
 set foldopen&
 set foldopen-=block
@@ -543,9 +545,6 @@ autocmd MyAutoCmd FileType vim nnoremap <buffer> <Space>v. :<C-U>source %:p<CR>
 autocmd MyAutoCmd FileType qf nnoremap <buffer> p <CR>zz<C-W>p
 autocmd MyAutoCmd FileType qf nnoremap <buffer> q :quit<CR>
 
-" Diff
-autocmd MyAutoCmd FileType diff setlocal foldlevel=99
-
 " Help
 autocmd MyAutoCmd FileType help setlocal nolist
 autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
@@ -554,8 +553,6 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
 autocmd MyAutoCmd FileType neosnippet setlocal noexpandtab
 
 " Git
-autocmd MyAutoCmd FileType git setlocal foldlevel=99
-autocmd MyAutoCmd FileType gitcommit setlocal foldlevel=99
 
 " Python
 autocmd MyAutoCmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=8
@@ -564,7 +561,6 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 
 " Golang
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
-autocmd MyAutoCmd FileType go setlocal foldlevel=99 foldmethod=syntax foldnestmax=1
 autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-U>Godoc<CR>
 
@@ -582,7 +578,6 @@ autocmd MyAutoCmd BufNewFile,BufRead *.gradle setfiletype groovy
 " Markdown
 autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
-autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
 autocmd MyAutoCmd FileType {markdown,text} setlocal breakat=
 let g:markdown_fenced_languages = [
   \   'diff',
