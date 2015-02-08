@@ -220,11 +220,13 @@ set iminsert=0
 set imsearch=0
 set incsearch
 set laststatus=2
+set linebreak
 set list lcs=tab:^_,trail:_
 set mouse=a
 set nrformats=hex
 set scrolloff=5
 set shiftwidth=2
+set showbreak=>\ "
 set sidescroll=1
 set sidescrolloff=5
 set smartcase
@@ -242,12 +244,9 @@ set wildignore+=*.DS_Store
 set wildmenu
 set nowrap
 
-if has('linebreak')
+if has('patch-7.4.338')
   set breakindent
-  set linebreak
-  set showbreak=>\ "
   autocmd MyAutoCmd BufEnter * setlocal breakindentopt=min:20,shift:0
-  autocmd MyAutoCmd FileType {markdown,text} setlocal breakat=
 endif
 
 set fileencodings=utf-8,cp932,euc-jp
@@ -584,6 +583,7 @@ autocmd MyAutoCmd BufNewFile,BufRead *.gradle setfiletype groovy
 autocmd MyAutoCmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
 autocmd MyAutoCmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
 autocmd MyAutoCmd FileType markdown setlocal foldlevel=99 foldlevelstart=99
+autocmd MyAutoCmd FileType {markdown,text} setlocal breakat=
 let g:markdown_fenced_languages = [
   \   'diff',
   \   'dosbatch',
