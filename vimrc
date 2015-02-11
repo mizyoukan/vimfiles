@@ -895,7 +895,10 @@ if s:bundled('vim-quickrun')
       \ }
 
     if has('win32')
-      let g:quickrun_config.dosbatch = {'runner': 'system'}
+      let g:quickrun_config.dosbatch = {
+        \   'runner': 'system',
+        \   'hook/output_encode/encoding': 'cp932'
+        \ }
 
       let g:quickrun_config.vb = {
         \   'command': 'CScript',
