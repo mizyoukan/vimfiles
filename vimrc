@@ -729,11 +729,10 @@ if s:bundled('unite.vim')
   nnoremap <silent> <Space>u :<C-U>Unite buffer bookmark file file_mru<CR>
   nnoremap <silent> <Space>/ :<C-U>Unite line<CR>
   if executable('git')
+    nnoremap <silent> <Space>gb :<C-U>Glcd \| Unite giti/branch<CR>
     nnoremap <silent> <Space>gf :<C-U>Glcd \| Unite file_rec/git<CR>
     nnoremap <silent> <Space>gg :<C-U>Glcd \| Unite giti<CR>
-    nnoremap <silent> <Space>gb :<C-U>Glcd \| Unite giti/branch<CR>
     nnoremap <silent> <Space>gl :<C-U>Glcd \| Unite giti/log -no-start-insert<CR>
-    nnoremap <silent> <Space>gs :<C-U>Glcd \| Unite giti/status<CR>
   endif
 endif
 " }}}
@@ -977,6 +976,12 @@ if s:bundled('vim-fireplace')
   endfunction
   autocmd MyAutoCmd FileType clojure call <SID>my_clojure_mapping()
   autocmd MyAutoCmd FileType clojure command! -nargs=0 Austin :Piggieback (reset! cemerick.austin.repls/browser-repl-env (cemerick.austin/repl-env))
+endif
+"}}}
+
+" tpope/vim-fugitive {{{
+if s:bundled('vim-fugitive')
+  nnoremap <silent> <Space>gs :<C-U>Gstatus<CR>
 endif
 "}}}
 
