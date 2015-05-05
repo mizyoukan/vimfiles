@@ -750,7 +750,7 @@ if s:bundled('unite.vim')
   endfunction
   unlet s:bundle
 
-  nnoremap <silent> <Space>u :<C-U>Unite buffer bookmark file file_mru<CR>
+  nnoremap <silent> <Space>u :<C-U>Unite buffer bookmark file_mru directory_mru<CR>
   nnoremap <silent> <Space>/ :<C-U>Unite line<CR>
   if executable('git')
     nnoremap <silent> <Space>gb :<C-U>Glcd \| Unite giti/branch<CR>
