@@ -615,6 +615,26 @@ endfunction "}}}
 " VBScript
 autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
+" OCaml
+if executable('opam')
+  let s:opam_share = substitute(system('opam config var share'), '\n$', '', '''')
+
+  " Merlin
+  let s:merlin = s:opam_share . '/merlin'
+  if isdirectory(s:merlin) && stridx(&runtimepath, s:merlin) == -1
+    execute 'set runtimepath+=' . s:merlin . '/vim'
+  endif
+
+  " ocp-indent
+  let s:ocp_indent = s:opam_share . '/vim/syntax/ocp-indent.vim'
+  if filereadable(s:ocp_indent)
+    augroup OcpIndent
+      autocmd!
+      autocmd FileType ocaml execute 'source' s:ocp_indent
+    augroup END
+  endif
+endif
+
 "}}}
 
 " Plugins {{{
@@ -634,6 +654,9 @@ if s:bundled('neocomplete.vim')
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
     call neocomplete#custom#source('omni', 'disabled_filetypes', {'go': 1, 'clojure': 1})
+
+    let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
+    let g:neocomplete#sources#omni#input_patterns.ocaml = '\h\w*\.'
 
     if s:bundled('auto-pairs')
       " Close popup and delete backword char
@@ -777,6 +800,7 @@ if neobundle#is_installed('auto-pairs')
   endif
   let g:AutoPairsMapSpace = 0
   autocmd MyAutoCmd FileType lisp,clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
+  autocmd MyAutoCmd FileType ocaml let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
 endif
 "}}}
 
@@ -921,6 +945,11 @@ if s:bundled('vim-quickrun')
         \   'hook/output_encode/encoding': 'cp932',
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
         \ }
+    endif
+
+    " OCaml
+    if executable('coretop')
+      let g:quickrun_config.ocaml = { 'command': 'coretop' }
     endif
 
     " Silent syntax checker
