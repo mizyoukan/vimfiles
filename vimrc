@@ -28,7 +28,7 @@ let s:bundledir = s:vimfiles . '/bundle'
 let s:neobundledir = s:bundledir . '/neobundle.vim'
 let s:snippetsdir = s:vimfiles . '/snippets'
 
-let s:has_go = executable('go') && isdirectory(expand('$GOPATH'))
+let s:has_go = isdirectory(expand('$GOPATH')) && executable('go')
 
 function! s:bundled(bundle) abort
   if !isdirectory(s:bundledir)
@@ -168,7 +168,7 @@ if s:bundled('neobundle.vim')
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
   NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
   NeoBundleLazy 'tyru/open-browser.vim', {'autoload': {'functions': 'openbrowser#open'}}
-  if !executable('lein') || !has('python')
+  if !has('python') || !executable('lein')
     NeoBundleDisable 'tpope/vim-fireplace'
   endif
 
@@ -536,7 +536,7 @@ autocmd MyAutoCmd BufEnter * setlocal formatoptions=tcrqjM
 autocmd MyAutoCmd FileType * setlocal textwidth=0
 " Set IME off when insert leave
 autocmd MyAutoCmd InsertLeave * setlocal iminsert=0 imsearch=0
-if executable('fcitx-remote')
+if has('unix') && executable('fcitx-remote')
   set ttimeoutlen=150
   autocmd MyAutoCmd InsertLeave * call system('fcitx-remote -c')
 endif
@@ -622,7 +622,7 @@ endfunction "}}}
 autocmd MyAutoCmd FileType vb setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
 " OCaml
-if executable('opam')
+if !has('win32') && executable('opam')
   let s:opam_share = substitute(system('opam config var share'), '\n$', '', '''')
 
   " Merlin
@@ -954,7 +954,7 @@ if s:bundled('vim-quickrun')
     endif
 
     " OCaml
-    if executable('coretop')
+    if !has('win32') && executable('coretop')
       let g:quickrun_config.ocaml = { 'command': 'coretop' }
     endif
 
