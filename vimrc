@@ -300,7 +300,7 @@ function! MyFoldText() abort "{{{
   let l:left = getline(v:foldstart) . ' ...'
   let l:foldedlinecount = v:foldend - v:foldstart
   let l:right = '[' . l:foldedlinecount . '] '
-  let l:numbercolwidth = &foldcolumn + (&number || &relativenumber) * &numberwidth
+  let l:numbercolwidth = &foldcolumn + (&number || &relativenumber) * (&numberwidth + 1)
   let l:linewidth = winwidth(0) - l:numbercolwidth
   let l:spacecount = l:linewidth - strdisplaywidth(l:left) - strwidth(l:right)
   return l:left . repeat(' ', l:spacecount) . l:right
