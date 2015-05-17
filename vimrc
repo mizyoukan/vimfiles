@@ -221,12 +221,11 @@ set imsearch=0
 set incsearch
 set laststatus=2
 set linebreak
-set list lcs=tab:^_,trail:_
+set list
 set mouse=a
 set nrformats=hex
 set scrolloff=5
 set shiftwidth=2
-set showbreak=>\ "
 set sidescroll=1
 set sidescrolloff=5
 set smartcase
@@ -244,6 +243,14 @@ set wildignore+=*.swp,*.swo,*.swn
 set wildignore+=*.DS_Store
 set wildmenu
 set nowrap
+
+if has('win32') && !has('gui_running')
+  set listchars=tab:^_,trail:_,extends:>,precedes:<
+  let &showbreak = '> '
+else
+  set listchars=tab:▸-,trail:_,extends:￫,precedes:￩
+  let &showbreak = '↳ '
+endif
 
 if has('patch-7.4.338')
   set breakindent
@@ -305,7 +312,7 @@ function! MyFoldText() abort "{{{
   let l:spacecount = l:linewidth - strdisplaywidth(l:left) - strwidth(l:right)
   return l:left . repeat(' ', l:spacecount) . l:right
 endfunction "}}}
-set fillchars=vert:\|
+let &fillchars = 'vert: ,diff: '
 set foldlevel=99
 set foldlevelstart=99
 set foldmethod=marker
@@ -562,7 +569,6 @@ autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 
 " Golang
 autocmd MyAutoCmd FileType go setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4
-autocmd MyAutoCmd FileType go setlocal list listchars=tab:\ \ ,trail:_
 autocmd MyAutoCmd FileType go nnoremap <buffer> K :<C-U>Godoc<CR>
 
 " Clojure
