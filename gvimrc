@@ -6,10 +6,6 @@ silent! colorscheme sol
 " Ignore beep
 set visualbell t_vb=
 
-" Fix corruption of menu text
-source $VIMRUNTIME/delmenu.vim
-set langmenu=ja_JP.UTF-8
-source $VIMRUNTIME/menu.vim
 
 set guioptions&
 " Display horizontal scrollbar (limit length of the cursor line)
@@ -30,15 +26,6 @@ if has('win32')
     endif
   endfunction
   nnoremap <F11> :call ToggleFullscreen()<CR>
-endif
-
-" Popup menu
-if has('win32')
-  function! OpenWinExplorer()
-    execute '!start explorer /select,' . shellescape(expand('%:p'))
-  endfunction
-  nmenu PopUp.-Sep- :
-  nmenu <silent> PopUp.Open\ Explorer(&E) :call OpenWinExplorer()<CR>
 endif
 
 " Font
