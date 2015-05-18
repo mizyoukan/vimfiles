@@ -6,10 +6,6 @@ scriptencoding utf-8
 
 let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
 
-if filereadable(s:vimfiles . '/vimrc_local_pre.vim')
-  execute 'source' s:vimfiles . '/vimrc_local_pre.vim'
-endif
-
 " Popup if has already opened other Vim
 silent! runtime macros/editexisting.vim
 
