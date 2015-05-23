@@ -1017,6 +1017,7 @@ endif
 
 " tpope/vim-fugitive {{{
 if s:bundled('vim-fugitive')
+  nnoremap <silent> <Space>gd :<C-U>Gdiff<CR>
   nnoremap <silent> <Space>gs :<C-U>Gstatus<CR>
 endif
 "}}}
