@@ -805,8 +805,7 @@ if neobundle#is_installed('auto-pairs')
     let g:AutoPairsMapBS = 0
   endif
   let g:AutoPairsMapSpace = 0
-  autocmd MyAutoCmd FileType lisp,clojure let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
-  autocmd MyAutoCmd FileType ocaml let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
+  autocmd MyAutoCmd FileType lisp,clojure,ocaml let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
 endif
 "}}}
 
