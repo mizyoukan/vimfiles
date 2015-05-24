@@ -152,18 +152,22 @@ if s:bundled('neobundle.vim')
     \ }
   NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
   NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
-  NeoBundleLazy 'mizyoukan/gomigemo-matchers.vim', {
-    \   'autoload': {'unite_sources': ['mymemo']},
-    \   'disabled': !executable('gmigemo')
-    \ }
   NeoBundleLazy 'mizyoukan/previm', {
     \   'depends': 'tyru/open-browser.vim',
     \   'autoload': {'commands': 'PrevimOpen'}
     \ }
+  NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
   NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
-  NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
+  NeoBundleLazy 'osyo-manga/vim-vigemo', {
+    \   'autoload': {
+    \     'commands': 'VigemoSearch',
+    \     'mappings': '<Plug>(vigemo-search)',
+    \     'unite_sources': 'mymemo'
+    \   },
+    \   'disabled': !executable('cmigemo')
+    \ }
   NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
   NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
   NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
@@ -750,8 +754,8 @@ if s:bundled('unite.vim')
     endfunction
 
     call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
-    if s:bundled('gomigemo-matchers.vim')
-      call unite#custom#source('mymemo', 'matchers', ['matcher_gomigemo'])
+    if s:bundled('vim-vigemo')
+      call unite#custom#source('mymemo', 'matchers', 'matcher_vigemo')
     endif
   endfunction
   unlet s:bundle
@@ -905,6 +909,12 @@ if s:bundled('vim-textobj-multitextobj')
   omap ib <Plug>(textobj-multitextobj-i)
   vmap ab <Plug>(textobj-multitextobj-a)
   vmap ib <Plug>(textobj-multitextobj-i)
+endif
+"}}}
+
+" osyo-manga/vim-vigemo {{{
+if s:bundled('vim-vigemo')
+  nmap m/ <Plug>(vigemo-search)
 endif
 "}}}
 
