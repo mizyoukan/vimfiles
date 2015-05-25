@@ -66,124 +66,128 @@ endif
 if s:bundled('neobundle.vim')
   call neobundle#begin(s:bundledir)
 
-  NeoBundleFetch 'Shougo/neobundle.vim'
+  if neobundle#load_cache()
+    NeoBundleFetch 'Shougo/neobundle.vim'
 
-  " Use bundled plugin when windows-kaoriya
-  if !has('win32') || !has('kaoriya')
-    NeoBundle 'Shougo/vimproc', {
-      \   'build': {
-      \     'mac'  : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak'
+    " Use bundled plugin when windows-kaoriya
+    if !has('win32') || !has('kaoriya')
+      NeoBundle 'Shougo/vimproc', {
+        \   'build': {
+        \     'mac'  : 'make -f make_mac.mak',
+        \     'unix' : 'make -f make_unix.mak'
+        \   }
+        \ }
+    endif
+
+    if has('unix')
+      NeoBundle 'vim-jp/vimdoc-ja'
+      set helplang=ja,en
+    endif
+
+    NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
+    NeoBundle 'jiangmiao/auto-pairs'
+    NeoBundle 'kana/vim-textobj-line'
+    NeoBundle 'kana/vim-textobj-user'
+    NeoBundle 'kien/rainbow_parentheses.vim'
+    NeoBundle 'mattn/emmet-vim'
+    NeoBundle 'mattn/sonictemplate-vim'
+    NeoBundle 'tomtom/tcomment_vim'
+    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'tpope/vim-surround'
+    NeoBundleLazy 'Shougo/neocomplete.vim', {
+      \   'autoload': {'insert': 1},
+      \   'disabled': !has('lua'),
+      \   'vim_version' : '7.3.885'
+      \ }
+    NeoBundleLazy 'Shougo/neosnippet', {
+      \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
+      \   'autoload': {
+      \     'insert': 1,
+      \     'commands': 'NeoSnippetEdit',
+      \     'filename_patterns': '\.snip$',
+      \     'mappings': '<Plug>(neosnippet_'
       \   }
       \ }
-  endif
+    NeoBundleLazy 'Shougo/unite-outline', {'autoload': {'unite_sources': ['outline']}}
+    NeoBundleLazy 'Shougo/unite.vim', {
+      \   'depends': 'Shougo/neomru.vim',
+      \   'autoload': {'commands': 'Unite'}
+      \ }
+    NeoBundleLazy 'Shougo/vimfiler', {
+      \   'depends': 'Shougo/unite.vim',
+      \   'autoload': {
+      \     'commands': [
+      \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
+      \       'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',
+      \       'Edit', 'Read', 'Source', 'Write'
+      \     ],
+      \     'mappings': '<Plug>(vimfiler_',
+      \     'explorer': 1
+      \   }
+      \ }
+    NeoBundleLazy 'Shougo/vimshell', {
+      \   'autoload': {
+      \     'commands': [
+      \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
+      \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
+      \     ],
+      \     'mappings': '<Plug>(vimshell_'
+      \   }
+      \ }
+    NeoBundleLazy 'basyura/TweetVim', {
+      \   'depends': ['tyru/open-browser.vim', 'basyura/twibill.vim'],
+      \   'autoload': {'commands': 'TweetVimSay'},
+      \   'disabled': !executable('curl')
+      \ }
+    NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
+    NeoBundleLazy 'dannyob/quickfixstatus', {'autoload': {'commands': 'QuickfixStatusEnable'}}
+    NeoBundleLazy 'junegunn/vim-easy-align', {
+      \   'autoload': {
+      \     'commands': ['EasyAlign', 'LiveEasyAlign'],
+      \     'mappings': '<Plug>(EasyAlign)'
+      \   }
+      \ }
+    NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
+    NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
+    NeoBundleLazy 'mizyoukan/previm', {
+      \   'depends': 'tyru/open-browser.vim',
+      \   'autoload': {'commands': 'PrevimOpen'}
+      \ }
+    NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
+    NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
+    NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
+    NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
+    NeoBundleLazy 'osyo-manga/vim-vigemo', {
+      \   'autoload': {
+      \     'commands': 'VigemoSearch',
+      \     'mappings': '<Plug>(vigemo-search)',
+      \     'unite_sources': 'mymemo'
+      \   },
+      \   'disabled': !executable('cmigemo')
+      \ }
+    NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
+    NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
+    NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
+    NeoBundleLazy 'tyru/open-browser.vim', {'autoload': {'functions': 'openbrowser#open'}}
+    if !has('python') || !executable('lein')
+      NeoBundleDisable 'tpope/vim-fireplace'
+    endif
 
-  if has('unix')
-    NeoBundle 'vim-jp/vimdoc-ja'
-    set helplang=ja,en
-  endif
+    if s:has_go
+      NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
+      NeoBundleLazy 'nsf/gocode', {'rtp': 'vim', 'autoload': {'filetypes': 'go'}}
+      call neobundle#config('gocode', {'build': {
+        \ 'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
+        \ 'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+        \ }})
+    endif
 
-  NeoBundle 'Yggdroot/indentLine', {'disabled': !has('conceal')}
-  NeoBundle 'jiangmiao/auto-pairs'
-  NeoBundle 'kana/vim-textobj-line'
-  NeoBundle 'kana/vim-textobj-user'
-  NeoBundle 'kien/rainbow_parentheses.vim'
-  NeoBundle 'mattn/emmet-vim'
-  NeoBundle 'mattn/sonictemplate-vim'
-  NeoBundle 'tomtom/tcomment_vim'
-  NeoBundle 'tpope/vim-fugitive'
-  NeoBundle 'tpope/vim-surround'
-  NeoBundleLazy 'Shougo/neocomplete.vim', {
-    \   'autoload': {'insert': 1},
-    \   'disabled': !has('lua'),
-    \   'vim_version' : '7.3.885'
-    \ }
-  NeoBundleLazy 'Shougo/neosnippet', {
-    \   'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets'],
-    \   'autoload': {
-    \     'insert': 1,
-    \     'commands': 'NeoSnippetEdit',
-    \     'filename_patterns': '\.snip$',
-    \     'mappings': '<Plug>(neosnippet_'
-    \   }
-    \ }
-  NeoBundleLazy 'Shougo/unite-outline', {'autoload': {'unite_sources': ['outline']}}
-  NeoBundleLazy 'Shougo/unite.vim', {
-    \   'depends': 'Shougo/neomru.vim',
-    \   'autoload': {'commands': 'Unite'}
-    \ }
-  NeoBundleLazy 'Shougo/vimfiler', {
-    \   'depends': 'Shougo/unite.vim',
-    \   'autoload': {
-    \     'commands': [
-    \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
-    \       'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',
-    \       'Edit', 'Read', 'Source', 'Write'
-    \     ],
-    \     'mappings': '<Plug>(vimfiler_',
-    \     'explorer': 1
-    \   }
-    \ }
-  NeoBundleLazy 'Shougo/vimshell', {
-    \   'autoload': {
-    \     'commands': [
-    \       {'name': 'VimShell', 'complete': 'customlist,vimshell#complete'},
-    \       'VimShellExecute', 'VimShellInteractive', 'VimShellTerminal', 'VimShellPop', 'VimShellTab'
-    \     ],
-    \     'mappings': '<Plug>(vimshell_'
-    \   }
-    \ }
-  NeoBundleLazy 'basyura/TweetVim', {
-    \   'depends': ['tyru/open-browser.vim', 'basyura/twibill.vim'],
-    \   'autoload': {'commands': 'TweetVimSay'},
-    \   'disabled': !executable('curl')
-    \ }
-  NeoBundleLazy 'cohama/vim-hier', {'autoload': {'commands': ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
-  NeoBundleLazy 'dannyob/quickfixstatus', {'autoload': {'commands': 'QuickfixStatusEnable'}}
-  NeoBundleLazy 'junegunn/vim-easy-align', {
-    \   'autoload': {
-    \     'commands': ['EasyAlign', 'LiveEasyAlign'],
-    \     'mappings': '<Plug>(EasyAlign)'
-    \   }
-    \ }
-  NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
-  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
-  NeoBundleLazy 'mizyoukan/previm', {
-    \   'depends': 'tyru/open-browser.vim',
-    \   'autoload': {'commands': 'PrevimOpen'}
-    \ }
-  NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
-  NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
-  NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
-  NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
-  NeoBundleLazy 'osyo-manga/vim-vigemo', {
-    \   'autoload': {
-    \     'commands': 'VigemoSearch',
-    \     'mappings': '<Plug>(vigemo-search)',
-    \     'unite_sources': 'mymemo'
-    \   },
-    \   'disabled': !executable('cmigemo')
-    \ }
-  NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
-  NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
-  NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
-  NeoBundleLazy 'tyru/open-browser.vim', {'autoload': {'functions': 'openbrowser#open'}}
-  if !has('python') || !executable('lein')
-    NeoBundleDisable 'tpope/vim-fireplace'
-  endif
+    " colorscheme
+    NeoBundle 'Pychimp/vim-sol'
+    NeoBundle 'jnurmine/Zenburn'
 
-  if s:has_go
-    NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
-    NeoBundleLazy 'nsf/gocode', {'rtp': 'vim', 'autoload': {'filetypes': 'go'}}
-    call neobundle#config('gocode', {'build': {
-      \ 'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
-      \ 'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
-      \ }})
+    NeoBundleSaveCache
   endif
-
-  " colorscheme
-  NeoBundle 'Pychimp/vim-sol'
-  NeoBundle 'jnurmine/Zenburn'
 
   call neobundle#end()
 
