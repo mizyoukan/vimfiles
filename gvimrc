@@ -6,7 +6,6 @@ silent! colorscheme sol
 " Ignore beep
 set visualbell t_vb=
 
-
 set guioptions&
 " Display horizontal scrollbar (limit length of the cursor line)
 set guioptions+=b
@@ -56,11 +55,5 @@ if has('macunix')
   " Fix IME auto off
   set imdisable
 endif
-
-" Edit/source gvimrc
-nnoremap <Space>eg :<C-U>edit $MYGVIMRC<CR>
-nnoremap <Space>sg :<C-U>split $MYGVIMRC<CR>
-nnoremap <Space>vv :<C-U>source $MYVIMRC \| source $MYGVIMRC<CR>
-nnoremap <Space>vg :<C-U>source $MYGVIMRC<CR>
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC

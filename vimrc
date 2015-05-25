@@ -513,10 +513,17 @@ nmap <SID>ws <Nop>
 " Edit/source vimrc
 nnoremap <Space>ev :<C-U>edit $MYVIMRC<CR>
 nnoremap <Space>sv :<C-U>split $MYVIMRC<CR>
-nnoremap <Space>vv :<C-U>source $MYVIMRC<CR>
-nnoremap <Space>eg <Nop>
-nnoremap <Space>sg <Nop>
-nnoremap <Space>vg <Nop>
+if has('gui_running')
+  nnoremap <Space>vv :<C-U>source $MYVIMRC \| source $MYGVIMRC<CR>
+  nnoremap <Space>eg :<C-U>edit $MYGVIMRC<CR>
+  nnoremap <Space>sg :<C-U>split $MYGVIMRC<CR>
+  nnoremap <Space>vg :<C-U>source $MYGVIMRC<CR>
+else
+  nnoremap <Space>vv :<C-U>source $MYVIMRC<CR>
+  nnoremap <Space>eg <Nop>
+  nnoremap <Space>sg <Nop>
+  nnoremap <Space>vg <Nop>
+endif
 
 " Edit/source local vimrc
 if has('win32')
