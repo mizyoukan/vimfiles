@@ -407,12 +407,6 @@ command! -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC
 
-" Reopen file in a different format
-command! Utf8 edit ++enc=utf8 %
-command! Cp932 edit ++enc=cp932 %
-command! Unix edit ++ff=unix %
-command! Dos edit ++ff=dos %
-
 " Change local directory to git root
 function! s:lcd_gitroot(dir) abort "{{{
   let l:curr = fnamemodify(a:dir, ':p')
