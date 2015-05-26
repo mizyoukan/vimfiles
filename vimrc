@@ -392,18 +392,23 @@ command! -nargs=0 LastModifiedCapitalize silent call <SID>capitalize_last_modifi
 
 " Rename file
 function! s:renameto(file, bang) abort "{{{
-  if filereadable(a:file) && a:bang !=# '!'
-    echomsg 'File already exists'
-  elseif isdirectory(a:file)
-    echomsg 'Directory with same name already exists'
+  let l:old = expand('%:p')
+  if !filereadable(l:old)
+    echomsg 'Current buffer is not a file'
   else
-    let l:prev = expand('%')
-    execute 'saveas' . a:bang a:file
-    call delete(l:prev)
-    execute 'bdelete' l:prev
+    let l:new = expand('%:p:h') . '/' . fnamemodify(a:file, ':t')
+    if filereadable(l:new) && a:bang !=# '!'
+      echomsg 'File already exists'
+    elseif isdirectory(l:old)
+      echomsg 'Directory with same name already exists'
+    else
+      execute 'saveas' l:new
+      call delete(l:old)
+      execute 'bdelete' l:old
+    endif
   endif
 endfunction "}}}
-command! -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
+command! -complete=file -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
 
 command! -bang MyScouter Scouter<bang> $MYVIMRC
 
