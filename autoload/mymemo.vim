@@ -25,7 +25,7 @@ function! mymemo#new(title) abort
   let l:title_rows = filter(map(copy(g:mymemo_template),
     \ 'v:val =~# "title:\\s*" ? v:key+1 : 0'), 'v:val')
   if len(l:title_rows) > 0
-    call setpos('.', [0, l:title_rows[0], 1, 0])
+    call cursor(l:title_rows[0], 1)
     startinsert!
   endif
 endfunction
