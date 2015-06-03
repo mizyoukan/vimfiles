@@ -30,6 +30,19 @@ function! mymemo#new(title) abort
   endif
 endfunction
 
+function! mymemo#update_date() abort
+  if getline(1) !=# '---' | return | endif
+  for l:i in range(2, 10)
+    let l:line = getline(l:i)
+    if l:line ==# '---'
+      return
+    elseif l:line =~# '^date:'
+      call setline(l:i, 'date: ' . strftime('%Y-%m-%d %H:%M', localtime()))
+      return
+    endif
+  endfor
+endfunction
+
 function! s:apply_template(template, items) abort
   let l:mx = '<`\d:\(\w\+\)`>'
   return map(copy(a:template), '

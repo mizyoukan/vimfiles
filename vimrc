@@ -537,6 +537,7 @@ endif
 
 nnoremap mc :<C-U>MemoNew<CR>
 nnoremap ma :<C-U>Unite mymemo<CR>
+autocmd MyAutoCmd BufWritePre *.md call mymemo#update_date()
 
 "}}}
 
