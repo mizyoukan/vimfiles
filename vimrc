@@ -769,6 +769,7 @@ if s:bundled('unite.vim')
 
   nnoremap <silent> <Space>u :<C-U>Unite buffer bookmark file_mru directory_mru<CR>
   nnoremap <silent> <Space>/ :<C-U>Unite line<CR>
+  nnoremap <silent> <Space>s :<C-U>Unite grep:$buffers::.<CR>
   if executable('git')
     nnoremap <silent> <Space>gb :<C-U>Glcd \| Unite giti/branch<CR>
     nnoremap <silent> <Space>gf :<C-U>Glcd \| Unite file_rec/git<CR>
