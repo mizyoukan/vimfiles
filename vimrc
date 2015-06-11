@@ -818,6 +818,12 @@ if neobundle#is_installed('auto-pairs')
   endif
   let g:AutoPairsMapSpace = 0
   autocmd MyAutoCmd FileType lisp,clojure,ocaml let b:AutoPairs = {'(':')', '[':']', '{':'}', '"':'"'}
+  if has('unix') && !has('gui_running')
+    set <M-e>=<Esc>e
+    imap <Esc>e <M-e>
+    set <M-n>=<Esc>n
+    imap <Esc>n <M-n>
+  endif
 endif
 "}}}
 
