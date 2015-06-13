@@ -155,8 +155,6 @@ if s:bundled('neobundle.vim')
       \ }
     NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload': {'unite_sources': ['quickfix', 'location_list']}}
     NeoBundleLazy 'osyo-manga/vim-anzu', {'autoload': {'mappings': '<Plug>(anzu-'}}
-    NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
-    NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {'autoload': {'mappings': '<Plug>(textobj-multitextobj-'}}
     NeoBundleLazy 'osyo-manga/vim-vigemo', {
       \   'autoload': {
       \     'commands': 'VigemoSearch',
@@ -875,57 +873,6 @@ if s:bundled('vim-anzu')
   nmap N <Plug>(anzu-N-with-echo)
   nmap * <Plug>(anzu-star-with-echo)
   nmap # <Plug>(anzu-sharp-with-echo)
-endif
-"}}}
-
-" osyo-manga/vim-textobj-multiblock {{{
-if s:bundled('vim-textobj-multiblock')
-  let g:textobj_multiblock_blocks = [
-    \   ['(', ')'],
-    \   ['[', ']'],
-    \   ['{', '}'],
-    \   ['<', '>']
-    \ ]
-  "Disable default settings
-  let g:textobj#multiblock#default_blocks = []
-endif
-"}}}
-
-" osyo-manga/vim-textobj-multitextobj {{{
-if s:bundled('vim-textobj-multitextobj')
-  let g:textobj_multitextobj_textobjects_i = [
-    \   '<Plug>(textobj-multiblock-i)',
-    \   '<Plug>(textobj-jabraces-parens-i)',
-    \   '<Plug>(textobj-jabraces-braces-i)',
-    \   '<Plug>(textobj-jabraces-brackets-i)',
-    \   '<Plug>(textobj-jabraces-angles-i)',
-    \   '<Plug>(textobj-jabraces-double-angles-i)',
-    \   '<Plug>(textobj-jabraces-kakko-i)',
-    \   '<Plug>(textobj-jabraces-double-kakko-i)',
-    \   '<Plug>(textobj-jabraces-yama-kakko-i)',
-    \   '<Plug>(textobj-jabraces-double-yama-kakko-i)',
-    \   '<Plug>(textobj-jabraces-kikkou-kakko-i)',
-    \   '<Plug>(textobj-jabraces-sumi-kakko-i)'
-    \ ]
-  let g:textobj_multitextobj_textobjects_a = [
-    \   '<Plug>(textobj-multiblock-a)',
-    \   '<Plug>(textobj-jabraces-parens-a)',
-    \   '<Plug>(textobj-jabraces-braces-a)',
-    \   '<Plug>(textobj-jabraces-brackets-a)',
-    \   '<Plug>(textobj-jabraces-angles-a)',
-    \   '<Plug>(textobj-jabraces-double-angles-a)',
-    \   '<Plug>(textobj-jabraces-kakko-a)',
-    \   '<Plug>(textobj-jabraces-double-kakko-a)',
-    \   '<Plug>(textobj-jabraces-yama-kakko-a)',
-    \   '<Plug>(textobj-jabraces-double-yama-kakko-a)',
-    \   '<Plug>(textobj-jabraces-kikkou-kakko-a)',
-    \   '<Plug>(textobj-jabraces-sumi-kakko-a)',
-    \ ]
-
-  omap ab <Plug>(textobj-multitextobj-a)
-  omap ib <Plug>(textobj-multitextobj-i)
-  vmap ab <Plug>(textobj-multitextobj-a)
-  vmap ib <Plug>(textobj-multitextobj-i)
 endif
 "}}}
 
