@@ -94,6 +94,7 @@ if s:bundled('neobundle.vim')
     NeoBundle 'tomtom/tcomment_vim'
     NeoBundle 'tpope/vim-fugitive'
     NeoBundle 'tpope/vim-surround'
+    NeoBundle 'vim-jp/vital.vim'
     NeoBundleLazy 'Shougo/neocomplete.vim', {
       \   'autoload': {'insert': 1},
       \   'disabled': !has('lua'),
@@ -426,6 +427,9 @@ endfunction "}}}
 
 " Convert Markdown -> HTML
 command! -nargs=? -range=% MarkdownToHTML call markdown_to_html#exec(<q-args>, <line1>, <line2>)
+
+" Register expenses
+command! -nargs=0 ExpensesRegister call expenses_register#exec()
 
 "}}}
 
