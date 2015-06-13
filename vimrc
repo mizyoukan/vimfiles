@@ -426,6 +426,9 @@ function! s:lcd_gitroot(dir) abort "{{{
   echo 'Git root is not found of [' . fnamemodify(a:dir, ':p') . ']'
 endfunction "}}}
 
+" Convert Markdown -> HTML
+command! -nargs=? -range=% MarkdownToHTML call markdown_to_html#exec(<q-args>, <line1>, <line2>)
+
 "}}}
 
 " Key mappings {{{
