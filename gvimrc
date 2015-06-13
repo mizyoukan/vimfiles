@@ -14,6 +14,9 @@ set guioptions+=h
 set guioptions-=T
 set guioptions-=m
 
+" Switch off blinking
+set guicursor=a:blinkon0
+
 if has('win32')
   function! ToggleFullscreen()
     if &guioptions =~# 'C'
