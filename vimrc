@@ -425,10 +425,10 @@ function! s:lcd_gitroot(dir) abort "{{{
   echo 'Git root is not found of [' . fnamemodify(a:dir, ':p') . ']'
 endfunction "}}}
 
-" Convert Markdown -> HTML
+" Convert Markdown -> HTML <autoload/markdown_to_html.vim>
 command! -nargs=? -range=% MarkdownToHTML call markdown_to_html#exec(<q-args>, <line1>, <line2>)
 
-" Register expenses
+" Register expenses <autoload/expenses_register.vim>
 command! -nargs=0 ExpensesRegister call expenses_register#exec()
 
 "}}}
@@ -540,6 +540,7 @@ else
   nnoremap <Space>vl :<C-U>source ~/.vim/vimrc_local.vim<CR>
 endif
 
+" My memo <autoload/mymemo.vim> <autoload/unite/sources/mymemo.vim>
 nnoremap mc :<C-U>MemoNew<CR>
 nnoremap ma :<C-U>Unite mymemo<CR>
 autocmd MyAutoCmd BufWritePre *.md call mymemo#update_date()
@@ -575,8 +576,6 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
 
 " Snippet
 autocmd MyAutoCmd FileType neosnippet setlocal noexpandtab
-
-" Git
 
 " Python
 autocmd MyAutoCmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=8
