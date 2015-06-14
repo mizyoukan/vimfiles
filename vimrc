@@ -1001,7 +1001,7 @@ endif
 
 " tyru/open-browser.vim {{{
 if s:bundled('open-browser.vim')
-  let openbrowser_open_filepath_in_vim = 0
+  let g:openbrowser_open_filepath_in_vim = 0
   autocmd MyAutoCmd FileType html nnoremap <buffer> <Space>p :<C-U>call openbrowser#open(expand('%:p'))<CR>
 endif
 "}}}
