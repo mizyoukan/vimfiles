@@ -540,16 +540,10 @@ else
   nnoremap <Space>vg <Nop>
 endif
 
-" Edit/source local vimrc
-if has('win32')
-  nnoremap <Space>el :<C-U>edit $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-  nnoremap <Space>sl :<C-U>split $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-  nnoremap <Space>vl :<C-U>source $USERPROFILE\vimfiles\vimrc_local.vim<CR>
-else
-  nnoremap <Space>el :<C-U>edit ~/.vim/vimrc_local.vim<CR>
-  nnoremap <Space>sl :<C-U>split ~/.vim/vimrc_local.vim<CR>
-  nnoremap <Space>vl :<C-U>source ~/.vim/vimrc_local.vim<CR>
-endif
+" Edit/source vimrc_local.vim
+execute 'nnoremap <Space>el :edit' s:vimfiles . '/vimrc_local.vim' . '<CR>'
+execute 'nnoremap <Space>sl :split' s:vimfiles . '/vimrc_local.vim' . '<CR>'
+execute 'nnoremap <Space>vl :source' s:vimfiles . '/vimrc_local.vim' . '<CR>'
 
 " My memo <autoload/mymemo.vim> <autoload/unite/sources/mymemo.vim>
 nnoremap mc :<C-U>MemoNew<CR>
