@@ -223,6 +223,7 @@ set iminsert=0
 set imsearch=0
 set incsearch
 set laststatus=2
+set lazyredraw
 set linebreak
 set list
 set mouse=a
