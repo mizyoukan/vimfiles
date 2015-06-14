@@ -330,9 +330,7 @@ function! s:letandmkdir(var, path) abort "{{{
       call mkdir(a:path, 'p')
     endif
   catch
-    echohl WarningMsg
-    echom '[error] failed to mkdir: ' . a:path
-    echohl None
+    echohl WarningMsg | echomsg 'Failed to mkdir "' . a:path '"' | echohl None
   endtry
   execute printf('let %s = a:path', a:var)
 endfunction "}}}
@@ -433,7 +431,9 @@ function! s:lcd_gitroot(dir) abort "{{{
     endif
     let l:curr = fnamemodify(l:curr, ':h')
   endwhile
-  echo 'Git root is not found of [' . fnamemodify(a:dir, ':p') . ']'
+  echohl WarningMsg
+  echo 'Git root is not found of "' . fnamemodify(a:dir, ':p') . '"'
+  echohl None
 endfunction "}}}
 
 " Convert Markdown -> HTML <autoload/markdown_to_html.vim>
