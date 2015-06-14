@@ -410,7 +410,11 @@ function! s:renameto(file, bang) abort "{{{
 endfunction "}}}
 command! -complete=file -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
 
-command! -bang MyScouter Scouter<bang> $MYVIMRC
+if has('gui_running')
+  command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
+else
+  command! -bang MyScouter Scouter<bang> $MYVIMRC
+endif
 
 " Change local directory to git root
 function! s:lcd_gitroot(dir) abort "{{{

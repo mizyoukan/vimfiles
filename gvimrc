@@ -58,5 +58,3 @@ if has('macunix')
   " Fix IME auto off
   set imdisable
 endif
-
-command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
