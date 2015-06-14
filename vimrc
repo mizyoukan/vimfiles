@@ -13,7 +13,7 @@ silent! runtime macros/editexisting.vim
 if has('gui_running') && has('clientserver') && v:servername ==# 'GVIM1'
   let s:file = expand('%:p')
   bwipeout
-  call remote_send('GVIM', '<ESC>:tabnew ' . s:file . '<CR>')
+  call remote_send('GVIM', '<Esc>:tabnew ' . s:file . '<CR>')
   call remote_foreground('GVIM')
   quit
 endif
@@ -446,7 +446,7 @@ noremap <Space>j %
 nnoremap Y y$
 
 " Highlight off
-nnoremap <silent> <ESC><ESC> :nohlsearch<CR><ESC>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 nnoremap <silent> <C-L> :<C-U>nohlsearch<CR><C-L>
 
 " Select command history
