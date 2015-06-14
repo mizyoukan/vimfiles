@@ -391,24 +391,30 @@ endfunction
 command! -nargs=0 LastModifiedCapitalize silent call <SID>capitalize_last_modified()
 
 " Rename file
-function! s:renameto(file, bang) abort "{{{
+function! s:rename(bang) abort "{{{
   let l:old = expand('%:p')
-  if !filereadable(l:old)
-    echomsg 'Current buffer is not a file'
-  else
-    let l:new = expand('%:p:h') . '/' . fnamemodify(a:file, ':t')
-    if filereadable(l:new) && a:bang !=# '!'
-      echomsg 'File already exists'
-    elseif isdirectory(l:old)
-      echomsg 'Directory with same name already exists'
-    else
-      execute 'saveas' l:new
-      call delete(l:old)
-      execute 'bdelete' l:old
-    endif
+  if !filereadable(old)
+    echohl WarningMsg | echo "Current buffer is not a file" | echohl None
+    return
   endif
+  let l:prompt = "Rename file to: "
+  let l:new = input(l:prompt, l:old, 'file')
+  if l:new ==# '' || l:new ==? l:old
+    return
+  endif
+  if isdirectory(l:new)
+    let l:new .= '/' . fnamemodify(l:old, ':t')
+  endif
+  if filereadable(l:new) && a:bang !=# '!'
+    echohl WarningMsg | echo "\nDestination file already exists" | echohl None
+    return
+  endif
+  silent execute 'saveas'.a:bang l:new
+  call delete(l:old)
+  silent execute 'bdelete' l:old
+  echo "Rename file: \"" . l:old . "\" -> \"" . l:new . "\""
 endfunction "}}}
-command! -complete=file -nargs=1 -bang RenameTo call <SID>renameto(<q-args>, '<bang>')
+command! -nargs=0 -bang Rename call <SID>rename('<bang>')
 
 if has('gui_running')
   command! -bang MyScouter Scouter<bang> $MYVIMRC $MYGVIMRC
