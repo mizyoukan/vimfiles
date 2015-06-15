@@ -9,7 +9,9 @@ let g:markdown_to_html#codehilite_css_class =
 
 function! markdown_to_html#exec(file, line1, line2) abort
   if !has('python3')
-    echoerr "markdown_to_html must install python3 and library of markdown, pygments")
+    echohl WarningMsg
+    echomsg "markdown_to_html must install python3 and library of markdown, pygments"
+    echohl None
     return
   endif
 
