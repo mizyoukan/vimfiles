@@ -823,7 +823,7 @@ endif
 " }}}
 
 " jiangmiao/auto-pairs {{{
-if neobundle#is_installed('auto-pairs')
+if s:bundled('auto-pairs')
   " For avoiding conflict with neocomplete.vim
   if s:bundled('neocomplete.vim')
     let g:AutoPairsMapBS = 0
