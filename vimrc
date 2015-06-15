@@ -688,6 +688,9 @@ if s:bundled('neocomplete.vim')
       " Close popup and delete backword char
       inoremap <expr> <C-H> pumvisible() ? neocomplete#smart_close_popup().'<C-H>' : AutoPairsDelete()
       inoremap <expr> <BS> pumvisible() ? neocomplete#smart_close_popup().'<C-H>' : AutoPairsDelete()
+    else
+      inoremap <expr> <C-H> neocomplete#smart_close_popup().'<C-H>'
+      inoremap <expr> <BS> neocomplete#smart_close_popup().'<C-H>'
     endif
   endfunction
   unlet s:bundle
