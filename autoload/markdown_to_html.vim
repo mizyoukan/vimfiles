@@ -46,7 +46,7 @@ def markdown_to_html(line1, line2):
   css_path = vim.vars["markdown_to_html#css_path"]
   if os.path.exists(css_path):
     html.append("<style>")
-    with open(css_path, 'r') as reader:
+    with open(css_path, 'r', encoding="utf-8") as reader:
       html.extend([x.rstrip() for x in reader])
     html.append("</style>")
 

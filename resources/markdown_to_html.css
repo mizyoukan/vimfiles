@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 html {
   background: #fff;
   margin: 0;
@@ -5,7 +7,7 @@ html {
 }
 
 body {
-  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
   font-size: 14px;
   line-height: 1.6;
   margin: 0 auto;
