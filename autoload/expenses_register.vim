@@ -11,14 +11,14 @@ let s:format_date_str = get(g:, 'expenses_register#format_date', '%Y-%m-%d')
 
 " [[label, type, required, use history to candidate]]
 let s:items = get(g:, 'expenses_register#items', [
-  \   ["日付",   'date',   1, 0],
-  \   ["支出額", 'number', 1, 0],
-  \   ["タグ",   'string', 0, 1],
-  \   ["メモ",   'string', 0, 1]
+  \   ['日付',   'date',   1, 0],
+  \   ['支出額', 'number', 1, 0],
+  \   ['タグ',   'string', 0, 1],
+  \   ['メモ',   'string', 0, 1]
   \ ])
 
 let s:candidates_default = get(g:, 'expenses_register#candidates_default', {
-  \   'タグ': ["食費", "書籍", "光熱費", "交通費"]
+  \   'タグ': ['食費', '書籍', '光熱費', '交通費']
   \ })
 
 let s:candidates = {}
@@ -73,7 +73,7 @@ function! expenses_register#register() abort
   let values = map(split(text, '|'), 's:S.trim(v:val)')
   let error_messages = s:validate(values)
   if len(error_messages) > 0
-    echohl WarningMsg | echo "Save error: " . error_messages[0] | echohl None
+    echohl WarningMsg | echo 'Save error: ' . error_messages[0] | echohl None
     return
   endif
   if s:file_format ==? 'csv'
@@ -83,7 +83,7 @@ function! expenses_register#register() abort
   endif
   call writefile([text], s:file_save_path, 'a')
   bdelete!
-  echo "Saved new expenses."
+  echo 'Saved new expenses.'
 endfunction
 
 function! expenses_register#next_select() abort
@@ -100,18 +100,18 @@ endfunction
 
 function! s:validate(values) abort
   let error_messages = []
-  let values = extend(a:values, repeat([""], len(s:items)-len(a:values)))
+  let values = extend(a:values, repeat([''], len(s:items)-len(a:values)))
   for [item, value] in s:L.zip(s:items, values)
     let [name, type, required] = item[:2]
-    if required && value ==# ""
-      call add(error_messages, name . " requires value")
+    if required && value ==# ''
+      call add(error_messages, name . ' requires value')
     elseif type ==# 'date'
-      if s:format_date(value, s:format_date_str) ==# ""
-        call add(error_messages, name . " invalid format")
+      if s:format_date(value, s:format_date_str) ==# ''
+        call add(error_messages, name . ' invalid format')
       endif
     elseif type ==# 'number'
       if value !~# '^\d\+$'
-        call add(error_messages, name . " invalid format")
+        call add(error_messages, name . ' invalid format')
       endif
     endif
   endfor
@@ -185,7 +185,7 @@ function! s:set_cursor(index) abort
   let inc = a:index+1
   let values = split(getline('.'), '|')
   if inc >= len(values)
-    normal $
+    normal! $
   else
     let action = 'normal 0' . inc . 't|'
     if values[a:index] =~# '^\s*$'
@@ -208,7 +208,7 @@ function! s:format_date(string, format) abort
       return s:D.from_format(prefix . a:string, format).format(a:format)
     endif
   endfor
-  return ""
+  return ''
 endfunction
 
 function! s:load_candidates() abort
