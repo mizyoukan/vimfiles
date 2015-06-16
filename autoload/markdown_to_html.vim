@@ -13,7 +13,7 @@ let g:markdown_to_html#converts_image_to_base64 =
 function! markdown_to_html#exec(file, line1, line2) abort
   if !has('python3')
     echohl WarningMsg
-    echomsg "markdown_to_html must install python3 and library of markdown, pygments"
+    echomsg 'markdown_to_html must install python3 and library of markdown, pygments'
     echohl None
     return
   endif
