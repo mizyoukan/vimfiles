@@ -84,7 +84,10 @@ def markdown_to_html(line1, line2):
   if os.path.exists(css_path):
     html.append("<style>")
     with open(css_path, 'r', encoding="utf-8") as reader:
-      html.extend([x.rstrip() for x in reader])
+      style = [x.rstrip() for x in reader]
+      if len(style) > 0 and style[0].find("@charset") == 0:
+        style = style[1:]
+      html.extend(style)
     html.append("</style>")
 
   html.append("</head>")
