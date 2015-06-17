@@ -148,7 +148,6 @@ if s:bundled('neobundle.vim')
       \     'mappings': '<Plug>(EasyAlign)'
       \   }
       \ }
-    NeoBundleLazy 'kana/vim-textobj-jabraces', {'autoload': {'mappings': '<Plug>(textobj-jabraces-'}}
     NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
     NeoBundleLazy 'mizyoukan/previm', {
       \   'depends': 'tyru/open-browser.vim',
