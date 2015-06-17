@@ -535,9 +535,6 @@ if has('gui_running')
   nnoremap <Space>vg :<C-U>source $MYGVIMRC<CR>
 else
   nnoremap <Space>vv :<C-U>source $MYVIMRC<CR>
-  nnoremap <Space>eg <Nop>
-  nnoremap <Space>sg <Nop>
-  nnoremap <Space>vg <Nop>
 endif
 
 " Edit/source vimrc_local.vim
@@ -759,8 +756,6 @@ if s:bundled('unite.vim')
       imap <buffer> <expr> <C-S> unite#do_action('split')
       " Quit
       nmap <buffer> q <Plug>(unite_exit)
-      nmap <buffer> <C-Q> <Plug>(unite_exit)
-      imap <buffer> <C-Q> <Plug>(unite_exit)
       " Ctrlp like
       imap <buffer> <C-J> <Plug>(unite_select_next_line)
       imap <buffer> <C-K> <Plug>(unite_select_previous_line)
