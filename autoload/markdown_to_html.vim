@@ -40,13 +40,19 @@ class HTMLBase64EncodeParser(HTMLParser):
   def handle_endtag(self, tag):
     self.writer.write("</" + tag + ">")
 
-  def handle_data(self, data):
-    self.writer.write(data)
-
   def handle_startendtag(self, tag, attrs):
     self.writer.write("<" + tag)
     self._write_attrs(tag, attrs)
     self.writer.write(" />")
+
+  def handle_data(self, data):
+    self.writer.write(data)
+
+  def handle_entityref(self, name):
+    self.writer.write("&" + name + ";")
+
+  def handle_charref(self, name):
+    self.writer.write("&#" + name + ";")
 
   def _write_attrs(self, tag, attrs):
     for [k, v] in attrs:
