@@ -929,6 +929,13 @@ if s:bundled('vim-quickrun')
         \   'hook/output_encode/encoding': 'cp932',
         \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
         \ }
+
+      let g:quickrun_config['nim'] = {
+        \   'command': 'nim',
+        \   'cmdopt': 'compile --run --verbosity:0',
+        \   'hook/sweep/files': ['%S:p:r', '%S:p:r.exe'],
+        \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
+        \ }
     endif
 
     " OCaml
@@ -961,6 +968,12 @@ if s:bundled('vim-quickrun')
       \   'outputter': 'silent_quickfix'
       \ }
 
+    let g:quickrun_config['nim/syntaxcheck'] = {
+      \   'type': 'nim',
+      \   'exec': '%c check --hints:off --listfullpaths %s %a',
+      \   'outputter': 'silent_quickfix'
+      \ }
+
     autocmd MyAutoCmd FileType quickrun nnoremap <buffer> q :quit<CR>
   endfunction
   unlet s:bundle
@@ -970,6 +983,8 @@ if s:bundled('vim-quickrun')
   if s:has_go
     autocmd MyAutoCmd BufWritePost *.go QuickRun go/syntaxcheck
   endif
+
+  autocmd MyAutoCmd BufWritePost *.nim QuickRun nim/syntaxcheck
 endif
 
 "}}}
