@@ -10,6 +10,9 @@ let g:markdown_to_html#codehilite_css_class =
 let g:markdown_to_html#converts_image_to_base64 =
   \ get(g:, 'markdown_to_html#converts_image_to_base64', 1)
 
+let g:markdown_to_html#trunc_whitespace_in_jp_text =
+  \ get(g:, 'markdown_to_html#trunc_whitespace_in_jp_text', 1)
+
 function! markdown_to_html#exec(file, line1, line2) abort
   if !has('python3')
     echohl WarningMsg
@@ -18,27 +21,38 @@ function! markdown_to_html#exec(file, line1, line2) abort
     return
   endif
 
-  py3 << EOF
+  python3 << EOF
 import base64
+from functools import reduce
 from html.parser import HTMLParser
 import io
 import markdown
 import mimetypes
 import os.path
+import re
 import vim
 
 class HTMLBase64EncodeParser(HTMLParser):
-  def __init__(self, writer):
+  def __init__(self, writer, trunc_whitespace_in_jp_text=0):
     HTMLParser.__init__(self)
     self.writer = writer
+    self.in_pre = False
+    if trunc_whitespace_in_jp_text > 0:
+      self.trunc_whitespace_in_jp_text = self._trunc_whitespace_in_jp_text
+    else:
+      self.trunc_whitespace_in_jp_text = lambda x: x
 
   def handle_starttag(self, tag, attrs):
     self.writer.write("<" + tag)
     self._write_attrs(tag, attrs)
     self.writer.write(">")
+    if tag == 'pre':
+      self.in_pre = True
 
   def handle_endtag(self, tag):
     self.writer.write("</" + tag + ">")
+    if tag == 'pre':
+      self.in_pre = False
 
   def handle_startendtag(self, tag, attrs):
     self.writer.write("<" + tag)
@@ -46,6 +60,7 @@ class HTMLBase64EncodeParser(HTMLParser):
     self.writer.write(" />")
 
   def handle_data(self, data):
+    data = self.trunc_whitespace_in_jp_text(data)
     self.writer.write(data)
 
   def handle_entityref(self, name):
@@ -63,12 +78,23 @@ class HTMLBase64EncodeParser(HTMLParser):
           v = "data:{0};base64,{1}".format(mime, b64.decode('utf-8'))
       self.writer.write(' {0}="{1}"'.format(k, v))
 
+  def _trunc_whitespace_in_jp_text(self, data):
+    if self.in_pre:
+      return data
+    lines = re.split(r'\r\n|\r|\n', data)
+    def f(a, b):
+      a = a.rstrip()
+      b = b.lstrip()
+      if re.search(r'[\x01-\x7E]$', a) != None and re.search(r'^[\x01-\x7E]', b) != None:
+        return a + ' ' + b
+      return a + b
+    return reduce(f, lines)
+
 def markdown_to_html(line1, line2):
   css_class = vim.vars['markdown_to_html#codehilite_css_class']
   md = markdown.Markdown(
     extensions=['markdown.extensions.extra',
                 'markdown.extensions.codehilite',
-                'markdown.extensions.nl2br',
                 'markdown.extensions.sane_lists',
                 'markdown.extensions.meta'],
     extension_configs={'markdown.extensions.codehilite': {'css_class': css_class}}
@@ -100,9 +126,10 @@ def markdown_to_html(line1, line2):
   html.append("<body>")
 
   converts_image_to_base64 = vim.vars["markdown_to_html#converts_image_to_base64"]
+  trunc_whitespace_in_jp_text = vim.vars['markdown_to_html#trunc_whitespace_in_jp_text']
   if converts_image_to_base64 > 0:
     with io.StringIO() as writer:
-      parser = HTMLBase64EncodeParser(writer)
+      parser = HTMLBase64EncodeParser(writer, trunc_whitespace_in_jp_text)
       parser.feed(body)
       html.extend(writer.getvalue().split('\n'))
   else:
