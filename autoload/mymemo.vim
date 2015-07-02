@@ -2,12 +2,12 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! mymemo#new(title) abort
-  if !isdirectory(g:mymemo_root) | return | endif
-  if len(g:mymemo_filename) == 0 | return | endif
+  if !isdirectory(g:mymemo#root) | return | endif
+  if len(g:mymemo#filename) == 0 | return | endif
 
   let l:time = localtime()
 
-  let l:file = fnamemodify(g:mymemo_root, ':p') . strftime(g:mymemo_filename, l:time)
+  let l:file = fnamemodify(g:mymemo#root, ':p') . strftime(g:mymemo#filename, l:time)
   let l:dir = fnamemodify(l:file, ':p:h')
   if !isdirectory(l:dir)
     call mkdir(l:dir, 'p')
@@ -18,11 +18,11 @@ function! mymemo#new(title) abort
 
   let l:items = {
     \   'title': a:title,
-    \   'date': strftime('%Y-%m-%d %H:%M', l:time)
+    \   'date': strftime('%Y-%m-%d %H:%M:%S', l:time)
     \ }
-  call append(0, s:apply_template(g:mymemo_template, l:items))
+  call append(0, s:apply_template(g:mymemo#template, l:items))
 
-  let l:title_rows = filter(map(copy(g:mymemo_template),
+  let l:title_rows = filter(map(copy(g:mymemo#template),
     \ 'v:val =~# "title:\\s*" ? v:key+1 : 0'), 'v:val')
   if len(l:title_rows) > 0
     call cursor(l:title_rows[0], 1)
@@ -37,7 +37,7 @@ function! mymemo#update_date() abort
     if l:line ==# '---'
       return
     elseif l:line =~# '^date:'
-      call setline(l:i, 'date: ' . strftime('%Y-%m-%d %H:%M', localtime()))
+      call setline(l:i, 'date: ' . strftime('%Y-%m-%d %H:%M:%S', localtime()))
       return
     endif
   endfor

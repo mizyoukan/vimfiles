@@ -12,10 +12,10 @@ let s:source = {
   \ }
 
 function! s:source.gather_candidates(args, context) abort
-  if !isdirectory(g:mymemo_root) | return [] | endif
+  if !isdirectory(g:mymemo#root) | return [] | endif
 
-  let l:file_pattern = fnamemodify(g:mymemo_root, ':p') . '/**/*.' .
-    \ fnamemodify(g:mymemo_filename, ':e')
+  let l:file_pattern = fnamemodify(g:mymemo#root, ':p') . '/**/*.' .
+    \ fnamemodify(g:mymemo#filename, ':e')
 
   return map(split(glob(l:file_pattern), "\n"), '{
     \   "word": s:candidate_word(v:val),
@@ -25,7 +25,7 @@ function! s:source.gather_candidates(args, context) abort
 endfunction
 
 function! s:candidate_word(file) abort
-  let l:head = readfile(a:file, '', len(g:mymemo_template))
+  let l:head = readfile(a:file, '', len(g:mymemo#template))
   let l:dict = {}
   call map(map(filter(copy(l:head),
     \ 'match(v:val, "^\\w\\+:") == 0'),

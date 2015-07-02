@@ -6,10 +6,11 @@ let g:loaded_mymemo = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:mymemo_root = get(g:, 'mymemo_root', expand(has('win32')? '$USERPROFILE' : '$HOME') . '/memo')
-let g:mymemo_filename = get(g:, 'mymemo_filename', '/%Y/%m/%Y-%m-%d-%H%M%S.md')
-let g:mymemo_template = get(g:, 'mymemo_template', map([
+let g:mymemo#root = get(g:, 'mymemo#root', expand('~/memo'))
+let g:mymemo#filename = get(g:, 'mymemo#filename', '%Y/%m/%Y-%m-%d-%H%M%S.md')
+let g:mymemo#template = get(g:, 'mymemo#template', map([
   \   '---',
+  \   'layout: post',
   \   'title: <_1:title_>',
   \   'date: <_2:date_>',
   \   'tags: [<_3_>]',
