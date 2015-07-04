@@ -971,6 +971,7 @@ if s:bundled('vim-quickrun')
     let g:quickrun_config['nim/syntaxcheck'] = {
       \   'type': 'nim',
       \   'exec': '%c check --hints:off --listfullpaths %s %a',
+      \   'hook/sweep/files': [],
       \   'outputter': 'silent_quickfix'
       \ }
 
