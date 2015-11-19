@@ -934,7 +934,7 @@ if s:bundled('vim-quickrun')
         \   'command': 'nim',
         \   'cmdopt': 'compile --run --verbosity:0',
         \   'hook/sweep/files': ['%S:p:r', '%S:p:r.exe'],
-        \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
+        \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1'', '''')}.nim'
         \ }
     endif
 
