@@ -586,7 +586,7 @@ autocmd MyAutoCmd FileType help nnoremap <buffer> q :quit<CR>
 autocmd MyAutoCmd FileType neosnippet setlocal noexpandtab
 
 " Python
-autocmd MyAutoCmd FileType python setlocal shiftwidth=4 softtabstop=4 tabstop=8
+autocmd MyAutoCmd FileType python setlocal shiftwidth=2 softtabstop=2 tabstop=4
 autocmd MyAutoCmd FileType python setlocal cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd MyAutoCmd FileType python inoremap <buffer> # X#
 
