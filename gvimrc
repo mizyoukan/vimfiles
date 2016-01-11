@@ -1,6 +1,16 @@
-let s:vimfiles = expand(has('win32') ? '$USERPROFILE/vimfiles' : '$HOME/.vim')
-
 " colorscheme
+augroup colorscheme_sol
+  autocmd!
+  autocmd ColorScheme sol highlight Comment guifg=#a0a0a0
+  autocmd ColorScheme sol highlight Folded guifg=#8d8d8d
+  autocmd ColorScheme sol highlight IncSearch guibg=#9999ff
+  autocmd ColorScheme sol highlight MatchParen guibg=#8d8d8d
+  autocmd ColorScheme sol highlight Search guibg=#ccccff
+  autocmd ColorScheme sol highlight SpecialKey guifg=#b592e8
+  autocmd ColorScheme sol highlight StatusLine guibg=#404040 guifg=#dfdfdf
+  autocmd ColorScheme sol highlight StatusLineNC guibg=#8d8d8d guifg=#dfdfdf
+  autocmd ColorScheme sol highlight CursorIM guibg=#af0000
+augroup END
 silent! colorscheme sol
 
 " Ignore beep
@@ -18,7 +28,7 @@ set guioptions-=m
 set guicursor=a:blinkon0
 
 if has('win32')
-  function! ToggleFullscreen()
+  function! s:toggle_fullscreen()
     if &guioptions =~# 'C'
       set guioptions-=C
       simalt ~r
@@ -27,7 +37,7 @@ if has('win32')
       simalt ~x
     endif
   endfunction
-  nnoremap <F11> :call ToggleFullscreen()<CR>
+  nnoremap <F11> :<C-U>call <SID>toggle_fullscreen()<CR>
 endif
 
 " Font
@@ -49,12 +59,7 @@ elseif has('unix')
   endif
 endif
 
-if has('multi_byte_ime') || has('xim')
-  " Change caret color when set IME on
-  highlight CursorIM guibg=#af0000
-endif
-
 if has('macunix')
-  " Fix IME auto off
+  " IME auto off
   set imdisable
 endif

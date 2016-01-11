@@ -1,7 +1,5 @@
-bundle/
-.backup/
-.cache/
-.undo/
-.swap/
-vimrc_local*.vim
-gvimrc_local*.vim
+**/.*
+!/.gitignore
+/plugged/
+/autoload/plug.vim
+vimrc_local.vim
