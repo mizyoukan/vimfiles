@@ -111,6 +111,7 @@ if s:bundled('neobundle.vim')
       \ }
     NeoBundleLazy 'Shougo/unite-outline', {'autoload': {'unite_sources': ['outline']}}
     NeoBundleLazy 'Shougo/unite.vim', {
+      \   'rev': 'ff4b233',
       \   'depends': 'Shougo/neomru.vim',
       \   'autoload': {'commands': 'Unite'}
       \ }
