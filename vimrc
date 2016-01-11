@@ -35,6 +35,17 @@ function! s:init_plug() abort
 endfunction
 
 function! s:load_plug() abort
+  function! BuildGocode(info) abort
+    if executable('go') && isdirectory(expand('$GOPATH/bin'))
+      if has('win32')
+        let cmd = 'go build -ldflags -H=windowsgui && copy /Y .\\gocode.exe ' . expand('$GOPATH\\bin\\')
+      else
+        let cmd = 'go build && cp ./gocode ' . expand('$GOPATH/bin/')
+      endif
+      silent call system(cmd)
+    endif
+  endfunction
+
   call plug#begin(s:plugged)
 
   if !has('win32')
@@ -75,7 +86,7 @@ function! s:load_plug() abort
 
   Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 
-  Plug 'nsf/gocode', {'for': 'go', 'rtp': 'vim'}
+  Plug 'nsf/gocode', {'for': 'go', 'rtp': 'vim', 'do': function('BuildGocode')}
   Plug 'vim-jp/vim-go-extra', {'for': 'go'}
 
   Plug 'Pychimp/vim-sol'
