@@ -171,6 +171,12 @@ if s:bundled('neobundle.vim')
       NeoBundleDisable 'tpope/vim-fireplace'
     endif
 
+    NeoBundleLazy 'pangloss/vim-javascript', {'autoload': {'filetypes': 'javascript'}}
+    NeoBundleLazy 'myhere/vim-nodejs-complete', {'autoload': {'filetypes': 'javascript'}}
+    NeoBundle 'nicklasos/vim-jsx-riot'
+    NeoBundleLazy 'JulesWang/css.vim', {'autoload': {'filetypes': 'css'}}
+    NeoBundleLazy 'gorodinskiy/vim-coloresque', {'autoload': {'filetypes': 'css'}}
+
     if s:has_go
       NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
       NeoBundleLazy 'nsf/gocode', {'rtp': 'vim', 'autoload': {'filetypes': 'go'}}
