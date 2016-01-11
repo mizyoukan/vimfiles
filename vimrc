@@ -915,6 +915,10 @@ if s:bundled('vim-quickrun')
         \   'hook/output_encode/encoding': 'cp932'
         \ }
 
+      let g:quickrun_config.python = {
+        \   'hook/output_encode/encoding': 'cp932'
+        \ }
+
       let g:quickrun_config.vb = {
         \   'command': 'CScript',
         \   'exec': '%c //Nologo //E:VBScript %s',
