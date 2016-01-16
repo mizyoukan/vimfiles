@@ -683,6 +683,9 @@ if s:installed('vim-quickrun')
   endif
 endif
 
+" nim.vim
+let g:nim#system_function = 'vimproc#system'
+
 " previm
 let g:previm_parse_yaml_format_matter = 1
 
