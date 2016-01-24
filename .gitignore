@@ -1,5 +1,4 @@
 **/.*
 !/.gitignore
-/plugged/
-/autoload/plug.vim
+/bundle/
 vimrc_local.vim

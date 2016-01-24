@@ -19,100 +19,127 @@ endif
 
 " Plugins {{{
 
-let s:plug = s:vimfiles . '/autoload/plug.vim'
-let s:plugged = s:vimfiles . '/plugged'
+let s:bundledir = s:vimfiles . '/bundle'
+let s:neobundledir = s:bundledir . '/neobundle.vim'
 
-function! s:init_plug() abort
-  let uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  let autoload = s:vimfiles . '/autoload'
-  if !isdirectory(autoload)
-    call mkdir(autoload)
-  endif
-  if has('win32')
-    let cmd = printf('(New-Object Net.WebClient).DownloadFile(\"%s\", \"%s\")', uri, s:plug)
-    call system('powershell -Command "' . cmd . '"')
+function! s:installed(bundle) abort
+  if !isdirectory(s:bundledir)
+    return 0
+  elseif a:bundle ==# 'neobundle.vim' && isdirectory(s:neobundledir)
+    return 1
+  else
+    return neobundle#is_installed(a:bundle)
   endif
 endfunction
 
-function! s:load_plug() abort
-  function! BuildGocode(info) abort
-    if executable('go') && isdirectory(expand('$GOPATH/bin'))
-      if has('win32')
-        let cmd = 'go build -ldflags -H=windowsgui && copy /Y .\\gocode.exe ' . expand('$GOPATH\\bin\\')
-      else
-        let cmd = 'go build && cp ./gocode ' . expand('$GOPATH/bin/')
-      endif
-      silent call system(cmd)
-    endif
-  endfunction
+if !s:installed('neobundle.vim') && executable('git')
+  echo 'Install NeoBundle ...'
+  if !isdirectory(s:bundledir)
+    call mkdir(iconv(s:bundledir, &encoding, &termencoding), 'p')
+  endif
+  call system('git clone https://github.com/Shougo/neobundle.vim ' . shellescape(s:neobundledir))
+endif
 
-  call plug#begin(s:plugged)
+if has('vim_starting') && isdirectory(s:neobundledir)
+  let &runtimepath = &runtimepath . ',' . s:neobundledir
+endif
+
+if s:installed('neobundle.vim')
+  filetype plugin indent off
+
+  " Use shallow clone
+  let g:neobundle#types#git#clone_depth = 1
+
+  call neobundle#begin(s:bundledir)
+
+  NeoBundleFetch 'Shougo/neobundle.vim'
 
   if !has('win32')
-    Plug 'Shougo/vimproc', {'do': 'make'}
-    Plug 'vim-jp/vimdoc-ja'
+    NeoBundle 'Shougo/vimproc', {'build': 'make'}
+    NeoBundle 'vim-jp/vimdoc-ja'
+    set helplang=ja,en
   endif
 
-  Plug 'Shougo/neocomplete.vim'
-  Plug 'Shougo/neomru.vim'
-  Plug 'Shougo/neosnippet'
-  Plug 'Shougo/neosnippet-snippets'
-  Plug 'Shougo/unite.vim'
-  Plug 'Yggdroot/indentLine'
-  Plug 'jiangmiao/auto-pairs'
-  Plug 'junegunn/vim-easy-align'
-  Plug 'kien/rainbow_parentheses.vim'
-  Plug 'kmnk/vim-unite-giti'
-  Plug 'mattn/emmet-vim'
-  Plug 'mattn/sonictemplate-vim'
-  Plug 'scrooloose/syntastic'
-  Plug 'tomtom/tcomment_vim'
-  Plug 'tpope/vim-fugitive'
-  Plug 'tpope/vim-surround'
-  Plug 'tyru/open-browser.vim'
-  Plug 'vim-jp/vital.vim'
+  NeoBundle 'Shougo/neocomplete.vim', {'disabled': !has('lua'), 'vim_version' : '7.3.885'}
+  NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets']}
+  NeoBundle 'Yggdroot/indentLine'
+  NeoBundle 'jiangmiao/auto-pairs'
+  NeoBundle 'kien/rainbow_parentheses.vim'
+  NeoBundle 'mattn/emmet-vim'
+  NeoBundle 'mattn/sonictemplate-vim'
+  NeoBundle 'scrooloose/syntastic'
+  NeoBundle 'tomtom/tcomment_vim'
+  NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive'}
+  NeoBundle 'tpope/vim-surround'
+  NeoBundle 'vim-jp/vital.vim'
 
-  Plug 'Shougo/vimfiler', {'on': 'VimFilerBufferDir'}
-  Plug 'mizyoukan/previm', {'on': 'PrevimOpen'}
-  Plug 'thinca/vim-quickrun', {'on': 'QuickRun'}
-  Plug 'thinca/vim-scouter', {'on': 'Scouter'}
+  NeoBundleLazy 'Shougo/unite.vim', {
+    \   'depends': 'Shougo/neomru.vim',
+    \   'autoload': {'commands': 'Unite'}
+    \ }
+  NeoBundleLazy 'Shougo/vimfiler', {
+    \   'depends': 'Shougo/unite.vim',
+    \   'autoload': {
+    \     'commands': [
+    \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
+    \       'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',
+    \       'Edit', 'Read', 'Source', 'Write'
+    \     ],
+    \     'mappings': '<Plug>(vimfiler_',
+    \     'explorer': 1
+    \   }
+    \ }
+  NeoBundleLazy 'junegunn/vim-easy-align', {
+    \   'autoload': {
+    \     'commands': ['EasyAlign', 'LiveEasyAlign'],
+    \     'mappings': '<Plug>(EasyAlign)'
+    \   }
+    \ }
+  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
+  NeoBundleLazy 'mizyoukan/previm', {
+    \   'depends': 'tyru/open-browser.vim',
+    \   'autoload': {'commands': 'PrevimOpen'}
+    \ }
+  NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
+  NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
 
-  Plug 'myhere/vim-nodejs-complete', {'for': 'javascript'}
-  Plug 'nicklasos/vim-jsx-riot'
-  Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+  NeoBundleLazy 'myhere/vim-nodejs-complete', {'autoload': {'filetypes': 'javascript'}}
+  NeoBundleLazy 'pangloss/vim-javascript', {'autoload': {'filetypes': 'javascript'}}
 
-  Plug 'JulesWang/css.vim', {'for': 'css'}
-  Plug 'gorodinskiy/vim-coloresque', {'for': 'css'}
+  NeoBundleLazy 'JulesWang/css.vim', {'autoload': {'filetypes': 'css'}}
+  NeoBundleLazy 'gorodinskiy/vim-coloresque', {'autoload': {'filetypes': 'css'}}
 
-  Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+  if isdirectory(expand('~/src/github.com/mizyoukan/nim/nim.vim'))
+    call neobundle#local('~/src/github.com/mizyoukan/nim', {}, ['nim.vim'])
+  endif
 
-  Plug 'nsf/gocode', {'for': 'go', 'rtp': 'vim', 'do': function('BuildGocode')}
-  Plug 'vim-jp/vim-go-extra', {'for': 'go'}
+  NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
+  if !has('python') || !executable('lein')
+    NeoBundleDisable 'tpope/vim-fireplace'
+  endif
 
-  Plug 'Pychimp/vim-sol'
-  Plug 'jnurmine/Zenburn'
+  if executable('go')
+    NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
+    NeoBundleLazy 'nsf/gocode', {'rtp': 'vim', 'autoload': {'filetypes': 'go'}}
+    call neobundle#config('gocode', {'build': {
+      \ 'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
+      \ 'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+      \ }})
+  endif
 
-  Plug '~/src/github.com/mizyoukan/nim/nim.vim'
+  NeoBundle 'Pychimp/vim-sol'
+  NeoBundle 'jnurmine/Zenburn'
 
-  call plug#end()
-endfunction
+  call neobundle#end()
 
-if filereadable(s:plug)
-  call s:load_plug()
-else
-  call s:init_plug()
-  if filereadable(s:plug)
-    call s:load_plug()
-    augroup init_plug
-      autocmd!
-      autocmd VimEnter * PlugInstall | source $MYVIMRC
-    augroup END
+  NeoBundleCheck
+
+  if !has('vim_starting')
+    call neobundle#call_hook('on_source')
   endif
 endif
 
-function! s:installed(plug) abort
-  return isdirectory(s:plugged . '/' . a:plug)
-endfunction
+filetype plugin indent on
 
 " }}}
 
@@ -536,8 +563,14 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#max_list = 20
 
-let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+if s:installed('neocomplete.vim')
+  let s:bundle = neobundle#get('neocomplete.vim')
+  function! s:bundle.hooks.on_source(bundle) abort
+    let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+  endfunction
+  unlet s:bundle
+endif
 
 " Shougo/neosnippet
 let g:neosnippet#disable_runtime_snippets = {'_': 1}
@@ -545,7 +578,7 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 
 let g:neosnippet#data_directory = s:cachedir . '/neosnippet'
 let g:neosnippet#snippets_directory = [
-  \   s:plugged . '/neosnippet-snippets/neosnippets',
+  \   s:bundledir . '/neosnippet-snippets/neosnippets',
   \   s:vimfiles . '/snippets'
   \ ]
 
@@ -568,24 +601,28 @@ if s:installed('neosnippet')
 endif
 
 " Shougo/unite.vim
+let g:neomru#file_mru_path = s:cachedir . '/neomru/file'
+let g:neomru#directory_mru_path = s:cachedir . '/neomru/directory'
+
+let g:unite_data_directory = s:cachedir . '/unite'
+let g:unite_enable_start_insert = 1
+let g:unite_split_rule = 'botright'
+let g:unite_winheight = 10
+
+let g:unite_source_file_mru_ignore_pattern = ''
+let g:unite_source_file_mru_ignore_pattern .= '\~$'
+let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
+if has('win32')
+  let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
+  let g:unite_source_file_mru_ignore_pattern .= '\|^//'
+endif
+
 if s:installed('unite.vim')
-  let g:neomru#file_mru_path = s:cachedir . '/neomru/file'
-  let g:neomru#directory_mru_path = s:cachedir . '/neomru/directory'
-
-  let g:unite_data_directory = s:cachedir . '/unite'
-  let g:unite_enable_start_insert = 1
-  let g:unite_split_rule = 'botright'
-  let g:unite_winheight = 10
-
-  let g:unite_source_file_mru_ignore_pattern = ''
-  let g:unite_source_file_mru_ignore_pattern .= '\~$'
-  let g:unite_source_file_mru_ignore_pattern .= '\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)'
-  if has('win32')
-    let g:unite_source_file_mru_ignore_pattern .= '\|AppData/Local/Temp'
-    let g:unite_source_file_mru_ignore_pattern .= '\|^//'
-  endif
-
-  call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
+  let s:bundle = neobundle#get('unite.vim')
+  function! s:bundle.hooks.on_source(bundle) abort
+    call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
+  endfunction
+  unlet s:bundle
 endif
 
 " Shougo/vimfiler
@@ -596,10 +633,10 @@ let g:vimfiler_tree_indentation = 2
 let g:vimfiler_tree_leaf_icon = ' '
 
 " jiangmiao/auto-pairs
-if s:installed('auto-pairs')
-  " For avoiding conflict with neocomplete.vim
-  let g:AutoPairsMapBS = 0
+" For avoiding conflict with neocomplete.vim
+let g:AutoPairsMapBS = 0
 
+if s:installed('auto-pairs')
   if has('unix') && !has('gui_running')
     set <M-e>=<Esc>e
     imap <Esc>e <M-e>
@@ -632,56 +669,60 @@ let tcomment#ignore_comment_def = ['clojurescript']
 
 " thinca/vim-quickrun
 if s:installed('vim-quickrun')
-  let g:quickrun_config = get(g:, 'quickrun_config', {})
+  let s:bundle = neobundle#get('vim-quickrun')
+  function! s:bundle.hooks.on_source(bundle) abort
+    let g:quickrun_config = get(g:, 'quickrun_config', {})
 
-  let g:quickrun_config._ = {
-    \   'outputter': 'multi:buffer:quickfix',
-    \   'outputter/buffer/split': 'botright 10sp',
-    \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
-    \   'outputter/buffer/close_on_empty': 1,
-    \   'runner': 'vimproc',
-    \   'runner/vimproc/updatetime': 50,
-    \   'runner/vimproc/sleep': 0
-    \ }
-
-  if has('win32')
-    let g:quickrun_config.dosbatch = {
-      \   'runner': 'system',
-      \   'hook/output_encode/encoding': 'cp932'
+    let g:quickrun_config._ = {
+      \   'outputter': 'multi:buffer:quickfix',
+      \   'outputter/buffer/split': 'botright 10sp',
+      \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
+      \   'outputter/buffer/close_on_empty': 1,
+      \   'runner': 'vimproc',
+      \   'runner/vimproc/updatetime': 50,
+      \   'runner/vimproc/sleep': 0
       \ }
 
-    let g:quickrun_config.python = {
-      \   'hook/output_encode/encoding': 'cp932'
-      \ }
+    if has('win32')
+      let g:quickrun_config.dosbatch = {
+        \   'runner': 'system',
+        \   'hook/output_encode/encoding': 'cp932'
+        \ }
 
-    let g:quickrun_config.vb = {
-      \   'command': 'CScript',
-      \   'exec': '%c //Nologo //E:VBScript %s',
-      \   'hook/output_encode/encoding': 'cp932',
-      \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
-      \ }
+      let g:quickrun_config.python = {
+        \   'hook/output_encode/encoding': 'cp932'
+        \ }
 
-    let g:quickrun_config['javascript.chakra'] = {
-      \   'command': 'CScript',
-      \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
-      \   'hook/output_encode/encoding': 'cp932',
-      \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
-      \ }
+      let g:quickrun_config.vb = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:VBScript %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
+        \ }
 
-    let g:quickrun_config['javascript.jscript'] = {
-      \   'command': 'CScript',
-      \   'exec': '%c //Nologo //E:JScript %s',
-      \   'hook/output_encode/encoding': 'cp932',
-      \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
-      \ }
+      let g:quickrun_config['javascript.chakra'] = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
+        \ }
 
-    let g:quickrun_config.nim = {
-      \   'command': 'nim',
-      \   'cmdopt': 'compile --run --verbosity:0',
-      \   'hook/sweep/files': ['%S:p:r.exe'],
-      \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
-      \ }
-  endif
+      let g:quickrun_config['javascript.jscript'] = {
+        \   'command': 'CScript',
+        \   'exec': '%c //Nologo //E:JScript %s',
+        \   'hook/output_encode/encoding': 'cp932',
+        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
+        \ }
+
+      let g:quickrun_config.nim = {
+        \   'command': 'nim',
+        \   'cmdopt': 'compile --run --verbosity:0',
+        \   'hook/sweep/files': ['%S:p:r.exe'],
+        \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
+        \ }
+    endif
+  endfunction
+  unlet s:bundle
 endif
 
 " nim.vim
