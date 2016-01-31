@@ -511,6 +511,11 @@ augroup bufinit
   autocmd BufNewFile,BufRead *.vue setfiletype html
 augroup END
 
+augroup imeoff
+  autocmd!
+  autocmd InsertLeave * setlocal iminsert=0 imsearch=0
+augroup END
+
 augroup filetypes
   autocmd!
 
