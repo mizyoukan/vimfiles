@@ -210,9 +210,9 @@ function! s:letandmkdir(var, path) abort
   endtry
 endfunction
 
-call s:letandmkdir('&backupdir', s:vimfiles . '/.backup')
-call s:letandmkdir('&directory', s:vimfiles . '/.swap')
-call s:letandmkdir('&undodir', s:vimfiles . '/.undo')
+call s:letandmkdir('&backupdir', s:cachedir . '/backup')
+call s:letandmkdir('&directory', s:cachedir . '/swap')
+call s:letandmkdir('&undodir', s:cachedir . '/undo')
 
 " Status line {{{
 
