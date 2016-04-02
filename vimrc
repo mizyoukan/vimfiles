@@ -4,7 +4,7 @@ let &termencoding = &encoding
 set encoding=utf-8
 scriptencoding utf-8
 
-let s:vimfiles = expand(has('win32') ? '$UserProfile/vimfiles' : '$HOME/.vim')
+let s:vimfiles = substitute(expand(has('win32') ? '$UserProfile/vimfiles' : '$HOME/.vim'), '\\', '/', 'g')
 let s:cachedir = s:vimfiles . '/.cache'
 
 " Popup if has already opened other Vim
@@ -17,125 +17,103 @@ endif
 
 " }}}
 
-" Plugins {{{
+" Plugin install {{{
 
 let s:bundledir = s:vimfiles . '/bundle'
-let s:neobundledir = s:bundledir . '/neobundle.vim'
+let s:reposdir = s:cachedir . '/dein'
+let s:deindir = s:reposdir . '/dein.vim'
 
-function! s:installed(bundle) abort
-  if !isdirectory(s:bundledir)
-    return 0
-  elseif a:bundle ==# 'neobundle.vim' && isdirectory(s:neobundledir)
-    return 1
-  else
-    return neobundle#is_installed(a:bundle)
+" Install dein.vim
+if stridx(&runtimepath, s:deindir) == -1 && executable('git')
+  if !isdirectory(s:deindir)
+    call mkdir(iconv(s:deindir, &encoding, &termencoding), 'p')
   endif
+  call system('git clone --depth 1 https://github.com/Shougo/dein.vim ' . shellescape(s:deindir))
+  execute 'set runtimepath+=' . s:deindir
+endif
+
+" Check install
+function! s:installed(repos) abort
+  if !isdirectory(s:deindir)
+    return 0
+  endif
+  let dict = dein#get(a:repos)
+  return len(dict) > 0
 endfunction
 
-if !s:installed('neobundle.vim') && executable('git')
-  echo 'Install NeoBundle ...'
-  if !isdirectory(s:bundledir)
-    call mkdir(iconv(s:bundledir, &encoding, &termencoding), 'p')
-  endif
-  call system('git clone https://github.com/Shougo/neobundle.vim ' . shellescape(s:neobundledir))
-endif
+" Use shallow clone
+let g:dein#types#git#clone_depth = 1
 
-if has('vim_starting') && isdirectory(s:neobundledir)
-  let &runtimepath = &runtimepath . ',' . s:neobundledir
-endif
+if isdirectory(s:deindir)
+  if dein#load_state(s:reposdir)
+    call dein#begin(expand(s:reposdir))
 
-if s:installed('neobundle.vim')
-  filetype plugin indent off
+    if !has('win32')
+      call dein#add('Shougo/vimproc', {'build': 'make'})
+      call dein#add('vim-jp/vimdoc-ja')
+      set helplang=ja,en
+    endif
 
-  " Use shallow clone
-  let g:neobundle#types#git#clone_depth = 1
+    call dein#add('Shougo/neocomplete.vim')
+    call dein#add('Shougo/neomru.vim')
+    call dein#add('Shougo/neosnippet')
+    call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('Shougo/unite.vim', {'on_cmd': 'Unite'})
+    call dein#add('Shougo/vimfiler', {'on_cmd': ['VimFiler', 'VimFilerTab', 'VimFilerBufferDir'], 'on_map': '<Plug>(vimfiler_'})
+    call dein#add('Yggdroot/indentLine')
+    call dein#add('jiangmiao/auto-pairs')
+    call dein#add('junegunn/vim-easy-align', {'on_cmd': ['EasyAlign', 'LiveEasyAlign'], 'on_map': '<Plug>(EasyAlign)'})
+    call dein#add('kien/rainbow_parentheses.vim')
+    call dein#add('kmnk/vim-unite-giti')
+    call dein#add('mattn/emmet-vim')
+    call dein#add('mattn/sonictemplate-vim')
+    call dein#add('mizyoukan/previm', {'on_cmd': 'PrevimOpen'})
+    call dein#add('scrooloose/syntastic')
+    call dein#add('thinca/vim-quickrun')
+    call dein#add('thinca/vim-scouter', {'on_cmd': 'Scouter'})
+    call dein#add('tomtom/tcomment_vim')
+    call dein#add('tpope/vim-fugitive')
+    call dein#add('tpope/vim-surround')
+    call dein#add('tyru/open-browser.vim')
+    call dein#add('vim-jp/vital.vim')
 
-  call neobundle#begin(s:bundledir)
+    " colorscheme
+    call dein#add('Pychimp/vim-sol')
+    call dein#add('jnurmine/Zenburn')
 
-  NeoBundleFetch 'Shougo/neobundle.vim'
+    " clojure
+    call dein#add('tpope/vim-fireplace', {'on_ft': 'clojure'})
 
-  if !has('win32')
-    NeoBundle 'Shougo/vimproc', {'build': 'make'}
-    NeoBundle 'vim-jp/vimdoc-ja'
-    set helplang=ja,en
-  endif
+    " nim
+    if isdirectory(expand('~/src/github.com/mizyoukan/nim/nim.vim'))
+      call dein#local('~/src/github.com/mizyoukan/nim', {}, ['nim.vim'])
+    endif
 
-  NeoBundle 'Shougo/neocomplete.vim', {'disabled': !has('lua'), 'vim_version' : '7.3.885'}
-  NeoBundle 'Shougo/neosnippet', {'depends': ['Shougo/neocomplete.vim', 'Shougo/neosnippet-snippets']}
-  NeoBundle 'Yggdroot/indentLine'
-  NeoBundle 'jiangmiao/auto-pairs'
-  NeoBundle 'kien/rainbow_parentheses.vim'
-  NeoBundle 'mattn/emmet-vim'
-  NeoBundle 'mattn/sonictemplate-vim'
-  NeoBundle 'scrooloose/syntastic'
-  NeoBundle 'tomtom/tcomment_vim'
-  NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive'}
-  NeoBundle 'tpope/vim-surround'
-  NeoBundle 'vim-jp/vital.vim'
+    " go
+    if executable('go')
+      if has('win32')
+        let s:gocode_build_command = 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin')
+      else
+        let s:gocode_build_command = 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
+      endif
+      call dein#add('nsf/gocode', {'on_ft': 'go', 'rtp': 'vim', 'build': s:gocode_build_command})
+    endif
+    call dein#add('vim-jp/vim-go-extra', {'on_ft': 'go'})
 
-  NeoBundleLazy 'Shougo/unite.vim', {
-    \   'depends': 'Shougo/neomru.vim',
-    \   'autoload': {'commands': 'Unite'}
-    \ }
-  NeoBundleLazy 'Shougo/vimfiler', {
-    \   'depends': 'Shougo/unite.vim',
-    \   'autoload': {
-    \     'commands': [
-    \       {'name': 'VimFiler', 'complete': 'customhist,vimfiler#complete'},
-    \       'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',
-    \       'Edit', 'Read', 'Source', 'Write'
-    \     ],
-    \     'mappings': '<Plug>(vimfiler_',
-    \     'explorer': 1
-    \   }
-    \ }
-  NeoBundleLazy 'junegunn/vim-easy-align', {
-    \   'autoload': {
-    \     'commands': ['EasyAlign', 'LiveEasyAlign'],
-    \     'mappings': '<Plug>(EasyAlign)'
-    \   }
-    \ }
-  NeoBundleLazy 'kmnk/vim-unite-giti', {'autoload': {'unite_sources': ['giti']}}
-  NeoBundleLazy 'mizyoukan/previm', {
-    \   'depends': 'tyru/open-browser.vim',
-    \   'autoload': {'commands': 'PrevimOpen'}
-    \ }
-  NeoBundleLazy 'thinca/vim-quickrun', {'autoload': {'commands': 'QuickRun'}}
-  NeoBundleLazy 'thinca/vim-scouter', {'autoload': {'commands': 'Scouter'}}
+    " javascript
+    call dein#add('myhere/vim-nodejs-complete', {'on_ft': 'javascript'})
+    call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})
 
-  NeoBundleLazy 'myhere/vim-nodejs-complete', {'autoload': {'filetypes': 'javascript'}}
-  NeoBundleLazy 'pangloss/vim-javascript', {'autoload': {'filetypes': 'javascript'}}
+    " css
+    call dein#add('JulesWang/css.vim', {'on_ft': 'css'})
+    call dein#add('gorodinskiy/vim-coloresque', {'on_ft': 'css'})
 
-  NeoBundleLazy 'JulesWang/css.vim', {'autoload': {'filetypes': 'css'}}
-  NeoBundleLazy 'gorodinskiy/vim-coloresque', {'autoload': {'filetypes': 'css'}}
-
-  if isdirectory(expand('~/src/github.com/mizyoukan/nim/nim.vim'))
-    call neobundle#local('~/src/github.com/mizyoukan/nim', {}, ['nim.vim'])
+    call dein#end()
+    call dein#save_state()
   endif
 
-  NeoBundleLazy 'tpope/vim-fireplace', {'autoload': {'filetypes': 'clojure'}}
-  if !has('python') || !executable('lein')
-    NeoBundleDisable 'tpope/vim-fireplace'
-  endif
-
-  if executable('go')
-    NeoBundleLazy 'vim-jp/vim-go-extra', {'autoload': {'filetypes': 'go'}}
-    NeoBundleLazy 'nsf/gocode', {'rtp': 'vim', 'autoload': {'filetypes': 'go'}}
-    call neobundle#config('gocode', {'build': {
-      \ 'windows': 'go build -ldflags -H=windowsgui && move /Y gocode.exe ' . shellescape(expand('$GOPATH') . '/bin'),
-      \ 'others': 'go build && mv -f gocode ' . shellescape(expand('$GOPATH') . '/bin')
-      \ }})
-  endif
-
-  NeoBundle 'Pychimp/vim-sol'
-  NeoBundle 'jnurmine/Zenburn'
-
-  call neobundle#end()
-
-  NeoBundleCheck
-
-  if !has('vim_starting')
-    call neobundle#call_hook('on_source')
+  if dein#check_install()
+    call dein#install()
   endif
 endif
 
@@ -567,15 +545,8 @@ let g:neocomplete#enable_ignore_case = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#max_list = 20
-
-if s:installed('neocomplete.vim')
-  let s:bundle = neobundle#get('neocomplete.vim')
-  function! s:bundle.hooks.on_source(bundle) abort
-    let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-  endfunction
-  unlet s:bundle
-endif
+let g:neocomplete#keyword_patterns = get(g:, 'neodomplete#keywork_patterns', {})
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
 " Shougo/neosnippet
 let g:neosnippet#disable_runtime_snippets = {'_': 1}
@@ -622,13 +593,13 @@ if has('win32')
   let g:unite_source_file_mru_ignore_pattern .= '\|^//'
 endif
 
-if s:installed('unite.vim')
-  let s:bundle = neobundle#get('unite.vim')
-  function! s:bundle.hooks.on_source(bundle) abort
-    call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
-  endfunction
-  unlet s:bundle
-endif
+" if s:installed('unite.vim')
+"   let s:bundle = neobundle#get('unite.vim')
+"   function! s:bundle.hooks.on_source(bundle) abort
+"     call unite#custom#source('mymemo', 'sorters', ['sorter_ftime', 'sorter_reverse'])
+"   endfunction
+"   unlet s:bundle
+" endif
 
 " Shougo/vimfiler
 let g:vimfiler_as_default_explorer = 1
@@ -673,61 +644,55 @@ let g:tcomment_types['markdown'] = '<!-- %s -->'
 let tcomment#ignore_comment_def = ['clojurescript']
 
 " thinca/vim-quickrun
-if s:installed('vim-quickrun')
-  let s:bundle = neobundle#get('vim-quickrun')
-  function! s:bundle.hooks.on_source(bundle) abort
-    let g:quickrun_config = get(g:, 'quickrun_config', {})
+let g:quickrun_config = get(g:, 'quickrun_config', {})
 
-    let g:quickrun_config._ = {
-      \   'outputter': 'multi:buffer:quickfix',
-      \   'outputter/buffer/split': 'botright 10sp',
-      \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
-      \   'outputter/buffer/close_on_empty': 1,
-      \   'runner': 'vimproc',
-      \   'runner/vimproc/updatetime': 50,
-      \   'runner/vimproc/sleep': 0
-      \ }
+let g:quickrun_config._ = {
+  \   'outputter': 'multi:buffer:quickfix',
+  \   'outputter/buffer/split': 'botright 10sp',
+  \   'outputter/buffer/running_mark': '(」・ω・)」うー！(/・ω・)/にゃー！',
+  \   'outputter/buffer/close_on_empty': 1,
+  \   'runner': 'vimproc',
+  \   'runner/vimproc/updatetime': 50,
+  \   'runner/vimproc/sleep': 0
+  \ }
 
-    if has('win32')
-      let g:quickrun_config.dosbatch = {
-        \   'runner': 'system',
-        \   'hook/output_encode/encoding': 'cp932'
-        \ }
+if has('win32')
+  let g:quickrun_config.dosbatch = {
+    \   'runner': 'system',
+    \   'hook/output_encode/encoding': 'cp932'
+    \ }
 
-      let g:quickrun_config.python = {
-        \   'hook/output_encode/encoding': 'cp932'
-        \ }
+  let g:quickrun_config.python = {
+    \   'hook/output_encode/encoding': 'cp932'
+    \ }
 
-      let g:quickrun_config.vb = {
-        \   'command': 'CScript',
-        \   'exec': '%c //Nologo //E:VBScript %s',
-        \   'hook/output_encode/encoding': 'cp932',
-        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
-        \ }
+  let g:quickrun_config.vb = {
+    \   'command': 'CScript',
+    \   'exec': '%c //Nologo //E:VBScript %s',
+    \   'hook/output_encode/encoding': 'cp932',
+    \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ VBScript\ %m'
+    \ }
 
-      let g:quickrun_config['javascript.chakra'] = {
-        \   'command': 'CScript',
-        \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
-        \   'hook/output_encode/encoding': 'cp932',
-        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
-        \ }
+  let g:quickrun_config['javascript.chakra'] = {
+    \   'command': 'CScript',
+    \   'exec': '%c //Nologo //E:\{16d51579-a30b-4c8b-a276-0ff4dc41e755\} %s',
+    \   'hook/output_encode/encoding': 'cp932',
+    \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ JavaScript\ %m'
+    \ }
 
-      let g:quickrun_config['javascript.jscript'] = {
-        \   'command': 'CScript',
-        \   'exec': '%c //Nologo //E:JScript %s',
-        \   'hook/output_encode/encoding': 'cp932',
-        \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
-        \ }
+  let g:quickrun_config['javascript.jscript'] = {
+    \   'command': 'CScript',
+    \   'exec': '%c //Nologo //E:JScript %s',
+    \   'hook/output_encode/encoding': 'cp932',
+    \   'outputter/quickfix/errorformat': '%f(%l\\,\ %c)\ Microsoft\ JScript\ %m'
+    \ }
 
-      let g:quickrun_config.nim = {
-        \   'command': 'nim',
-        \   'cmdopt': 'compile --run --verbosity:0',
-        \   'hook/sweep/files': ['%S:p:r.exe'],
-        \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
-        \ }
-    endif
-  endfunction
-  unlet s:bundle
+  let g:quickrun_config.nim = {
+    \   'command': 'nim',
+    \   'cmdopt': 'compile --run --verbosity:0',
+    \   'hook/sweep/files': ['%S:p:r.exe'],
+    \   'tempfile': '%{substitute(tempname(), ''\(\d\+\)$'', ''nim\1.nim'', '''')}'
+    \ }
 endif
 
 " nim.vim
@@ -745,4 +710,3 @@ if filereadable(s:vimfiles . '/vimrc_local.vim')
 endif
 
 " }}}
-
