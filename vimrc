@@ -27,8 +27,8 @@ let s:deindir = s:reposdir . '/dein.vim'
 if stridx(&runtimepath, s:deindir) == -1 && executable('git')
   if !isdirectory(s:deindir)
     call mkdir(iconv(s:deindir, &encoding, &termencoding), 'p')
+    call system('git clone --depth 1 https://github.com/Shougo/dein.vim ' . shellescape(s:deindir))
   endif
-  call system('git clone --depth 1 https://github.com/Shougo/dein.vim ' . shellescape(s:deindir))
   execute 'set runtimepath+=' . s:deindir
 endif
 
