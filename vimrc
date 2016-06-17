@@ -486,6 +486,7 @@ augroup bufinit
   autocmd BufNewFile,BufRead *.{md,mkd,markdown} setlocal filetype=markdown
   autocmd BufNewFile,BufRead *.{cljs,cljx} setlocal filetype=clojure.clojurescript
   autocmd BufNewFile,BufRead *.edn setlocal filetype=clojure
+  autocmd BufNewFile,BufRead *.boot setlocal filetype=clojure
   autocmd BufNewFile,BufRead *.vue setfiletype html
 augroup END
 
