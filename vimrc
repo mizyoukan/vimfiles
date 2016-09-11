@@ -636,6 +636,11 @@ endif
 " mattn/sonictemplate-vim
 let g:sonictemplate_vim_template_dir = s:vimfiles . '/template'
 
+" mattn/emmet-vim
+let g:user_emmet_settings = {
+  \ 'lang': 'ja'
+  \ }
+
 " scrooloose/syntastic
 let g:syntastic_auto_loc_list = 1
 
