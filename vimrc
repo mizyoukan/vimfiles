@@ -8,7 +8,7 @@ let s:vimfiles = substitute(expand(has('win32') ? '$UserProfile/vimfiles' : '$HO
 let s:cachedir = s:vimfiles . '/.cache'
 
 " Popup if has already opened other Vim
-silent! runtime macros/editexisting.vim
+" silent! runtime macros/editexisting.vim
 
 " Avoid loading menu.vim
 if &guioptions !~# 'M'
